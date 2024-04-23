@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Textures</title>
+  </head>
+  <body>
+    <a-scene>
+      <!--Assets Management System-->
+      <a-assets>
+        <img src="/table-wood.jpg" alt="table-texture" id="table-texture" />
+      </a-assets>
+
+      <a-box
+        width=".3"
+        height=".3"
+        depth=".02"
+        color="#795548"
+        normal-map="#table-texture"
+        src="/table-wood.jpg"
+        normal-scale="1 -1"
+        position="0 1.2 -2"
+        rotation="-90 0 0"
+      >
+        <a-box
+          width=".3"
+          height=".3"
+          depth=".02"
+          color="#795548"
+          normal-map="#table-texture"
+          src="/table-wood.jpg"
+          position="0 .158 .15"
+          rotation="90 0 0"
+        ></a-box>
+        <a-cylinder
+          height=".2"
+          radius="0.004"
+          color="#b3b3b3"
+          position="-0.12 -0.12 -0.1"
+          rotation="-90 0 0"
+        ></a-cylinder>
+        <a-cylinder
+          height=".2"
+          radius="0.004"
+          color="#b3b3b3"
+          position="-0.12 0.12 -0.1"
+          rotation="-90 0 0"
+        ></a-cylinder>
+        <a-cylinder
+          height=".2"
+          radius="0.004"
+          color="#b3b3b3"
+          position="0.12 -0.12 -0.1"
+          rotation="-90 0 0"
+        ></a-cylinder>
+        <a-cylinder
+          height=".2"
+          radius="0.004"
+          color="#b3b3b3"
+          position="0.12 0.12 -0.1"
+          rotation="-90 0 0"
+        ></a-cylinder>
+      </a-box>
+      <a-plane
+        width="1.5"
+        height="1.5"
+        position="0 1 -2"
+        rotation="-90 0 0"
+        color="green"
+      ></a-plane>
+      <a-sky color="skyblue"></a-sky>
+    </a-scene>
+  </body>
+</html>
