@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Creating a table</title>
+  </head>
+  <body>
+    <a-scene>
+      <a-plane
+        width="5"
+        height="5"
+        color="#7BC8A4"
+        position="0 1 0"
+        rotation="-90 0 0"
+      ></a-plane>
+      <a-box
+        width="1"
+        height="1"
+        depth=".02"
+        rotation="-90 0 0"
+        color="brown"
+        position="0 1.5 0"
+      >
+        <a-cylinder
+          radius="0.01"
+          depth="0.01"
+          height="0.48"
+          position="0.4 -0.4 -0.25"
+          rotation="-90 0 0"
+          color="brown"
+        ></a-cylinder>
+        <a-cylinder
+          radius="0.01"
+          depth="0.01"
+          height="0.48"
+          position="-0.4 0.4 -0.25"
+          rotation="-90 0 0"
+          color="brown"
+        ></a-cylinder>
+        <a-cylinder
+          radius="0.01"
+          depth="0.01"
+          height="0.48"
+          position="-0.4 -0.4 -0.25"
+          rotation="-90 0 0"
+          color="brown"
+        ></a-cylinder>
+        <a-cylinder
+          radius="0.01"
+          depth="0.01"
+          height="0.48"
+          position="0.4 0.4 -0.25"
+          rotation="-90 0 0"
+          color="brown"
+        ></a-cylinder>
+      </a-box>
+      <a-sky color="skyblue"> </a-sky>
+    </a-scene>
+  </body>
+</html>
