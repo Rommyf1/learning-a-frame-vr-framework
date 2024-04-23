@@ -1,0 +1,23 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-particle-system-component@a5a8449/dist/aframe-particle-system-component.js"></script>
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Particles</title>
+  </head>
+  <body>
+    <a-scene>
+      <a-entity particle-system="preset: snow;" position="0 0 0"></a-entity>
+      <a-plane
+        position="0 0 -4"
+        rotation="-90 0 0"
+        width="5"
+        height="4"
+        color="green"
+      ></a-plane>
+      <a-sky color="#ccc"></a-sky>
+    </a-scene>
+  </body>
+</html>
