@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+  <body>
+    <a-scene>
+      <!--Assets Management System-->
+      <a-assets>
+        <a-asset-item id="sofa-obj" src="/sofa/Koltuk.obj"></a-asset-item>
+        <img src="/texturas/textura-piso.jpg" alt="Textura de piso" />
+        <img
+          id="pared"
+          src="/texturas/textura-pared2.jpg"
+          alt="Textura de pared de bloques"
+        />
+        <img src="/texturas/textura-cuero.jpg" alt="Textura del techo" />
+      </a-assets>
+
+      <a-obj-model src="#sofa-obj" position="0 1 -2" color="#555555">
+      </a-obj-model>
+      <!--Piso-->
+      <a-plane
+        src="/texturas/textura-piso.jpg"
+        normal-map="#pared"
+        normal-scale="1 -1"
+        roughness="0.5"
+        width="6"
+        height="6"
+        rotation="-90 0 0"
+        position="0 .84 -2"
+      >
+        <!--Pared del frente-->
+        <a-box
+          width="6"
+          height="5"
+          depth=".1"
+          src="/texturas/textura-pared2.jpg"
+          position="0 3 2.5"
+          rotation="90 0 0"
+        >
+        </a-box>
+        <!--Pared de la derecha-->
+        <a-box
+          width="6"
+          height="5"
+          depth=".1"
+          src="/texturas/textura-pared2.jpg"
+          position="3 0 2.5"
+          rotation="0 90 90"
+        >
+          <!--Pared de atrás-->
+          <a-box
+            width="6"
+            height="5"
+            depth=".1"
+            src="/texturas/textura-pared2.jpg"
+            position="-3 0 -3"
+            rotation="0 -90 0"
+          ></a-box>
+          <!--Pared de la izquierda-->
+          <a-box
+            width="6"
+            height="5"
+            depth=".1"
+            src="/texturas/textura-pared2.jpg"
+            position="0 0 -6"
+          ></a-box>
+          <!--Techo-->
+          <a-box
+            width="6"
+            height="6"
+            depth=".1"
+            color="#fff"
+            src="/texturas/textura-cuero.jpg"
+            rotation="-90 0 0"
+            position="0 2.5 -3"
+          ></a-box>
+        </a-box>
+      </a-plane>
+      <a-sky color="skyblue"></a-sky>
+    </a-scene>
+  </body>
+</html>
