@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+  <body>
+    <!--Scene-->
+    <a-scene>
+      <!--Assets Management System-->
+      <a-assets>
+        <!--Preload sofá obj model-->
+        <a-asset-item id="sofa-obj" src="/sofa/Koltuk.obj"></a-asset-item>
+        <!--Preload Textures -->
+        <img src="/table-wood.jpg" alt="table-texture" />
+      </a-assets>
+      <a-obj-model
+        src="#sofa-obj"
+        position="0 1 -2"
+        color="#555555"
+      ></a-obj-model>
+      <a-plane
+        src="/table-wood.jpg"
+        width="5"
+        height="5"
+        rotation="-90 0 0"
+        position="0 .84 -3"
+      ></a-plane>
+      <a-sky color="skyblue"></a-sky>
+    </a-scene>
+  </body>
+</html>
