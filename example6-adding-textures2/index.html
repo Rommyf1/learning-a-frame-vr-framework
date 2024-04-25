@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+  <body>
+    <a-scene>
+      <!--Assets Management System-->
+      <a-assets>
+        <img
+          id="pared-empedrada"
+          src="/texturas/textura-pared-empedrada-mapa.png"
+          alt="mapa normalizado para la textura de pared empedrada"
+        />
+        <img
+          id="piso"
+          src="/texturas/textura-piso-mapa.png"
+          alt="mapa normalizado para la textura de piso"
+        />
+      </a-assets>
+
+      <a-box
+        src="/texturas/textura-pared-empedrada.jpg"
+        normal-map="#pared-empedrada"
+        normal-scale="1 -1"
+        roughness="0.4"
+        repeat="1 1"
+        width="4"
+        height="4"
+        depth="4"
+        position="-2 1 -6"
+      ></a-box>
+      <a-box
+        src="/texturas/textura-piso.jpg"
+        normal-map="#piso"
+        normal-scale="1 -1"
+        normal-repeat="2 1"
+        repeat="2 1"
+        width="4"
+        height="4"
+        depth="4"
+        position="2 1 -6"
+      ></a-box>
+      <a-sky color="#ececec"></a-sky>
+    </a-scene>
+  </body>
+</html>
