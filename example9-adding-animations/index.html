@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animaciones en A-FRAME</title>
+  </head>
+  <body>
+    <a-scene>
+      <!--Assets Management System-->
+      <a-assets>
+        <img
+          id="piso"
+          src="/texturas/piso-ceramica-negra.png"
+          alt="Textura del piso"
+        />
+        <img
+          id="piso-map"
+          src="/texturas/piso-ceramica-negra-map.png"
+          alt="Mapa de la textura del piso"
+        />
+      </a-assets>
+
+      <a-plane
+        src="#piso"
+        normal-map="#piso-map"
+        normal-texture-repeat="3 3"
+        normal-scale="1 -1"
+        repeat="3 3"
+        roughness="0.7"
+        width="8"
+        height="8"
+        rotation="-90 0 0"
+      ></a-plane>
+
+      <!--Rotating Red box-->
+      <a-box
+        color="red"
+        position="0 3 0"
+        animation="property: rotation; to: 0 360 0; easing: linear; loop: true; dur: 9000;"
+      >
+      </a-box>
+      <!--sphere orbiting Red Box-->
+      <a-entity
+        position="0 3 0"
+        scale=".3 .3 .3"
+        animation="property: rotation; to: 0 360 0; easing: linear; loop: true; dur: 4000;"
+      >
+        <a-sphere color="green" position="8 0 0"></a-sphere>
+      </a-entity>
+      <!--Blue Box moving itself ahead and behind-->
+      <a-box
+        color="blue"
+        position="-3.5 .5 -3.5"
+        animation="property: position; from: -3.5 .5 -3.5; to: -3.5 .5 3.5; dur: 3000; easing: easeInOutQuad; loop: true; dir: alternate;"
+      ></a-box>
+
+      <!--Camera Position-->
+      <a-entity position="0 0 8">
+        <a-camera></a-camera>
+      </a-entity>
+    </a-scene>
+  </body>
+</html>
