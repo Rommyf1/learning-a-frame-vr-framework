@@ -11,39 +11,51 @@
     <a-scene>
       <!--Assets Management System-->
       <a-assets>
+        <!--Pared Empedrada-->
         <img
           id="pared-empedrada"
+          src="public/texturas/textura-pared-empedrada.jpg"
+          alt="textura de pared empedrada"
+        />
+        <img
+          id="pared-empedrada-mapa"
           src="/texturas/textura-pared-empedrada-mapa.png"
           alt="mapa normalizado para la textura de pared empedrada"
         />
+        <!--Piso-->
         <img
           id="piso"
+          src="public/texturas/textura-piso.jpg"
+          alt="textura de piso de madera"
+        />
+        <img
+          id="piso-mapa"
           src="/texturas/textura-piso-mapa.png"
           alt="mapa normalizado para la textura de piso"
         />
       </a-assets>
 
       <a-box
-        src="/texturas/textura-pared-empedrada.jpg"
-        normal-map="#pared-empedrada"
+        src="#pared-empedrada"
+        normal-map="#pared-empedrada-mapa"
         normal-scale="1 -1"
-        roughness="0.4"
+        roughness="0.43"
         repeat="1 1"
         width="4"
         height="4"
         depth="4"
         position="-2 1 -6"
+        scale="1 1 1"
       ></a-box>
       <a-box
-        src="/texturas/textura-piso.jpg"
-        normal-map="#piso"
+        src="#piso"
+        normal-map="#piso-mapa"
         normal-scale="1 -1"
-        normal-repeat="2 1"
-        repeat="2 1"
         width="4"
         height="4"
         depth="4"
         position="2 1 -6"
+        scale="1 1 1"
       ></a-box>
       <a-sky color="#ececec"></a-sky>
     </a-scene>
