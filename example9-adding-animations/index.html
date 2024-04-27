@@ -57,6 +57,28 @@
         animation="property: position; from: -3.5 .5 -3.5; to: -3.5 .5 3.5; dur: 3000; easing: easeInOutQuad; loop: true; dir: alternate;"
       ></a-box>
 
+      <!--Purple box growing and shrinking-->
+      <a-box
+        color="Purple"
+        position="3.5 .5 -3.5"
+        animation__depth="property: scale; to: 1 1 8; dur: 2500; easing: linear; dir: alternate; loop: true;"
+        animation__position="property: position; to: 3.5 .5 0; dur: 2500; easing: linear; dir: alternate; loop: true;"
+      >
+      </a-box>
+
+      <!--Sun Element-->
+      <a-entity
+        animation="property: rotation; to: 0 0 360; easing: linear; dur: 3000; loop: true;"
+      >
+        <a-sphere
+          color="yellow"
+          position="5 .5 0"
+          scale=".5 .5 .5"
+          animation__visibility="property: opacity; delay: 1000; from: 1; to: 0; dur: 1500; easing: linear; loop: true; dir: alternate;"
+          animation__color="property: color; from: #d9ae04; to: yellow; dur: 750; easing: linear; loop: true; dir: alternate;"
+        ></a-sphere>
+      </a-entity>
+
       <!--Camera Position-->
       <a-entity position="0 0 8">
         <a-camera></a-camera>
