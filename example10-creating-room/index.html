@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+  <body>
+    <a-scene>
+      <!--Assets Management System-->
+      <a-assets>
+        <!--Precarga del objeto sofá-->
+        <a-asset-item id="sofa" src="/sofa/Koltuk.obj"></a-asset-item>
+        <!--Precarga de la textura del sofá -->
+        <img src="/texturas/tela-mueble.png" alt="textura del sofá" />
+        <!--Precarga de la textura normalizada del sofá-->
+        <img
+          src="/texturas/tela-mueble-normal.png"
+          alt="textura normalizada del sofá"
+        />
+
+        <!--Silla Moderna-->
+        <a-asset-item
+          id="silla-model"
+          src="/modelos/silla-moderna/scene.gltf"
+        ></a-asset-item>
+
+        <!--Mesa Simple-->
+        <a-asset-item
+          id="mesa-model"
+          src="/modelos/mesa-simple/scene.gltf"
+        ></a-asset-item>
+
+        <!--Piso de cerámica-->
+        <img
+          id="piso-ceramica-model"
+          src="/texturas/piso-ceramica-negra/piso-ceramica-negra.png"
+          alt="Piso de cerámica"
+        />
+        <!--Precarga de la textura normalizada del piso-->
+        <img
+          id="piso-ceramica-map"
+          src="/texturas/tela-mueble-normal.png"
+          alt="Piso de cerámica normalizado"
+        />
+      </a-assets>
+      <a-obj-model src="#sofa"></a-obj-model>
+      <a-gltf-model
+        id="silla1"
+        src="#silla-model"
+        color="red"
+        position="-0.456 0 -3.1"
+        rotation="0 180 0"
+      ></a-gltf-model>
+      <a-gltf-model
+        id="silla2"
+        src="#silla-model"
+        color="red"
+        position="0.456 0 -3.1"
+        rotation="0 180 0"
+      ></a-gltf-model>
+      <a-gltf-model
+        id="silla3"
+        src="#silla-model"
+        color="red"
+        position="-0.456 0 -4.9"
+      ></a-gltf-model>
+      <a-gltf-model
+        id="silla4"
+        src="#silla-model"
+        color="red"
+        position="0.456 0 -4.9"
+      ></a-gltf-model>
+      <a-gltf-model
+        id="mesa"
+        src="#mesa-model"
+        position="0 0 -4"
+        rotation="0 90 0"
+      ></a-gltf-model>
+      <a-box
+        width="10"
+        height="10"
+        depth="0.1"
+        src="#piso-ceramica-model"
+        normal-map="#piso-ceramica-map"
+        rotation="-90 0 0"
+        position="0 0 -4"
+      ></a-box>
+    </a-scene>
+  </body>
+</html>

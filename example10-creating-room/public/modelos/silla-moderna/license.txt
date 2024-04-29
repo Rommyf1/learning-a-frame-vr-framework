@@ -1,0 +1,8 @@
+Model Information:
+* title:	chair
+* source:	https://sketchfab.com/3d-models/chair-47696751de7143ed8629ab53144a8666
+* author:	Kljaja (https://sketchfab.com/Kljaja)
+
+Model License:
+* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
+* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works
