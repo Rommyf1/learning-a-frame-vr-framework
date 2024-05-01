@@ -178,7 +178,16 @@
         id="cubo"
         radius=".1"
         color="red"
-        position="-1.5  3 -1"
+        position=".5  3 -2"
+        ammo-body="type: dynamic; mass: 0.1; aungularDamping: 0.001; restitution: 0.7;"
+        ammo-shape="type: sphere;"
+      ></a-sphere>
+      <!--Pelota-->
+      <a-sphere
+        id="cubo"
+        radius=".1"
+        color="red"
+        position=".4 .87 -2"
         ammo-body="type: dynamic; mass: 0.1; aungularDamping: 0.001; restitution: 0.7;"
         ammo-shape="type: sphere;"
       ></a-sphere>
@@ -309,7 +318,7 @@
         height="3"
         depth=".1"
         position="0 2.3 1"
-        ammo-body="type: static;"
+        ammo-body="type: static; restitution: 0.7;"
         ammo-shape="type: box;"
       ></a-box>
 
@@ -327,7 +336,7 @@
         depth=".1"
         position="-1.8 2.3 -2"
         rotation="0 90 0"
-        ammo-body="type: static;"
+        ammo-body="type: static; restitution: 0.7;"
         ammo-shape="type: box;"
       >
       </a-box>
@@ -345,7 +354,7 @@
         height="3"
         depth=".1"
         position="0 2.3 -4.950"
-        ammo-body="type: static;"
+        ammo-body="type: static; restitution: 0.7;"
         ammo-shape="type: box;"
       ></a-box>
 
@@ -363,7 +372,7 @@
         depth=".1"
         position="1.8 2.3 -2"
         rotation="0 90 0"
-        ammo-body="type: static;"
+        ammo-body="type: static; restitution: 0.7;"
         ammo-shape="type: box;"
       ></a-box>
 
@@ -378,7 +387,7 @@
         depth=".1"
         position="0 3.85 -2"
         rotation="-90 0 0"
-        ammo-body="type: static;"
+        ammo-body="type: static; restitution: 0.7;"
         ammo-shape="type: box;"
       ></a-box>
       <a-sky color="skyblue"></a-sky>
