@@ -3,12 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <!--<script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.4.0/dist/aframe-extras.min.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/gh/MozillaReality/ammo.js@8bbc0ea/builds/ammo.wasm.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.2/dist/aframe-physics-system.js"></script>
+    <!--<script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v$npm_package_version/dist/aframe-physics-system.min.js"></script>-->
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite App</title>
   </head>
   <body>
-    <a-scene>
+    <a-scene physics="driver: ammo; debug: true; debugDrawMode: 1;">
       <!--Assets Management System-->
       <a-assets>
         <!------------------------------------------------------------------------------------------------------->
@@ -99,13 +103,13 @@
 
         <!--Precarga textura del Piso-->
         <img
-          id="piso"
+          id="textura-piso"
           src="/texturas/piso-ceramica-negra/piso-ceramica-negra.png"
           alt="Textura de piso"
         />
         <!--Precarga textura del Piso normalizado-->
         <img
-          id="piso-normal"
+          id="textura-piso-normal"
           src="/texturas/piso-ceramica-negra/piso-ceramica-negra-map.png"
           alt="Textura de piso normalizado"
         />
@@ -154,211 +158,229 @@
 
       <!--Piso-->
       <a-plane
-        src="#piso"
-        normal-map="#piso-normal"
+        id="piso"
+        src="#textura-piso"
+        normal-map="#textura-piso-normal"
         normal-texture-repeat="5 5"
         normal-scale="1 -1"
         repeat="5 5"
         width="3.5"
         height="6"
-        rotation="-90 -90 -90"
+        rotation="-90 0 0"
         position="0 .84 -2"
+        ammo-body="type: static; restitution: 0.7;"
+        ammo-shape="type: box;"
       >
-        <!--Mesita central-->
-        <a-obj-model
-          src="#mesita"
-          mtl="#mesita-mtl"
-          position="0.6 0.978 0"
-          scale="0.2 0.2 0.2"
-          rotation="0 -90 -90"
-        >
-        </a-obj-model>
-
-        <!--Sofá 1-->
-        <a-obj-model
-          id="sofa1"
-          src="#sofa-simple"
-          position="1.43 1 0"
-          scale="0.1 0.1 0.1"
-          rotation="0 -90 -90"
-          material="src: #tela-sofa;"
-          normal-map="#tela-sofa-normal"
-          normal-scale="1 -1"
-          normal-texture-repeat="3 3"
-          repeat="3 3"
-        ></a-obj-model>
-
-        <!--Sofá 2-->
-        <a-obj-model
-          id="sofa2"
-          src="#sofa-simple"
-          position="0.6 0.173 0"
-          scale="0.1 0.1 0.1"
-          rotation="-90 -90 -90"
-          material="src: #tela-sofa;"
-          normal-map="#tela-sofa-normal"
-          normal-scale="1 -1"
-          normal-texture-repeat="3 3"
-          repeat="3 3"
-        ></a-obj-model>
-
-        <!--Mesa-->
-        <a-obj-model
-          id="mesa"
-          src="#mesa-obj"
-          material="src: #textura-mesa"
-          scale="0.2 0.2 0.2"
-          position="0.6 -1.5 0"
-          rotation="90 0 0"
-        ></a-obj-model>
-
-        <!--Silla 1-->
-        <a-obj-model
-          id="silla1"
-          src="#silla-obj"
-          material="src: #silla-madera; color: gray"
-          normal-map="#silla-tela"
-          scale="0.006 0.006 0.006"
-          position="0.398 -0.92 0"
-          rotation="0 -90 -90"
-          obj-model=""
-        ></a-obj-model>
-
-        <!--Silla 2-->
-        <a-obj-model
-          id="silla2"
-          src="#silla-obj"
-          material="src: #silla-madera; color: gray"
-          normal-map="#silla-tela"
-          scale="0.006 0.006 0.006"
-          position="0.398 -2.1 0"
-          rotation="0 90 90"
-          obj-model=""
-        ></a-obj-model>
-
-        <!--Silla 3-->
-        <a-obj-model
-          id="silla3"
-          src="#silla-obj"
-          material="src: #silla-madera; color: gray"
-          normal-map="#silla-tela"
-          scale="0.006 0.006 0.006"
-          position="0.848 -0.92 0"
-          rotation="0 -90 -90"
-          obj-model=""
-        ></a-obj-model>
-
-        <!--Silla 4-->
-        <a-obj-model
-          id="silla4"
-          src="#silla-obj"
-          material="src: #silla-madera; color: gray"
-          normal-map="#silla-tela"
-          scale="0.006 0.006 0.006"
-          position="0.848 -2.1 0"
-          rotation="0 90 90"
-          obj-model=""
-        ></a-obj-model>
-
-        <!--Mesa Auxiliar-->
-        <a-obj-model
-          id="mesa-auxiliar"
-          src="#mesa-auxiliar-obj"
-          material="src: #silla-madera; color: gray"
-          scale="0.01 0.01 0.01"
-          position="-1.45008 0.902 0"
-          rotation="0 -90 -90"
-          obj-model=""
-        ></a-obj-model>
-
-        <!--TV-->
-        <a-obj-model
-          id="tv"
-          src="#tv-obj"
-          mtl="#tv-mtl"
-          scale="0.2 0.2 0.2"
-          position="-1.45137 0.88048 0.24729"
-          rotation="0 90 90"
-        ></a-obj-model>
-
-        <!--Pared de atrás-->
-        <a-box
-          id="pared-atras"
-          src="#pared-empedrada"
-          normal-map="#pared-empedrada-normal"
-          normal-scale="1 -1"
-          normal-texture-repeat="3 3"
-          repeat="3 3"
-          roughness="0.6"
-          width="3.5"
-          height="3"
-          depth=".1"
-          position="0 3 1.5"
-          rotation="90 180 180"
-        ></a-box>
-
-        <!--Pared de la Izquierda-->
-        <a-box
-          id="pared-izquierda"
-          src="#pared-empedrada"
-          normal-map="#pared-empedrada-normal"
-          normal-scale="1 -1"
-          normal-texture-repeat="5 5"
-          repeat="5 5"
-          roughness="0.6"
-          width="6"
-          height="3"
-          depth=".1"
-          position="1.78198 0 1.5"
-          rotation="0 90 90"
-        >
-        </a-box>
-
-        <!--Pared del frente-->
-        <a-box
-          id="pared-frente"
-          src="#pared-empedrada"
-          normal-map="#pared-empedrada-normal"
-          normal-scale="1 -1"
-          normal-texture-repeat="3 3"
-          repeat="3 3"
-          roughness="0.6"
-          width="3.5"
-          height="3"
-          depth=".1"
-          position="0 -3 1.5"
-          rotation="90 180 180"
-        ></a-box>
-
-        <!--Pared de la derecha-->
-        <a-box
-          id="pared-derecha"
-          src="#pared-empedrada"
-          normal-map="#pared-empedrada-normal"
-          normal-scale="1 -1"
-          normal-texture-repeat="5 5"
-          repeat="5 5"
-          roughness="0.6"
-          width="6"
-          height="3"
-          depth=".1"
-          position="-1.79902 0 1.5"
-          rotation="0 -90 90"
-        ></a-box>
-
-        <!--Techo-->
-        <a-box
-          id="techo"
-          src="#techo"
-          repeat="4 4"
-          width="3.5"
-          height="6"
-          depth=".1"
-          color="#fff"
-          rotation="0 -180 -180"
-          position="0 0 3"
-        ></a-box>
       </a-plane>
+
+      <!--Pelota-->
+      <a-sphere
+        id="cubo"
+        radius=".1"
+        color="red"
+        position="-1.5  3 -1"
+        ammo-body="type: dynamic; mass: 0.1; aungularDamping: 0.001; restitution: 0.7;"
+        ammo-shape="type: sphere;"
+      ></a-sphere>
+
+      <!--Sofá 1-->
+      <a-obj-model
+        id="sofa1"
+        src="#sofa-simple"
+        position="-1.43 .86 -1"
+        scale="0.1 0.1 0.1"
+        rotation="0 90 0"
+        material="src: #tela-sofa"
+        normal-map="#tela-sofa-normal"
+        normal-scale="1 -1"
+        normal-texture-repeat="3 3"
+        repeat="3 3"
+        ammo-body="type: kinematic; mass: 10; restitution: 0.5;"
+        ammo-shape="type: hull;"
+      ></a-obj-model>
+
+      <!--Sofá 2-->
+      <a-obj-model
+        id="sofa2"
+        src="#sofa-simple"
+        position="-0.6 .86 -1.86022"
+        scale="0.1 0.1 0.1"
+        material="src: #tela-sofa"
+        normal-map="#tela-sofa-normal"
+        normal-scale="1 -1"
+        normal-texture-repeat="3 3"
+        repeat="3 3"
+      ></a-obj-model>
+
+      <!--Mesita central-->
+      <a-obj-model
+        id="mesita-central"
+        src="#mesita"
+        mtl="#mesita-mtl"
+        position="-0.6 .86 -1"
+        scale="0.2 0.2 0.2"
+        rotation="0 -90 0"
+      >
+      </a-obj-model>
+
+      <!--Mesa-->
+      <a-obj-model
+        id="mesa"
+        src="#mesa-obj"
+        material="src: #textura-mesa"
+        scale="0.2 0.2 0.2"
+        position="-0.6 .86 -3.5"
+      ></a-obj-model>
+
+      <!--Silla 1-->
+      <a-obj-model
+        id="silla1"
+        src="#silla-obj"
+        material="src: #silla-madera; color: gray"
+        normal-map="#silla-tela"
+        scale="0.006 0.006 0.006"
+        position="-0.398 .86 -2.88326"
+        rotation="0 90 0"
+      ></a-obj-model>
+
+      <!--Silla 2-->
+      <a-obj-model
+        id="silla2"
+        src="#silla-obj"
+        material="src: #silla-madera; color: gray"
+        normal-map="#silla-tela"
+        scale="0.006 0.006 0.006"
+        position="-0.9879 .86 -2.883"
+        rotation="0 90 0"
+      ></a-obj-model>
+
+      <!--Silla 3-->
+      <a-obj-model
+        id="silla3"
+        src="#silla-obj"
+        material="src: #silla-madera; color: gray"
+        normal-map="#silla-tela"
+        scale="0.006 0.006 0.006"
+        position="-0.398 .86 -4.13703"
+        rotation="0 -90 0"
+      ></a-obj-model>
+
+      <!--Silla 4-->
+      <a-obj-model
+        id="silla4"
+        src="#silla-obj"
+        material="src: #silla-madera; color: gray"
+        normal-map="#silla-tela"
+        scale="0.006 0.006 0.006"
+        position="-0.988 .86 -4.137"
+        rotation="0 -90 0"
+      ></a-obj-model>
+
+      <!--Mesa Auxiliar-->
+      <a-obj-model
+        id="mesa-auxiliar"
+        src="#mesa-auxiliar-obj"
+        material="src: #silla-madera; color: gray"
+        scale="0.01 0.01 0.01"
+        position="1.25 .86 -1"
+        rotation="0 -90 0"
+      ></a-obj-model>
+
+      <!--TV-->
+      <a-obj-model
+        id="tv"
+        src="#tv-obj"
+        mtl="#tv-mtl"
+        scale="0.2 0.2 0.2"
+        position="1.25 1.080 -1"
+        rotation="0 -90 0"
+      ></a-obj-model>
+
+      <!--Pared de atrás-->
+      <a-box
+        id="pared-atras"
+        src="#pared-empedrada"
+        normal-map="#pared-empedrada-normal"
+        normal-scale="1 -1"
+        normal-texture-repeat="3 3"
+        repeat="3 3"
+        roughness="0.6"
+        width="3.5"
+        height="3"
+        depth=".1"
+        position="0 2.3 1"
+        ammo-body="type: static;"
+        ammo-shape="type: box;"
+      ></a-box>
+
+      <!--Pared de la Izquierda-->
+      <a-box
+        id="pared-izquierda"
+        src="#pared-empedrada"
+        normal-map="#pared-empedrada-normal"
+        normal-scale="1 -1"
+        normal-texture-repeat="5 5"
+        repeat="5 5"
+        roughness="0.6"
+        width="6"
+        height="3"
+        depth=".1"
+        position="-1.8 2.3 -2"
+        rotation="0 90 0"
+        ammo-body="type: static;"
+        ammo-shape="type: box;"
+      >
+      </a-box>
+
+      <!--Pared del frente-->
+      <a-box
+        id="pared-frente"
+        src="#pared-empedrada"
+        normal-map="#pared-empedrada-normal"
+        normal-scale="1 -1"
+        normal-texture-repeat="3 3"
+        repeat="3 3"
+        roughness="0.6"
+        width="3.5"
+        height="3"
+        depth=".1"
+        position="0 2.3 -4.950"
+        ammo-body="type: static;"
+        ammo-shape="type: box;"
+      ></a-box>
+
+      <!--Pared de la derecha-->
+      <a-box
+        id="pared-derecha"
+        src="#pared-empedrada"
+        normal-map="#pared-empedrada-normal"
+        normal-scale="1 -1"
+        normal-texture-repeat="5 5"
+        repeat="5 5"
+        roughness="0.6"
+        width="6"
+        height="3"
+        depth=".1"
+        position="1.8 2.3 -2"
+        rotation="0 90 0"
+        ammo-body="type: static;"
+        ammo-shape="type: box;"
+      ></a-box>
+
+      <!--Techo-->
+      <a-box
+        id="techo"
+        src="#techo"
+        repeat="5 5"
+        roughness="0.6"
+        width="3.7"
+        height="6"
+        depth=".1"
+        position="0 3.85 -2"
+        rotation="-90 0 0"
+        ammo-body="type: static;"
+        ammo-shape="type: box;"
+      ></a-box>
       <a-sky color="skyblue"></a-sky>
     </a-scene>
   </body>
