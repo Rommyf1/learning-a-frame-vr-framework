@@ -12,7 +12,9 @@
     <title>Vite App</title>
   </head>
   <body>
-    <a-scene physics="driver: ammo; debug: true; debugDrawMode: 1;">
+    <a-scene
+      physics="driver: ammo; debug: true; debugDrawMode: 1; stats: panel;"
+    >
       <!--Assets Management System-->
       <a-assets>
         <!------------------------------------------------------------------------------------------------------->
@@ -178,7 +180,7 @@
         id="cubo"
         radius=".1"
         color="red"
-        position=".5  3 -2"
+        position=".5  3 -1"
         ammo-body="type: dynamic; mass: 0.1; aungularDamping: 0.001; restitution: 0.7;"
         ammo-shape="type: sphere;"
       ></a-sphere>
@@ -188,7 +190,7 @@
         id="cubo"
         radius=".1"
         color="red"
-        position=".4 .87 -2"
+        position=".4 .87 -1"
         ammo-body="type: dynamic; mass: 0.1; aungularDamping: 0.001; restitution: 0.7;"
         ammo-shape="type: sphere;"
       ></a-sphere>
