@@ -12,8 +12,26 @@
     <title>Vite App</title>
   </head>
   <body>
+    <script>
+      AFRAME.registerComponent("autofit-model-shape", {
+        init() {
+          this.el.addEventListener("model-loaded", () => {
+            this.el.setAttribute("ammo-body", {
+              type: "kinematic",
+              mass: 10,
+              restitution: 0.5,
+            });
+            this.el.setAttribute("ammo-shape", {
+              type: "hull",
+              halfExtents: "0.1 0.1 0.1",
+            });
+          });
+        },
+      });
+    </script>
+
     <a-scene
-      physics="driver: ammo; debug: true; debugDrawMode: 1; stats: panel;"
+      physics="driver: ammo; debug: true; debugDrawMode:  '1 << 12'; stats: panel;"
     >
       <!--Assets Management System-->
       <a-assets>
@@ -202,7 +220,7 @@
         radius=".1"
         color="red"
         position=".5  3 -1"
-        ammo-body="type: dynamic; mass: 0.1; aungularDamping: 0.001; restitution: 0.7;"
+        ammo-body="type: dynamic; mass: 0.1; angularDamping: 0.001; restitution: 0.7;"
         ammo-shape="type: sphere;"
       ></a-sphere>
 
@@ -212,13 +230,14 @@
         radius=".1"
         color="red"
         position=".4 .87 -1"
-        ammo-body="type: dynamic; mass: 0.1; aungularDamping: 0.001; restitution: 0.7;"
+        ammo-body="type: dynamic; mass: 0.1; angularDamping: 0.001; restitution: 0.7;"
         ammo-shape="type: sphere;"
       ></a-sphere>
 
       <!--Sofá 1-->
       <a-obj-model
         id="sofa1"
+        autofit-model-shape
         src="#sofa-simple"
         position="-1.43 .86 -1"
         scale="0.1 0.1 0.1"
@@ -231,8 +250,6 @@
         metalness-map="#tela-sofa-metalness"
         ambient-occlusion-map="#tela-sofa-occlusion"
         repeat="3 3"
-        ammo-body="type: kinematic; mass: 10; restitution: 0.5;"
-        ammo-shape="type: mesh;"
       ></a-obj-model>
 
       <!--Sofá 2-->
