@@ -42,13 +42,34 @@
         <img
           id="tela-sofa"
           src="/texturas/tela-sofa/tela-sofa.png"
-          alt="textura de mueble de tela"
+          alt="textura de mueble de la tela del sofá"
         />
         <!--Textura mueble normalizado-->
         <img
           id="tela-sofa-normal"
           src="/texturas/tela-sofa/tela-sofa-normal.png"
-          alt="textura normalizada de tela"
+          alt="textura normalizada de la tela del sofá"
+        />
+
+        <!--Textura mueble Roughness-->
+        <img
+          id="tela-sofa-roughness"
+          src="/texturas/tela-sofa/tela-sofa-roughness.png"
+          alt="textura roughness de la tela del sofá"
+        />
+
+        <!--Textura mueble Metalness-->
+        <img
+          id="tela-sofa-metalness"
+          src="/texturas/tela-sofa/tela-sofa-metalness.png"
+          alt="textura Metalness de la tela del sofá"
+        />
+
+        <!--Textura Ambient occlusión del mueble-->
+        <img
+          id="tela-sofa-occlusion"
+          src="/texturas/tela-sofa/tela-sofa-occlusion.png"
+          alt="Textura Ambient occlusión del sofá"
         />
 
         <!------------------------------------------------------------------------------------------------------->
@@ -206,9 +227,12 @@
         normal-map="#tela-sofa-normal"
         normal-scale="1 -1"
         normal-texture-repeat="3 3"
+        roughness-map="#tela-sofa-roughness"
+        metalness-map="#tela-sofa-metalness"
+        ambient-occlusion-map="#tela-sofa-occlusion"
         repeat="3 3"
         ammo-body="type: kinematic; mass: 10; restitution: 0.5;"
-        ammo-shape="type: hull;"
+        ammo-shape="type: mesh;"
       ></a-obj-model>
 
       <!--Sofá 2-->
@@ -221,6 +245,9 @@
         normal-map="#tela-sofa-normal"
         normal-scale="1 -1"
         normal-texture-repeat="3 3"
+        roughness-map="#tela-sofa-roughness"
+        metalness-map="#tela-sofa-metalness"
+        ambient-occlusion-map="#tela-sofa-occlusion"
         repeat="3 3"
       ></a-obj-model>
 
