@@ -210,12 +210,33 @@
       >
       </a-plane>
 
+      <!--Pelota 1-->
+      <a-sphere
+        id="cubo"
+        radius=".1"
+        color="red"
+        position="-0.5 3 0.05"
+        ammo-body="type: dynamic; mass: 0.1; angularDamping: 0.001; restitution: 0.7;"
+        ammo-shape="type: sphere;"
+      ></a-sphere>
+
+      <!--Pelota 2-->
+      <a-sphere
+        id="cubo"
+        radius=".1"
+        color="red"
+        position="-0.5 .87 0"
+        ammo-body="type: dynamic; mass: 0.1; angularDamping: 0.001; restitution: 0.7;"
+        ammo-shape="type: sphere;"
+      ></a-sphere>
+
       <!--Mesa-->
       <a-obj-model
         id="mesa"
         src="#mesa-obj"
         material="src: #textura-mesa"
         scale="0.2 0.2 0.2"
+        position="0 0 -2"
       >
         <!--Pata delantera derecha-->
         <a-box
@@ -265,9 +286,9 @@
           ammo-shape="type: box;"
         ></a-box>
 
-        <!--Vidrio superior-->
+        <!--madera superior-->
         <a-box
-          id="mesita-central-vidrio"
+          id="mesa-madera-horizontal"
           width="6"
           height="3.6"
           depth=".35"
