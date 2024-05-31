@@ -1,0 +1,76 @@
+---
+interface Props {
+  ID: string;
+  scale: string;
+  position?: string;
+  rotation?: string;
+}
+
+const { ID, scale, position, rotation } = Astro.props;
+---
+
+<!--Mesa-->
+<a-obj-model
+  id={ID}
+  src="#mesa-obj"
+  material="src: #textura-mesa"
+  scale={scale}
+  position={position ?? "0 0 0"}
+  rotation={rotation ?? "0 0 0"}
+>
+  <!--Pata delantera derecha-->
+  <a-box
+    id="mesa-pata-delantera-derecha"
+    width=".33"
+    depth=".33"
+    height="2.75"
+    material="transparent: true; opacity: 0;"
+    position="2.7 1.4 1.55"
+    ammo-body="type: static; restitution: 0.7"
+    ammo-shape="type: box;"></a-box>
+
+  <!--Pata trasera derecha-->
+  <a-box
+    id="mesa-pata-trasera-derecha"
+    width=".33"
+    depth=".33"
+    height="2.75"
+    material="transparent: true; opacity: 0;"
+    position="2.7 1.4 -1.55"
+    ammo-body="type: static; restitution: 0.7"
+    ammo-shape="type: box;"></a-box>
+
+  <!--Pata delantera izquierda-->
+  <a-box
+    id="mesa-pata-delantera-izquierda"
+    width=".33"
+    depth=".33"
+    height="2.75"
+    material="transparent: true; opacity: 0;"
+    position="-2.7 1.4 1.55"
+    ammo-body="type: static; restitution: 0.7"
+    ammo-shape="type: box;"></a-box>
+
+  <!--Pata trasera izquierda-->
+  <a-box
+    id="mesa-pata-trasera-izquierda"
+    width=".33"
+    depth=".33"
+    height="2.75"
+    material="transparent: true; opacity: 0;"
+    position="-2.7 1.4 -1.55"
+    ammo-body="type: static; restitution: 0.7"
+    ammo-shape="type: box;"></a-box>
+
+  <!--madera superior-->
+  <a-box
+    id="mesa-madera-horizontal"
+    width="6"
+    height="3.6"
+    depth=".35"
+    material="transparent: true; opacity: 0;"
+    rotation="90 0 0"
+    position="0 2.85 0"
+    ammo-body="type: static; restitution: 0.7"
+    ammo-shape="type: box;"></a-box>
+</a-obj-model>

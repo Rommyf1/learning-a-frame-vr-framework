@@ -1,0 +1,76 @@
+---
+interface Props {
+  ID: string;
+  scale: string;
+  position?: string;
+  rotation?: string;
+}
+
+const { ID, scale, position, rotation } = Astro.props;
+---
+
+<!--Mesita central-->
+<a-obj-model
+  id={ID}
+  src="#mesita"
+  mtl="#mesita-mtl"
+  scale={scale}
+  position={position ?? "0 0 0"}
+  rotation={rotation ?? "0 0 0"}
+>
+  <!--Pata delantera derecha-->
+  <a-box
+    id="mesita-central-pata-delantera-derecha"
+    width=".15"
+    depth=".15"
+    height="1.55"
+    material="transparent: true; opacity: 0;"
+    position="0.949 .75 1.397"
+    ammo-body="type: static; restitution: 0.7"
+    ammo-shape="type: box;"></a-box>
+
+  <!--Pata trasera derecha-->
+  <a-box
+    id="mesita-central-pata-trasera-derecha"
+    width=".15"
+    depth=".15"
+    height="1.55"
+    material="transparent: true; opacity: 0;"
+    position="0.949 .75 -1.397"
+    ammo-body="type: static; restitution: 0.7"
+    ammo-shape="type: box;"></a-box>
+
+  <!--Pata delantera izquierda-->
+  <a-box
+    id="mesita-central-pata-delantera-izquierda"
+    width=".15"
+    depth=".15"
+    height="1.55"
+    material="transparent: true; opacity: 0;"
+    position="-0.949 .75 1.397"
+    ammo-body="type: static; restitution: 0.7"
+    ammo-shape="type: box;"></a-box>
+
+  <!--Pata trasera izquierda-->
+  <a-box
+    id="mesita-central-pata-trasera-izquierda"
+    width=".15"
+    depth=".15"
+    height="1.55"
+    material="transparent: true; opacity: 0;"
+    position="-0.949 .75 -1.397"
+    ammo-body="type: static; restitution: 0.7"
+    ammo-shape="type: box;"></a-box>
+
+  <!--Vidrio superior-->
+  <a-box
+    id="mesita-central-vidrio"
+    width="2.05"
+    height="3"
+    depth=".08"
+    material="transparent: true; opacity: 0;"
+    rotation="90 0 0"
+    position="0 1.53 0"
+    ammo-body="type: static; restitution: 0.7"
+    ammo-shape="type: box;"></a-box>
+</a-obj-model>

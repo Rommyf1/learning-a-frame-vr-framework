@@ -1,0 +1,147 @@
+---
+interface Props {
+  ID: string;
+  scale: string;
+  position?: string;
+  rotation?: string;
+}
+
+const { ID, scale, position, rotation } = Astro.props;
+---
+
+<!--Sofá 1-->
+<a-obj-model
+  id={ID}
+  src="#sofa-simple"
+  material="src: #tela-sofa"
+  normal-map="#tela-sofa-normal"
+  normal-scale="1 -1"
+  normal-texture-repeat="3 3"
+  roughness-map="#tela-sofa-roughness"
+  metalness-map="#tela-sofa-metalness"
+  ambient-occlusion-map="#tela-sofa-occlusion"
+  repeat="3 3"
+  scale={scale}
+  position={position ?? "0 0 0"}
+  rotation={rotation ?? "0 0 0"}
+>
+  <!--Base Inferior-->
+  <a-box
+    id="sofa-base-inferior"
+    width="11"
+    height="1.25"
+    depth="4.9"
+    material="transparent: true; opacity: 0;"
+    position="0 1.16 0.05"
+    ammo-body="type: static; restitution: 0.7;"
+    ammo-shape="type: box;"></a-box>
+
+  <!--Cojín Izquierdo-->
+  <a-box
+    id="sofa-cojin-izquierda"
+    width="4.6"
+    height="1.25"
+    depth="3.75"
+    material="transparent: true; opacity: 0;"
+    position="2.30821 2.29655 0.58426;"
+    ammo-body="type: static; restitution: 0.7"
+    ammo-shape="type: box;"></a-box>
+
+  <!--Cojín Derecho-->
+  <a-box
+    id="sofa-cojin-derecha"
+    width="4.6"
+    height="1.25"
+    depth="3.75"
+    material="transparent: true; opacity: 0;"
+    position="-2.30821 2.29655 0.58426"
+    ammo-body="type: static; restitution: 0.7"
+    ammo-shape="type: box; halfExtents: 2.575000047683716 0.625 1.8250000476837158;"
+  ></a-box>
+
+  <!--Posabrazos izquierdo-->
+  <a-box
+    id="sofa-posabrazos-izquierdo"
+    width=".9"
+    height="3.2"
+    depth="4.9"
+    material="transparent: true; opacity: 0;"
+    position="5.05391 2.34407 0.07"
+    ammo-body="type: static; restitution: 0.7"
+    ammo-shape="type: box;"></a-box>
+
+  <!--Posabrazos derecho-->
+  <a-box
+    id="sofa-posabrazos-derecho"
+    width=".9"
+    height="3.2"
+    depth="4.9"
+    material="transparent: true; opacity: 0;"
+    position="-5.054 2.34407 0.07"
+    ammo-body="type: static; restitution: 0.7"
+    ammo-shape="type: box;"></a-box>
+
+  <!--Espaldar-->
+  <a-box
+    id="sofa-espaldar"
+    width="11"
+    height="4.5"
+    depth="1.3"
+    material="transparent: true; opacity: 0;"
+    position="0 3.3 -1.9"
+    rotation="-2.633 0 0"
+    ammo-body="type: static; restitution: 0.7"
+    ammo-shape="type: box;"
+  >
+  </a-box>
+  <!--Pata delantera izquierda-->
+  <a-box
+    id="sofa-pata-izquierda-delantera"
+    width=".5"
+    height=".8"
+    depth=".5"
+    material="transparent: true; opacity: 0;"
+    position="5.027 .3 2.072"
+    ammo-body="type: static; restitution: 0.7"
+    ammo-shape="type: box;"
+  >
+  </a-box>
+
+  <!--Pata trasera izquierda-->
+  <a-box
+    id="sofa-pata-izquierda-trasera"
+    width=".5"
+    height=".8"
+    depth=".5"
+    material="transparent: true; opacity: 0;"
+    position="5.027 .3 -1.92"
+    ammo-body="type: static; restitution: 0.7"
+    ammo-shape="type: box;"
+  >
+  </a-box>
+
+  <!--Pata trasera derecha-->
+  <a-box
+    id="sofa-pata-derecha-trasera"
+    width=".5"
+    height=".8"
+    depth=".5"
+    material="transparent: true; opacity: 0;"
+    position="-5.027 .3 -1.92"
+    ammo-body="type: static; restitution: 0.7"
+    ammo-shape="type: box;"
+  >
+  </a-box>
+  <!--Pata delantera derecha-->
+  <a-box
+    id="sofa-pata-derecha-delantera"
+    width=".5"
+    height=".8"
+    depth=".5"
+    material="transparent: true; opacity: 0;"
+    position="-5.027 .3 2.072"
+    ammo-body="type: static; restitution: 0.7"
+    ammo-shape="type: box;"
+  >
+  </a-box>
+</a-obj-model>

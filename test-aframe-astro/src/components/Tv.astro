@@ -1,0 +1,53 @@
+---
+interface Props {
+  ID: string;
+  scale: string;
+  position?: string;
+  rotation?: string;
+}
+
+const { ID, scale, position, rotation } = Astro.props;
+---
+
+<!--TV-->
+<a-obj-model
+  id={ID}
+  src="#tv-obj"
+  mtl="#tv-mtl"
+  scale={scale}
+  position={position ?? "0 0 0"}
+  rotation={rotation ?? "0 0 0"}
+>
+  <!--Base-->
+  <a-box
+    width="2"
+    height=".2"
+    depth=".6"
+    position="0 0.1 -.15"
+    color="red"
+    material="transparent: true; opacity: 0;"
+    ammo-body="type: static; restitution: 0.7"
+    ammo-shape="type: box;"></a-box>
+
+  <!--Pantalla-->
+  <a-box
+    width="3.4"
+    height="2.1"
+    depth=".2"
+    position="0 1.3 0"
+    color="blue"
+    material="transparent: true; opacity: 0;"
+    ammo-body="type: static; restitution: 0.7"
+    ammo-shape="type: box;"></a-box>
+
+  <!--soporte-->
+  <a-box
+    width="1"
+    height="1.5"
+    depth=".3"
+    position="0 .75 -.1"
+    color="green"
+    material="transparent: true; opacity: 0;"
+    ammo-body="type: static; restitution: 0.7"
+    ammo-shape="type: box;"></a-box>
+</a-obj-model>

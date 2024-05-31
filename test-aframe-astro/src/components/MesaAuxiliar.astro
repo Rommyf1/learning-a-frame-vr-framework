@@ -1,0 +1,129 @@
+---
+interface Props {
+  ID: string;
+  scale: string;
+  position?: string;
+  rotation?: string;
+}
+
+const { ID, scale, position, rotation } = Astro.props;
+---
+
+<!--Mesa Auxiliar-->
+<a-obj-model
+  id={ID}
+  src="#mesa-auxiliar-obj"
+  material="src: #silla-madera; color: gray"
+  scale={scale}
+  position={position ?? "0 0 0"}
+  rotation={rotation ?? "0 0 0"}
+>
+  <!--Pata delantera derecha-->
+  <a-box
+    id="mesa-auxiliar-pata-delantera-derecha"
+    width="5.9"
+    depth="5.8"
+    height="14"
+    color="red"
+    material="transparent: true; opacity: 0;"
+    position="-61.5 7 17.3"
+    ammo-body="type: static; restitution: 0.7"
+    ammo-shape="type: box;"></a-box>
+
+  <!--Pata delantera izquierda-->
+  <a-box
+    id="mesa-auxiliar-pata-delantera-izquierda"
+    width="5.9"
+    depth="5.8"
+    height="14"
+    color="red"
+    material="transparent: true; opacity: 0;"
+    position="57.7 7 16.5"
+    ammo-body="type: static; restitution: 0.7"
+    ammo-shape="type: box;"></a-box>
+
+  <!--Pata trasera derecha-->
+  <a-box
+    id="mesa-auxiliar-pata-trasera-derecha"
+    width="5.9"
+    depth="5.8"
+    height="14"
+    color="red"
+    material="transparent: true; opacity: 0;"
+    position="-61 7 -14.4"
+    ammo-body="type: static; restitution: 0.7"
+    ammo-shape="type: box;"></a-box>
+
+  <!--Pata trasera izquierda-->
+  <a-box
+    id="mesa-auxiliar-pata-trasera-izquierda"
+    width="5.9"
+    depth="5.8"
+    height="14"
+    color="red"
+    material="transparent: true; opacity: 0;"
+    position="58.2 7 -15.1"
+    ammo-body="type: static; restitution: 0.7"
+    ammo-shape="type: box;"></a-box>
+
+  <!--asiento Hozizontal-->
+  <a-box
+    id="mesa-auxiliar-asiento-horizontal"
+    width="140"
+    height="46"
+    depth="12"
+    color="blue"
+    material="transparent: true; opacity: 0;"
+    rotation="90 0 0"
+    position="0 18 0"
+    ammo-body="type: static; restitution: 0.7"
+    ammo-shape="type: box;"></a-box>
+
+  <!--Baranda trasera-->
+  <a-box
+    id="mesa-auxiliar-baranda-trasera"
+    width="135"
+    height="6"
+    depth="4.5"
+    color="orange"
+    material="transparent: true; opacity: 0;"
+    position="0 22.95 -20.7"
+    ammo-body="type: static; restitution: 0.7"
+    ammo-shape="type: box;"></a-box>
+
+  <!--Baranda delantera-->
+  <a-box
+    id="mesa-auxiliar-baranda-delantera"
+    width="135"
+    height="6"
+    depth="4.5"
+    color="orange"
+    material="transparent: true; opacity: 0;"
+    position="0 22.95 20.7"
+    ammo-body="type: static; restitution: 0.7"
+    ammo-shape="type: box;"></a-box>
+
+  <!--Baranda Izquierda-->
+  <a-box
+    id="mesa-auxiliar-baranda-izquierda"
+    width="4.5"
+    height="6"
+    depth="46"
+    color="orange"
+    material="transparent: true; opacity: 0;"
+    position="65.3 22.9 0"
+    ammo-body="type: static; restitution: 0.7"
+    ammo-shape="type: box;"></a-box>
+
+  <!--Baranda Derecha-->
+  <a-box
+    id="mesa-auxiliar-baranda-derecha"
+    width="4.5"
+    height="6"
+    depth="46"
+    color="orange"
+    material="transparent: true; opacity: 0;"
+    position="-65.3 22.9 0"
+    ammo-body="type: static; restitution: 0.7"
+    ammo-shape="type: box;"></a-box>
+</a-obj-model>

@@ -1,0 +1,457 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Sofa from "../components/Sofa.astro";
+import MesitaCentral from "../components/MesitaCentral.astro";
+import Mesa from "../components/Mesa.astro";
+import Silla from "../components/Silla.astro";
+import MesaAuxiliar from "../components/MesaAuxiliar.astro";
+import Tv from "../components/Tv.astro";
+---
+
+<Layout title="Welcome to Astro.">
+  <script>
+    AFRAME.registerComponent("autofit-model-shape", {
+      init() {
+        this.el.addEventListener("model-loaded", () => {
+          this.el.setAttribute("ammo-body", {
+            type: "kinematic",
+          });
+          this.el.setAttribute("ammo-shape", {
+            type: "box",
+          });
+        });
+      },
+    });
+
+    AFRAME.registerComponent("collision-wire", {
+      schema: {
+        element: { type: "string" },
+      },
+      init: function () {
+        let el = this.el;
+        let element = this.data.element;
+
+        el.addEventListener("collidestart", function (event) {
+          if (event.detail.targetEl.id === element) {
+            el.setAttribute("material", { wireframe: true });
+          }
+        });
+        el.addEventListener("collideend", function (event) {
+          if (event.detail.targetEl.id === element) {
+            el.setAttribute("material", { wireframe: false });
+          }
+        });
+      },
+    });
+
+    AFRAME.registerComponent("phase-shift", {
+      init: function () {
+        var el = this.el;
+        el.addEventListener("gripdown", function () {
+          el.setAttribute("collision-filter", { collisionForces: true });
+        });
+        el.addEventListener("gripup", function () {
+          el.setAttribute("collision-filter", { collisionForces: false });
+        });
+      },
+    });
+  </script>
+  <a-assets>
+    <!------------------------------------------------------------------------------------------------------->
+
+    <!--Precarga Mesita central OBJ-->
+    <a-asset-item id="mesita" src="/mesita-central/StylishDesk.obj"
+    ></a-asset-item>
+    <!--Precarga Mesita central MTL-->
+    <a-asset-item id="mesita-mtl" src="/mesita-central/StylishDesk.mtl"
+    ></a-asset-item>
+
+    <!------------------------------------------------------------------------------------------------------->
+
+    <!--Sofá sencillo-->
+    <a-asset-item id="sofa-simple" src="/sofa-simple/couch.obj"></a-asset-item>
+
+    <!--Textura mueble-->
+    <img
+      id="tela-sofa"
+      src="/texturas/tela-sofa/tela-sofa.png"
+      alt="textura de mueble de la tela del sofá"
+    />
+    <!--Textura mueble normalizado-->
+    <img
+      id="tela-sofa-normal"
+      src="/texturas/tela-sofa/tela-sofa-normal.png"
+      alt="textura normalizada de la tela del sofá"
+    />
+
+    <!--Textura mueble Roughness-->
+    <img
+      id="tela-sofa-roughness"
+      src="/texturas/tela-sofa/tela-sofa-roughness.png"
+      alt="textura roughness de la tela del sofá"
+    />
+
+    <!--Textura mueble Metalness-->
+    <img
+      id="tela-sofa-metalness"
+      src="/texturas/tela-sofa/tela-sofa-metalness.png"
+      alt="textura Metalness de la tela del sofá"
+    />
+
+    <!--Textura Ambient occlusión del mueble-->
+    <img
+      id="tela-sofa-occlusion"
+      src="/texturas/tela-sofa/tela-sofa-occlusion.png"
+      alt="Textura Ambient occlusión del sofá"
+    />
+
+    <!------------------------------------------------------------------------------------------------------->
+
+    <!--Precarga TV OBJ-->
+    <a-asset-item id="tv-obj" src="/tv/tv.obj"></a-asset-item>
+    <!--Precarga TV MTL-->
+    <a-asset-item id="tv-mtl" src="/tv/tv.mtl"></a-asset-item>
+
+    <!------------------------------------------------------------------------------------------------------->
+
+    <!--Precarga Mesa OBJ-->
+    <a-asset-item id="mesa-obj" src="/mesa-sencilla/table.obj"></a-asset-item>
+    <!--Precarga Mesa MTL-->
+    <a-asset-item id="mesa-mtl" src="/mesa-sencilla/table.mtl"></a-asset-item>
+
+    <!------------------------------------------------------------------------------------------------------->
+
+    <!--Precarga Silla OBJ-->
+    <a-asset-item id="silla-obj" src="/silla-moderna/Chair.obj"></a-asset-item>
+    <!--Precarga Silla MTL-->
+    <a-asset-item id="silla-mtl" src="/silla-moderna/Chair.mtl"></a-asset-item>
+
+    <img id="silla-tela" src="/silla-moderna/Fabric.jpg" alt="" />
+    <img id="silla-madera" src="/silla-moderna/Wood.jpg" alt="" />
+
+    <!------------------------------------------------------------------------------------------------------->
+
+    <!--Mesa Auxiliar OBJ-->
+    <a-asset-item
+      id="mesa-auxiliar-obj"
+      src="/mesa-auxiliar/Auxiliar_Table_005.obj"></a-asset-item>
+
+    <!--Mesa Auxiliar MTL-->
+    <a-asset-item
+      id="mesa-auxiliar-mtl"
+      src="/mesa-auxiliar/Auxiliar_Table_005.mtl"></a-asset-item>
+
+    <!------------------------------------------------------------------------------------------------------->
+
+    <!--Precarga textura del Piso-->
+    <img
+      id="textura-piso"
+      src="/texturas/piso-ceramica-negra/piso-ceramica-negra.png"
+      alt="Textura de piso"
+    />
+    <!--Precarga textura del Piso normalizado-->
+    <img
+      id="textura-piso-normal"
+      src="/texturas/piso-ceramica-negra/piso-ceramica-negra-map.png"
+      alt="Textura de piso normalizado"
+    />
+
+    <!------------------------------------------------------------------------------------------------------->
+
+    <!--Precarga textura del techo-->
+    <img id="techo" src="/texturas/textura-techo.jpg" alt="Textura del techo" />
+
+    <!------------------------------------------------------------------------------------------------------->
+
+    <!--Precarga textura de Pared empedrada-->
+    <img
+      id="pared-empedrada"
+      src="/texturas/pared-ladrillo/pared-piedra.jpg"
+      alt="Textura de pared empedrada"
+    />
+    <!--Precarga textura de Pared empedrada normalizada-->
+    <img
+      id="pared-empedrada-normal"
+      src="/texturas/pared-ladrillo/pared-piedra-normal.jpg"
+      alt="Textura de pared empedrada normal"
+    />
+
+    <!------------------------------------------------------------------------------------------------------->
+
+    <!--Precarga de la textura de la Mesa-->
+    <img
+      id="textura-mesa"
+      src="/texturas/mesa/mesa.jpg"
+      alt="textura de la mesa"
+    />
+    <!--Precarga de la textura de la Mesa normalizada-->
+    <img
+      id="textura-mesa-normal"
+      src="/texturas/mesa/mesa-normal.jpg"
+      alt="textura de la mesa normalizada"
+    />
+
+    <!------------------------------------------------------------------------------------------------------->
+    <a-mixin
+      id="all-interactions"
+      hoverable
+      grabbable
+      stretchable
+      draggable
+      event-set__hoveron="_event: hover-start; opacity: 0.7; transparent: true"
+      event-set__hoveroff="_event: hover-end; opacity: 1; transparent: false"
+    ></a-mixin>
+
+    <a-mixin
+      id="grab-move"
+      hoverable
+      grabbable
+      draggable
+      event-set__hoveron="_event: hover-start; opacity: 0.7; transparent: true"
+      event-set__hoveroff="_event: hover-end; opacity: 1; transparent: false"
+      ammo-body="type: dynamic"
+      ammo-shape="shape: box;"></a-mixin>
+
+    <a-mixin
+      id="physics-hands"
+      physics-collider
+      phase-shift
+      collision-filter="collisionForces: false"
+      static-body="shape: sphere; sphereRadius: 0.02"
+      super-hands="colliderEvent: collisions; colliderEventProperty: els; colliderEndEvent: collisions; colliderEndEventProperty: clearedEls;"
+    ></a-mixin>
+  </a-assets>
+  <!--<a-entity id="rig" autofit-model-shape>
+    <a-camera
+      id="camera"
+      position="0 1.2 0"
+      look-controls
+      wasd-controls="acceleration: 7"
+      autofit-model-shape
+    >
+      <a-box autofit-model-shape></a-box></a-camera
+    >
+  </a-entity> -->
+
+  <!--  <a-entity
+    id="rig"
+    look-controls
+    wasd-controls="acceleration: 5"
+    movement-controls="constrainToNavMesh: true"
+    height="1.6"
+    width=".2"
+  >
+    <a-entity camera position="0 1 0">
+      <a-entity
+        sphere-collider="objects: a-box"
+        super-hands
+        mixin="physics-hands"
+        hand-controls="hand: left"></a-entity>
+      <a-entity
+        sphere-collider="objects: a-box"
+        super-hands
+        mixin="physics-hands"
+        hand-controls="hand: right"></a-entity>
+    </a-entity>
+  </a-entity>-->
+
+  <!-- <a-entity
+    sphere-collider="objects: a-box"
+    super-hands
+    mixin="physics-hands"
+    hand-controls="hand: left"></a-entity>
+  <a-entity
+    sphere-collider="objects: a-box"
+    super-hands
+    mixin="physics-hands"
+    hand-controls="hand: right"></a-entity>-->
+
+  <a-camera
+    look-controls
+    wasd-controls
+    position="0 1 1"
+    capture-mouse
+    raycaster
+    cursor="rayOrigin:mouse"
+    body="type: static; shape: sphere; sphereRadius: 0.001"
+    super-hands="colliderEvent: raycaster-intersection; colliderEventProperty: els; colliderEndEvent:raycaster-intersection-cleared; colliderEndEventProperty: clearedEls;"
+  >
+  </a-camera>
+
+  <!--Pelota 1-->
+  <a-sphere
+    id="pelota1"
+    ammo-body="type: dynamic; mass: 0.1; angularDamping: 0.001; restitution: 0.7;"
+    ammo-shape="type: sphere;"
+    hoverable
+    grabbable
+    stretchable
+    draggable
+    droppable
+    event-set__hoveron="_event: hover-start; material.opacity: 0.7; transparent: true"
+    event-set__hoveroff="_event: hover-end; material.opacity: 1; transparent: false"
+    radius=".1"
+    color="red"
+    position=".5  3 -2"></a-sphere>
+
+  <!--Piso-->
+  <a-plane
+    id="piso"
+    src="#textura-piso"
+    normal-map="#textura-piso-normal"
+    normal-texture-repeat="5 5"
+    normal-scale="1 -1"
+    repeat="5 5"
+    width="3.5"
+    height="6"
+    rotation="-90 0 0"
+    position="0 0 -0.8"
+    ammo-body="type: static; restitution: 0.7;"
+    ammo-shape="type: box; margin: 0;"
+  >
+  </a-plane>
+  <!--Pared de atrás-->
+  <a-box
+    nav-mesh
+    id="pared-atras"
+    src="#pared-empedrada"
+    normal-map="#pared-empedrada-normal"
+    normal-scale="1 -1"
+    normal-texture-repeat="3 3"
+    repeat="3 3"
+    roughness="0.6"
+    width="3.5"
+    height="3"
+    depth=".1"
+    position="0 1.5 2.2"
+    ammo-body="type: static; restitution: 0.7;"
+    ammo-shape="type: box;"></a-box>
+
+  <!--Pared de la Izquierda-->
+  <a-box
+    nav-mesh
+    id="pared-izquierda"
+    src="#pared-empedrada"
+    normal-map="#pared-empedrada-normal"
+    normal-scale="1 -1"
+    normal-texture-repeat="5 5"
+    repeat="5 5"
+    roughness="0.6"
+    width="6"
+    height="3"
+    depth=".1"
+    position="-1.8 1.5 -0.8"
+    rotation="0 90 0"
+    ammo-body="type: static; restitution: 0.7;"
+    ammo-shape="type: box;"
+  >
+  </a-box>
+
+  <!--Pared del frente-->
+  <a-box
+    nav-mesh
+    id="pared-frente"
+    src="#pared-empedrada"
+    normal-map="#pared-empedrada-normal"
+    normal-scale="1 -1"
+    normal-texture-repeat="3 3"
+    repeat="3 3"
+    roughness="0.6"
+    width="3.5"
+    height="3"
+    depth=".1"
+    position="0 1.5 -3.8"
+    ammo-body="type: static; restitution: 0.7;"
+    ammo-shape="type: box;"></a-box>
+
+  <!--Pared de la derecha-->
+  <a-box
+    nav-mesh
+    collision-wire="element: camera"
+    id="pared-derecha"
+    src="#pared-empedrada"
+    normal-map="#pared-empedrada-normal"
+    normal-scale="1 -1"
+    normal-texture-repeat="5 5"
+    repeat="5 5"
+    roughness="0.6"
+    width="6"
+    height="3"
+    depth=".1"
+    position="1.8 1.5 -0.8"
+    rotation="0 90 0"
+    ammo-body="type: static; restitution: 0.7;"
+    ammo-shape="type: box;"></a-box>
+
+  <Sofa
+    nav-mesh
+    ID="sofa1"
+    scale="0.1 0.1 0.1"
+    position="-1.43 0 0"
+    rotation="0 90 0"
+  />
+  <Sofa
+    nav-mesh
+    ID="sofa2"
+    scale="0.1 0.1 0.1"
+    position="-0.6 0 -0.86022"
+    rotation="0 0 0"
+  />
+  <MesitaCentral
+    nav-mesh
+    ID="mesita-central"
+    scale="0.2 0.2 0.2"
+    position="-0.6 0 0"
+    rotation="0 -90 0"
+  />
+  <Mesa
+    nav-mesh
+    ID="mesa"
+    scale="0.2 0.2 0.2"
+    position="-0.6 0 -2.5"
+    rotation="0 0 0"
+  />
+  <Silla
+    nav-mesh
+    ID="silla1"
+    scale="0.006 0.006 0.006"
+    position="-0.398 0 -1.883"
+    rotation="0 90 0"
+  />
+  <Silla
+    nav-mesh
+    ID="silla2"
+    scale="0.006 0.006 0.006"
+    position="-0.988 0 -1.883"
+    rotation="0 90 0"
+  />
+  <Silla
+    nav-mesh
+    ID="silla3"
+    scale="0.006 0.006 0.006"
+    position="-0.398 0 -3.13703"
+    rotation="0 -90 0"
+  />
+  <Silla
+    nav-mesh
+    ID="silla4"
+    scale="0.006 0.006 0.006"
+    position="-0.988 0 -3.13703"
+    rotation="0 -90 0"
+  />
+  <MesaAuxiliar
+    nav-mesh
+    ID="mesa-auxiliar"
+    scale="0.01 0.01 0.01"
+    position="1.25 0 0"
+    rotation="0 -90 0"
+  />
+  <Tv
+    nav-mesh
+    ID="tv"
+    scale="0.2 0.2 0.2"
+    position="1.2 0.217 0"
+    rotation="0 -90 0"
+  />
+  <a-sky color="skyblue"></a-sky>
+</Layout>
