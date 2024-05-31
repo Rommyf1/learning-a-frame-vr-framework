@@ -294,6 +294,22 @@ import Tv from "../components/Tv.astro";
     color="red"
     position=".5  3 -2"></a-sphere>
 
+  <!--Pelota 2-->
+  <a-sphere
+    id="pelota2"
+    ammo-body="type: dynamic; mass: 0.1; angularDamping: 0.001; restitution: 0.7;"
+    ammo-shape="type: sphere;"
+    hoverable
+    grabbable
+    stretchable
+    draggable
+    droppable
+    event-set__hoveron="_event: hover-start; material.opacity: 0.7; transparent: true"
+    event-set__hoveroff="_event: hover-end; material.opacity: 1; transparent: false"
+    radius=".1"
+    color="red"
+    position=".4  1 -2.1"></a-sphere>
+
   <!--Piso-->
   <a-plane
     id="piso"
