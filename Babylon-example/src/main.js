@@ -15,7 +15,7 @@ const createScene = async function () {
   // This creates and positions a free camera (non-mesh)
   const camera = new BABYLON.FreeCamera(
     "camera",
-    new BABYLON.Vector3(0, 1, 4),
+    new BABYLON.Vector3(0, 1, 4.5),
     scene
   );
   camera.attachControl();
@@ -25,7 +25,7 @@ const createScene = async function () {
   //targets the camera to scene origin
   camera.setTarget(BABYLON.Vector3.Zero());
   //collision for camera
-  camera.ellipsoid = new BABYLON.Vector3(0.5, 1, 1);
+  camera.ellipsoid = new BABYLON.Vector3(0.5, 1, 0.5);
   //distance from Camera view
   camera.minZ = 0.75;
   //Sensibility to Angular movements
@@ -55,7 +55,7 @@ const createScene = async function () {
     },
     scene
   );
-  sphere.position = new BABYLON.Vector3(0, 0.5, 1.3);
+  sphere.position = new BABYLON.Vector3(0, 2, 1.3);
 
   //Ground shape
   const ground = BABYLON.MeshBuilder.CreateGround(
@@ -88,7 +88,7 @@ const createScene = async function () {
   const sphereAggregate = new BABYLON.PhysicsAggregate(
     sphere,
     BABYLON.PhysicsShapeType.SPHERE,
-    { mass: 1, restitution: 0.75 },
+    { mass: 0.3, restitution: 0.75 },
     scene
   );
 
@@ -266,13 +266,13 @@ const createScene = async function () {
     function (meshes, particleSystems, skeletons, animationGroups) {
       meshes.map((mesh, index) => {
         mesh.scaling = new BABYLON.Vector3(0.3, 0.3, 0.3);
-        mesh.position = new BABYLON.Vector3(0.8, 0.2, 2);
+        mesh.position = new BABYLON.Vector3(0.8, 0, 2);
         mesh.checkCollisions = true;
         //Adding Physics to Object
         new BABYLON.PhysicsAggregate(
           mesh,
           BABYLON.PhysicsShapeType.CONVEX_HULL,
-          { mass: 2, restitution: 0 },
+          { mass: 0, restitution: 0 },
           scene
         );
       });
