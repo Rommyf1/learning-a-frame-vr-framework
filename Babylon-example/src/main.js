@@ -15,7 +15,7 @@ const createScene = async function () {
   // This creates and positions a free camera (non-mesh)
   const camera = new BABYLON.FreeCamera(
     "camera",
-    new BABYLON.Vector3(0, 1, 4.5),
+    new BABYLON.Vector3(0, 1, 4),
     scene
   );
   camera.attachControl();
@@ -25,7 +25,7 @@ const createScene = async function () {
   //targets the camera to scene origin
   camera.setTarget(BABYLON.Vector3.Zero());
   //collision for camera
-  camera.ellipsoid = new BABYLON.Vector3(0.5, 1, 0.5);
+  camera.ellipsoid = new BABYLON.Vector3(0.3, 1, 0.3);
   //distance from Camera view
   camera.minZ = 0.75;
   //Sensibility to Angular movements
@@ -99,6 +99,46 @@ const createScene = async function () {
     { mass: 0 },
     scene
   );
+
+  //Create behind Wall
+  const paredTrasera = BABYLON.MeshBuilder.CreateBox("paredTrasera", {
+    width: 6,
+    height: 10,
+    depth: 0.2,
+  });
+  paredTrasera.position = new BABYLON.Vector3(0, 0, 5);
+  paredTrasera.checkCollisions = true;
+
+  //Create Front Wall
+  const paredDelantera = BABYLON.MeshBuilder.CreateBox("paredDelantera", {
+    width: 6,
+    height: 10,
+    depth: 0.2,
+  });
+  paredDelantera.position = new BABYLON.Vector3(0, 0, -5);
+  paredDelantera.checkCollisions = true;
+
+  //Create Left Wall
+  const paredIzquierda = BABYLON.MeshBuilder.CreateBox("paredIzquierda", {
+    width: 10,
+    height: 10,
+    depth: 0.2,
+  });
+  paredIzquierda.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
+  paredIzquierda.position = new BABYLON.Vector3(3, 0, 0);
+  paredIzquierda.checkCollisions = true;
+
+  //Create Right Wall
+  const paredDerecha = BABYLON.MeshBuilder.CreateBox("paredDerecha", {
+    width: 10,
+    height: 10,
+    depth: 0.2,
+  });
+  paredDerecha.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
+  paredDerecha.position = new BABYLON.Vector3(-3, 0, 0);
+  paredDerecha.checkCollisions = true;
+
+  const paredTexture = new BABYLON.StandardMaterial("paredTexture", scene);
 
   // Adding drag and drop effect to sphere
   // // Create behaviors to drag and scale with pointers in VR
