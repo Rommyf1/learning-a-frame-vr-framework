@@ -1,6 +1,6 @@
 import * as BABYLON from "@babylonjs/core";
 import "@babylonjs/loaders/OBJ";
-import createSofa from "./components/sofa";
+//import createSofa from "./components/sofa";
 
 const canvas = document.getElementById("renderCanvas");
 const engine = new BABYLON.Engine(canvas, true, {
