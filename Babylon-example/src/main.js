@@ -1,6 +1,5 @@
 import * as BABYLON from "@babylonjs/core";
 import "@babylonjs/loaders/OBJ";
-import * as CANNON from "cannon";
 
 /*import HavokPhysics from "@babylonjs/havok";
 let initializedHavok;

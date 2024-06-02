@@ -1,6 +1,5 @@
 import * as BABYLON from "@babylonjs/core";
 import "@babylonjs/loaders/OBJ";
-import sofa from "./components/sofa";
 import createSofa from "./components/sofa";
 
 const canvas = document.getElementById("renderCanvas");
@@ -26,7 +25,7 @@ const createScene = async function () {
   //targets the camera to scene origin
   camera.setTarget(BABYLON.Vector3.Zero());
   //collision for camera
-  camera.ellipsoid = new BABYLON.Vector3(1, 1, 1);
+  camera.ellipsoid = new BABYLON.Vector3(0.5, 1, 1);
   //distance from Camera view
   camera.minZ = 0.75;
   //Sensibility to Angular movements
@@ -173,7 +172,7 @@ const createScene = async function () {
       meshes.map((mesh, index) => {
         //console.log(mesh);
         if (index === 1 || index === 3) {
-          console.log(mesh);
+          //console.log(mesh);
           mesh.scaling = new BABYLON.Vector3(0.15, 0.15, 0.15);
           mesh.position = new BABYLON.Vector3(2, 0, 2);
           mesh.rotation = new BABYLON.Vector3(0, -Math.PI / 2, 0);
@@ -188,7 +187,7 @@ const createScene = async function () {
         }
 
         if (index === 5) {
-          console.log(mesh);
+          //console.log(mesh);
           mesh.scaling = new BABYLON.Vector3(0.15, 0.15, 0.15);
           mesh.position = new BABYLON.Vector3(2, 0, 2);
           mesh.rotation = new BABYLON.Vector3(0, -Math.PI / 2, 0);
@@ -208,54 +207,6 @@ const createScene = async function () {
   /**Importando Sofa2  */
   //Cargando texturas del modelo
 
-  const sofa2Texture = new BABYLON.StandardMaterial("sofaTexture", scene);
-  // Textura base
-  const sofa2DiffuseTexture = new BABYLON.Texture(
-    "/texturas/tela-sofa/tela-sofa.png",
-    scene
-  );
-
-  sofaDiffuseTexture.uScale = 3;
-  sofaDiffuseTexture.vScale = 3;
-
-  sofaTexture.diffuseTexture = sofaDiffuseTexture;
-
-  //Normal Map
-
-  const sofa2NormalMap = new BABYLON.Texture(
-    "/texturas/tela-sofa/tela-sofa-normal.png",
-    scene
-  );
-  sofaNormalMap.uScale = 3;
-  sofaNormalMap.vScale = 3;
-
-  sofaTexture.bumpTexture = sofaNormalMap;
-  sofaTexture.invertNormalMapX = true;
-  sofaTexture.invertNormalMapY = true;
-
-  //Ambient Occlusion
-
-  const sofa2Occlusion = new BABYLON.Texture(
-    "/texturas/tela-sofa/tela-sofa-occlusion.png",
-    scene
-  );
-  sofaOcclusion.uScale = 3;
-  sofaOcclusion.vScale = 3;
-
-  sofaTexture.ambientTexture = sofaOcclusion;
-
-  //Roughness Map
-  const sofa2Roughness = new BABYLON.Texture(
-    "/texturas/tela-sofa/tela-sofa-metalness.png",
-    scene
-  );
-  sofaRoughness.uScale = 3;
-  sofaRoughness.vScale = 3;
-
-  sofaTexture.specularTexture = sofaRoughness;
-  //Qué tanta luz refleja (Mientras más grande menos refleja)
-  sofaTexture.specularPower = 500;
-
   // Importando Modelos
   const sofa2 = BABYLON.SceneLoader.ImportMesh(
     "",
@@ -269,7 +220,7 @@ const createScene = async function () {
       meshes.map((mesh, index) => {
         //console.log(mesh);
         if (index === 1 || index === 3) {
-          console.log(mesh);
+          //console.log(mesh);
           mesh.scaling = new BABYLON.Vector3(0.15, 0.15, 0.15);
           mesh.position = new BABYLON.Vector3(0.8, 0, 0.5);
           mesh.rotation = new BABYLON.Vector3(0, 0, 0);
@@ -284,7 +235,7 @@ const createScene = async function () {
         }
 
         if (index === 5) {
-          console.log(mesh);
+          // console.log(mesh);
           mesh.scaling = new BABYLON.Vector3(0.15, 0.15, 0.15);
           mesh.position = new BABYLON.Vector3(0.8, 0, 0.5);
           mesh.rotation = new BABYLON.Vector3(0, 0, 0);
@@ -297,6 +248,142 @@ const createScene = async function () {
           mesh.material = sofaTexture;
           mesh.checkCollisions = true;
         }
+      });
+    }
+  );
+
+  /**Importando Mesita Central */
+  const mesitaCentralTexture = new BABYLON.StandardMaterial(
+    "mesitaCentralTexture",
+    scene
+  );
+  //importar Modelo
+  const mesitaCentral = BABYLON.SceneLoader.ImportMesh(
+    "",
+    "/mesita-central/",
+    "StylishDesk.obj",
+    scene,
+    function (meshes, particleSystems, skeletons, animationGroups) {
+      meshes.map((mesh, index) => {
+        mesh.scaling = new BABYLON.Vector3(0.3, 0.3, 0.3);
+        mesh.position = new BABYLON.Vector3(0.8, 0, 2);
+        mesh.checkCollisions = true;
+      });
+    }
+  );
+
+  /**Importando Mesa */
+  const mesaTexture = new BABYLON.StandardMaterial("mesaTexture", scene);
+  //importar Modelo
+  const mesa = BABYLON.SceneLoader.ImportMesh(
+    "",
+    "/mesa-sencilla/",
+    "table.obj",
+    scene,
+    function (meshes, particleSystems, skeletons, animationGroups) {
+      //console.log(meshes);
+      meshes[0].scaling = new BABYLON.Vector3(0.3, 0.3, 0.3);
+      meshes[0].position = new BABYLON.Vector3(1, 0, -3);
+      meshes[0].checkCollisions = true;
+    }
+  );
+
+  /**Importando silla 1 */
+
+  const sillaTexture = new BABYLON.StandardMaterial("sillaTexture", scene);
+  //importar Modelo
+  const silla1 = BABYLON.SceneLoader.ImportMesh(
+    "",
+    "/silla-moderna/",
+    "Chair.obj",
+    scene,
+    function (meshes, particleSystems, skeletons, animationGroups) {
+      //console.log(meshes);
+      meshes[0].scaling = new BABYLON.Vector3(0.01, 0.01, 0.01);
+      meshes[0].rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
+      meshes[0].position = new BABYLON.Vector3(0.7, 0, -3.5);
+      meshes[0].checkCollisions = true;
+    }
+  );
+
+  /**Importando silla 2 */
+  const silla2 = BABYLON.SceneLoader.ImportMesh(
+    "",
+    "/silla-moderna/",
+    "Chair.obj",
+    scene,
+    function (meshes, particleSystems, skeletons, animationGroups) {
+      //console.log(meshes);
+      meshes[0].scaling = new BABYLON.Vector3(0.01, 0.01, 0.01);
+      meshes[0].rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
+      meshes[0].position = new BABYLON.Vector3(1.4, 0, -3.5);
+      meshes[0].checkCollisions = true;
+    }
+  );
+
+  /**Importando silla 3 */
+  const silla3 = BABYLON.SceneLoader.ImportMesh(
+    "",
+    "/silla-moderna/",
+    "Chair.obj",
+    scene,
+    function (meshes, particleSystems, skeletons, animationGroups) {
+      // console.log(meshes);
+      meshes[0].scaling = new BABYLON.Vector3(0.01, 0.01, 0.01);
+      meshes[0].rotation = new BABYLON.Vector3(0, -Math.PI / 2, 0);
+      meshes[0].position = new BABYLON.Vector3(1.3, 0, -2.5);
+      meshes[0].checkCollisions = true;
+    }
+  );
+
+  /**Importando silla 4 */
+  const silla4 = BABYLON.SceneLoader.ImportMesh(
+    "",
+    "/silla-moderna/",
+    "Chair.obj",
+    scene,
+    function (meshes, particleSystems, skeletons, animationGroups) {
+      //console.log(meshes);
+      meshes[0].scaling = new BABYLON.Vector3(0.01, 0.01, 0.01);
+      meshes[0].rotation = new BABYLON.Vector3(0, -Math.PI / 2, 0);
+      meshes[0].position = new BABYLON.Vector3(0.6, 0, -2.5);
+      meshes[0].checkCollisions = true;
+    }
+  );
+
+  /**Importando Mesa Auxiliar */
+  const mesaAuxiliarTexture = new BABYLON.StandardMaterial(
+    "mesaAuxiliarTexture",
+    scene
+  );
+  /**Importando Modelo Mesa Auxiliar */
+  const mesaAuxiliar = BABYLON.SceneLoader.ImportMesh(
+    "",
+    "/mesa-auxiliar/",
+    "Auxiliar_Table_005.obj",
+    scene,
+    function (meshes, particleSystems, skeletons, animationGroups) {
+      //console.log(meshes);
+      meshes[0].scaling = new BABYLON.Vector3(0.018, 0.02, 0.02);
+      meshes[0].rotation = new BABYLON.Vector3(0, -Math.PI / 2, 0);
+      meshes[0].position = new BABYLON.Vector3(-1.6, 0, 2);
+      meshes[0].checkCollisions = true;
+    }
+  );
+
+  const tvTexture = new BABYLON.StandardMaterial("tvTxture", scene);
+  const tv = BABYLON.SceneLoader.ImportMesh(
+    "",
+    "/tv/",
+    "tv.obj",
+    scene,
+    function (meshes, particleSystems, skeletons, animationGroups) {
+      console.log(meshes);
+      meshes.map((mesh) => {
+        mesh.scaling = new BABYLON.Vector3(0.3, 0.3, 0.3);
+        mesh.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
+        mesh.position = new BABYLON.Vector3(-1.6, 0.6, 2.2);
+        mesh.checkCollisions = true;
       });
     }
   );
