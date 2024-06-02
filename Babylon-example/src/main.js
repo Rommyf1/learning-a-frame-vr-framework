@@ -266,8 +266,15 @@ const createScene = async function () {
     function (meshes, particleSystems, skeletons, animationGroups) {
       meshes.map((mesh, index) => {
         mesh.scaling = new BABYLON.Vector3(0.3, 0.3, 0.3);
-        mesh.position = new BABYLON.Vector3(0.8, 0, 2);
+        mesh.position = new BABYLON.Vector3(0.8, 0.2, 2);
         mesh.checkCollisions = true;
+        //Adding Physics to Object
+        new BABYLON.PhysicsAggregate(
+          mesh,
+          BABYLON.PhysicsShapeType.CONVEX_HULL,
+          { mass: 2, restitution: 0 },
+          scene
+        );
       });
     }
   );
@@ -285,6 +292,13 @@ const createScene = async function () {
       meshes[0].scaling = new BABYLON.Vector3(0.3, 0.3, 0.3);
       meshes[0].position = new BABYLON.Vector3(1, 0, -3);
       meshes[0].checkCollisions = true;
+      //Adding Physics to Object
+      new BABYLON.PhysicsAggregate(
+        meshes[0],
+        BABYLON.PhysicsShapeType.CONVEX_HULL,
+        { mass: 0, restitution: 0.1 },
+        scene
+      );
     }
   );
 
@@ -303,6 +317,13 @@ const createScene = async function () {
       meshes[0].rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
       meshes[0].position = new BABYLON.Vector3(0.7, 0, -3.5);
       meshes[0].checkCollisions = true;
+      //Adding Physics to Object
+      new BABYLON.PhysicsAggregate(
+        meshes[0],
+        BABYLON.PhysicsShapeType.CONVEX_HULL,
+        { mass: 1, restitution: 0.1 },
+        scene
+      );
     }
   );
 
@@ -318,6 +339,13 @@ const createScene = async function () {
       meshes[0].rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
       meshes[0].position = new BABYLON.Vector3(1.4, 0, -3.5);
       meshes[0].checkCollisions = true;
+      //Adding Physics to Object
+      new BABYLON.PhysicsAggregate(
+        meshes[0],
+        BABYLON.PhysicsShapeType.CONVEX_HULL,
+        { mass: 1, restitution: 0.1 },
+        scene
+      );
     }
   );
 
@@ -333,6 +361,13 @@ const createScene = async function () {
       meshes[0].rotation = new BABYLON.Vector3(0, -Math.PI / 2, 0);
       meshes[0].position = new BABYLON.Vector3(1.3, 0, -2.5);
       meshes[0].checkCollisions = true;
+      //Adding Physics to Object
+      new BABYLON.PhysicsAggregate(
+        meshes[0],
+        BABYLON.PhysicsShapeType.CONVEX_HULL,
+        { mass: 1, restitution: 0.1 },
+        scene
+      );
     }
   );
 
@@ -348,6 +383,13 @@ const createScene = async function () {
       meshes[0].rotation = new BABYLON.Vector3(0, -Math.PI / 2, 0);
       meshes[0].position = new BABYLON.Vector3(0.6, 0, -2.5);
       meshes[0].checkCollisions = true;
+      //Adding Physics to Object
+      new BABYLON.PhysicsAggregate(
+        meshes[0],
+        BABYLON.PhysicsShapeType.CONVEX_HULL,
+        { mass: 1, restitution: 0.1 },
+        scene
+      );
     }
   );
 
@@ -366,8 +408,15 @@ const createScene = async function () {
       //console.log(meshes);
       meshes[0].scaling = new BABYLON.Vector3(0.018, 0.02, 0.02);
       meshes[0].rotation = new BABYLON.Vector3(0, -Math.PI / 2, 0);
-      meshes[0].position = new BABYLON.Vector3(-1.6, 0, 2);
+      meshes[0].position = new BABYLON.Vector3(-2.4, 0, 2);
       meshes[0].checkCollisions = true;
+      //Adding Physics to Object
+      new BABYLON.PhysicsAggregate(
+        meshes[0],
+        BABYLON.PhysicsShapeType.CONVEX_HULL,
+        { mass: 8, restitution: 0.1 },
+        scene
+      );
     }
   );
 
@@ -378,12 +427,19 @@ const createScene = async function () {
     "tv.obj",
     scene,
     function (meshes, particleSystems, skeletons, animationGroups) {
-      console.log(meshes);
+      // console.log(meshes);
       meshes.map((mesh) => {
         mesh.scaling = new BABYLON.Vector3(0.3, 0.3, 0.3);
         mesh.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
-        mesh.position = new BABYLON.Vector3(-1.6, 0.6, 2.2);
+        mesh.position = new BABYLON.Vector3(-2.4, 0.6, 2.2);
         mesh.checkCollisions = true;
+        //Adding Physics to Object
+        new BABYLON.PhysicsAggregate(
+          mesh,
+          BABYLON.PhysicsShapeType.CONVEX_HULL,
+          { mass: 1, restitution: 0.1 },
+          scene
+        );
       });
     }
   );
