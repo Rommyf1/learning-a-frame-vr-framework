@@ -268,21 +268,37 @@ import Tv from "../components/Tv.astro";
 
   <a-camera
     look-controls
-    wasd-controls
+    wasd-controls="acceleration: 5"
     position="0 1 1"
     capture-mouse
-    raycaster
+    raycaster="objects: .collidable; showLine:true;"
     cursor="rayOrigin:mouse"
     body="type: static; shape: sphere; sphereRadius: 0.001"
     super-hands="colliderEvent: raycaster-intersection; colliderEventProperty: els; colliderEndEvent:raycaster-intersection-cleared; colliderEndEventProperty: clearedEls;"
   >
   </a-camera>
 
+  <!--Piso-->
+  <a-box
+    id="piso"
+    src="#textura-piso"
+    normal-map="#textura-piso-normal"
+    normal-texture-repeat="5 5"
+    normal-scale="1 -1"
+    repeat="5 5"
+    width="3.5"
+    height="6"
+    depth=".01"
+    rotation="-90 0 0"
+    position="0 0 -0.8"
+    static-body="shape: box"
+  >
+  </a-box>
+
   <!--Pelota 1-->
   <a-sphere
     id="pelota1"
-    ammo-body="type: dynamic; mass: 0.1; angularDamping: 0.001; restitution: 0.7;"
-    ammo-shape="type: sphere;"
+    dynamic-body="mass: 0.3; shape: sphere;"
     hoverable
     grabbable
     stretchable
@@ -297,8 +313,7 @@ import Tv from "../components/Tv.astro";
   <!--Pelota 2-->
   <a-sphere
     id="pelota2"
-    ammo-body="type: dynamic; mass: 0.1; angularDamping: 0.001; restitution: 0.7;"
-    ammo-shape="type: sphere;"
+    dynamic-body="mass: 0.3; shape: sphere;"
     hoverable
     grabbable
     stretchable
@@ -310,25 +325,8 @@ import Tv from "../components/Tv.astro";
     color="red"
     position=".4  1 -2.1"></a-sphere>
 
-  <!--Piso-->
-  <a-plane
-    id="piso"
-    src="#textura-piso"
-    normal-map="#textura-piso-normal"
-    normal-texture-repeat="5 5"
-    normal-scale="1 -1"
-    repeat="5 5"
-    width="3.5"
-    height="6"
-    rotation="-90 0 0"
-    position="0 0 -0.8"
-    ammo-body="type: static; restitution: 0.7;"
-    ammo-shape="type: box; margin: 0;"
-  >
-  </a-plane>
   <!--Pared de atrás-->
   <a-box
-    nav-mesh
     id="pared-atras"
     src="#pared-empedrada"
     normal-map="#pared-empedrada-normal"
@@ -340,12 +338,12 @@ import Tv from "../components/Tv.astro";
     height="3"
     depth=".1"
     position="0 1.5 2.2"
-    ammo-body="type: static; restitution: 0.7;"
-    ammo-shape="type: box;"></a-box>
+    static-body="shape: box;"
+  >
+  </a-box>
 
   <!--Pared de la Izquierda-->
   <a-box
-    nav-mesh
     id="pared-izquierda"
     src="#pared-empedrada"
     normal-map="#pared-empedrada-normal"
@@ -358,14 +356,12 @@ import Tv from "../components/Tv.astro";
     depth=".1"
     position="-1.8 1.5 -0.8"
     rotation="0 90 0"
-    ammo-body="type: static; restitution: 0.7;"
-    ammo-shape="type: box;"
+    static-body="shape: box;"
   >
   </a-box>
 
   <!--Pared del frente-->
   <a-box
-    nav-mesh
     id="pared-frente"
     src="#pared-empedrada"
     normal-map="#pared-empedrada-normal"
@@ -377,8 +373,7 @@ import Tv from "../components/Tv.astro";
     height="3"
     depth=".1"
     position="0 1.5 -3.8"
-    ammo-body="type: static; restitution: 0.7;"
-    ammo-shape="type: box;"></a-box>
+    static-body="shape: box;"></a-box>
 
   <!--Pared de la derecha-->
   <a-box
@@ -396,74 +391,73 @@ import Tv from "../components/Tv.astro";
     depth=".1"
     position="1.8 1.5 -0.8"
     rotation="0 90 0"
-    ammo-body="type: static; restitution: 0.7;"
-    ammo-shape="type: box;"></a-box>
+    static-body="shape: box;"></a-box>
 
   <Sofa
-    nav-mesh
+    static-body="shape: box"
     ID="sofa1"
     scale="0.1 0.1 0.1"
     position="-1.43 0 0"
     rotation="0 90 0"
   />
   <Sofa
-    nav-mesh
+    static-body="shape: box"
     ID="sofa2"
     scale="0.1 0.1 0.1"
     position="-0.6 0 -0.86022"
     rotation="0 0 0"
   />
   <MesitaCentral
-    nav-mesh
+    static-body="shape: box"
     ID="mesita-central"
     scale="0.2 0.2 0.2"
     position="-0.6 0 0"
     rotation="0 -90 0"
   />
   <Mesa
-    nav-mesh
+    static-body="shape: box"
     ID="mesa"
     scale="0.2 0.2 0.2"
     position="-0.6 0 -2.5"
     rotation="0 0 0"
   />
   <Silla
-    nav-mesh
+    static-body="shape: box"
     ID="silla1"
     scale="0.006 0.006 0.006"
     position="-0.398 0 -1.883"
     rotation="0 90 0"
   />
   <Silla
-    nav-mesh
+    static-body="shape: box"
     ID="silla2"
     scale="0.006 0.006 0.006"
     position="-0.988 0 -1.883"
     rotation="0 90 0"
   />
   <Silla
-    nav-mesh
+    static-body="shape: box"
     ID="silla3"
     scale="0.006 0.006 0.006"
     position="-0.398 0 -3.13703"
     rotation="0 -90 0"
   />
   <Silla
-    nav-mesh
+    static-body="shape: box"
     ID="silla4"
     scale="0.006 0.006 0.006"
     position="-0.988 0 -3.13703"
     rotation="0 -90 0"
   />
   <MesaAuxiliar
-    nav-mesh
+    static-body="shape: box"
     ID="mesa-auxiliar"
     scale="0.01 0.01 0.01"
     position="1.25 0 0"
     rotation="0 -90 0"
   />
   <Tv
-    nav-mesh
+    static-body="shape: box"
     ID="tv"
     scale="0.2 0.2 0.2"
     position="1.2 0.217 0"

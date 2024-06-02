@@ -14,25 +14,22 @@ const { title } = Astro.props;
     <meta charset="UTF-8" />
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js" is:inline
     ></script>
-    <script>
-      delete AFRAME.components["grabbable"];
-    </script>
+
     <script
       src="https://unpkg.com/aframe-event-set-component@^5.0.0/dist/aframe-event-set-component.min.js"
       is:inline></script>
     <script
       src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.4.0/dist/aframe-extras.min.js"
       is:inline></script>
+
     <script
-      src="https://cdn.jsdelivr.net/gh/MozillaReality/ammo.js@8bbc0ea/builds/ammo.wasm.js"
-      is:inline></script>
-    <script
-      src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.2.2/dist/aframe-physics-system.js"
+      src="https://cdn.jsdelivr.net/gh/c-frame/aframe-physics-system@v4.1.0/dist/aframe-physics-system.js"
       is:inline></script>
 
     <script
-      src="https://unpkg.com/super-hands@^3.0.4/dist/super-hands.min.js"
+      src="https://unpkg.com/super-hands/dist/super-hands.min.js"
       is:inline></script>
+
     <meta name="description" content="Astro description" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -40,7 +37,7 @@ const { title } = Astro.props;
     <title>{title}</title>
   </head>
   <body>
-    <a-scene physics="driver: ammo; debug:true;">
+    <a-scene physics="debug:true;">
       <slot />
     </a-scene>
   </body>
