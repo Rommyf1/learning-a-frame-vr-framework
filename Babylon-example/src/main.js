@@ -100,12 +100,36 @@ const createScene = async function () {
     scene
   );
 
+  //Create Walls's Textures
+  const paredMaterial = new BABYLON.StandardMaterial("paredTexture", scene);
+  //Basic Material
+  const wallSimpleTexture = new BABYLON.Texture(
+    "/texturas/pared-ladrillo/pared-piedra.jpg"
+  );
+  wallSimpleTexture.uScale = 5;
+  wallSimpleTexture.vScale = 5;
+  paredMaterial.diffuseTexture = wallSimpleTexture;
+
+  //Normal Map
+
+  const wallNormalMap = new BABYLON.Texture(
+    "/texturas/pared-ladrillo/pared-piedra-normal.jpg",
+    scene
+  );
+  wallNormalMap.uScale = 5;
+  wallNormalMap.vScale = 5;
+
+  paredMaterial.bumpTexture = wallNormalMap;
+  paredMaterial.invertNormalMapX = true;
+  paredMaterial.invertNormalMapY = true;
+
   //Create behind Wall
   const paredTrasera = BABYLON.MeshBuilder.CreateBox("paredTrasera", {
     width: 6,
     height: 10,
     depth: 0.2,
   });
+  paredTrasera.material = paredMaterial;
   paredTrasera.position = new BABYLON.Vector3(0, 0, 5);
   paredTrasera.checkCollisions = true;
 
@@ -115,6 +139,7 @@ const createScene = async function () {
     height: 10,
     depth: 0.2,
   });
+  paredDelantera.material = paredMaterial;
   paredDelantera.position = new BABYLON.Vector3(0, 0, -5);
   paredDelantera.checkCollisions = true;
 
@@ -124,6 +149,7 @@ const createScene = async function () {
     height: 10,
     depth: 0.2,
   });
+  paredIzquierda.material = paredMaterial;
   paredIzquierda.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
   paredIzquierda.position = new BABYLON.Vector3(3, 0, 0);
   paredIzquierda.checkCollisions = true;
@@ -134,11 +160,10 @@ const createScene = async function () {
     height: 10,
     depth: 0.2,
   });
+  paredDerecha.material = paredMaterial;
   paredDerecha.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
   paredDerecha.position = new BABYLON.Vector3(-3, 0, 0);
   paredDerecha.checkCollisions = true;
-
-  const paredTexture = new BABYLON.StandardMaterial("paredTexture", scene);
 
   // Adding drag and drop effect to sphere
   // // Create behaviors to drag and scale with pointers in VR
