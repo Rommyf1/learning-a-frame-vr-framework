@@ -1,5 +1,6 @@
 import * as BABYLON from "@babylonjs/core";
 import "@babylonjs/loaders/OBJ";
+import { PhysicsViewer } from "@babylonjs/core/Debug/";
 //import createSofa from "./components/sofa";
 
 const canvas = document.getElementById("renderCanvas");
@@ -44,18 +45,86 @@ const createScene = async function () {
     scene
   );
 
+  // initialize plugin
+  const havokInstance = await HavokPhysics();
+  // pass the engine to the plugin
+  const hk = new BABYLON.HavokPlugin(true, havokInstance);
+  // enable physics in the scene with a gravity
+  scene.enablePhysics(new BABYLON.Vector3(0, -9.8, 0), hk);
+
+
   // Default intensity is 1. Let's dim the light a small amount
   // light.intensity = 0.7;
 
   //Sphere
   const sphere = new BABYLON.MeshBuilder.CreateSphere(
-    "caja",
+    "sphere",
     {
       diameter: 0.3,
     },
     scene
   );
-  sphere.position = new BABYLON.Vector3(0, 2, 1.3);
+
+  //Create sphere Shape
+  const sphereShape = new BABYLON.PhysicsShapeSphere(new BABYLON.Vector3(0, 0, 0), 0.15, scene);
+
+  // Set shape material properties
+  sphereShape.material = { friction: 0.5, restitution: 0.75 };
+
+  sphere.position = new BABYLON.Vector3(-1, 2, 1.3);
+
+// Sphere body
+const sphereBody = new BABYLON.PhysicsBody(sphere, BABYLON.PhysicsMotionType.DYNAMIC, false, scene);
+
+// Associate shape and body
+sphereBody.shape = sphereShape;
+
+// And body mass
+sphereBody.setMassProperties({ mass: 0.3 });
+
+sphereBody.disablePreStep = false;
+
+
+
+
+const sixDofDragBehavior = new BABYLON.SixDofDragBehavior();
+        //this is the... distance to move each frame (lower reduces jitter)
+        sixDofDragBehavior.dragDeltaRatio = 0.2;
+        //this one modifies z dragging behavior
+        sixDofDragBehavior.zDragFactor = 0.2;
+
+        sixDofDragBehavior.onDragStartObservable.add((event) => {
+        hk.setGravity(new BABYLON.Vector3(0,0,0));
+        });
+        sixDofDragBehavior.onDragObservable.add((event) => {
+        });
+        sixDofDragBehavior.onDragEndObservable.add((event) => {
+            hk.setGravity(new BABYLON.Vector3(0,-9.8,0));
+        });
+
+        sphere.addBehavior(sixDofDragBehavior);
+
+
+
+
+
+  // Drag And Drop Sphere
+  //let pointerDragBehavior = new BABYLON.PointerDragBehavior({
+   
+ //   dragPlaneNormal: new BABYLON.Vector3(0, 1, 0)
+ // });
+
+ /* pointerDragBehavior.moveAttached = false
+  pointerDragBehavior.onDragObservable.add((eventData) => {
+      sphereMesh.moveWithCollisions(eventData.delta)
+  })*/
+
+  //Asign Drag And Drop to Sphere
+// sphere.addBehavior(pointerDragBehavior, true);
+
+
+
+
 
   //Ground shape
   const ground = BABYLON.MeshBuilder.CreateGround(
@@ -63,6 +132,9 @@ const createScene = async function () {
     { width: 6, height: 10 },
     scene
   );
+
+// Sphere body
+const groundBody = new BABYLON.PhysicsBody(ground, BABYLON.PhysicsMotionType.STATIC, false, scene);
 
   //Ground Texture
   const groundMaterial = new BABYLON.StandardMaterial();
@@ -77,21 +149,6 @@ const createScene = async function () {
   groundMaterial.diffuseTexture = groundTexture;
   ground.checkCollisions = true;
 
-  // initialize plugin
-  const havokInstance = await HavokPhysics();
-  // pass the engine to the plugin
-  const hk = new BABYLON.HavokPlugin(true, havokInstance);
-  // enable physics in the scene with a gravity
-  scene.enablePhysics(new BABYLON.Vector3(0, -9.8, 0), hk);
-
-  // Give Physics to Sphere
-  const sphereAggregate = new BABYLON.PhysicsAggregate(
-    sphere,
-    BABYLON.PhysicsShapeType.SPHERE,
-    { mass: 0.3, restitution: 0.75 },
-    scene
-  );
-
   // Give Physics to ground.
   const groundAggregate = new BABYLON.PhysicsAggregate(
     ground,
@@ -99,6 +156,76 @@ const createScene = async function () {
     { mass: 0 },
     scene
   );
+
+
+
+/**Crear Techo */
+const techo = BABYLON.MeshBuilder.CreateBox(
+  "techo",
+  { width: 6, height: 10, depth: 0.1 },
+  scene
+);
+
+// Sphere body
+const techoBody = new BABYLON.PhysicsBody(techo, BABYLON.PhysicsMotionType.STATIC, false, scene);
+
+//Create Walls's Textures
+const techoMaterial = new BABYLON.StandardMaterial("techoTexture", scene);
+//Basic Material
+const techoTexture = new BABYLON.Texture(
+  "/texturas/techo/ceiling.jpg"
+);
+//techoTexture.uScale = 5;
+//techoTexture.vScale = 5;
+techoMaterial.diffuseTexture = techoTexture;
+
+//Normal Map
+
+const techoNormalMap = new BABYLON.Texture(
+  "/texturas/techo/ceiling_normal.png",
+  scene
+);
+//techoNormalMap.uScale = 5;
+//techoNormalMap.vScale = 5;
+
+techoMaterial.bumpTexture = techoNormalMap;
+techoMaterial.invertNormalMapX = true;
+techoMaterial.invertNormalMapY = true;
+
+//Ambient Occlusion
+
+const techoOcclusion = new BABYLON.Texture(
+  "/texturas/techo/ceiling_ao.jpg",
+  scene
+);
+//techoOcclusion.uScale = 3;
+//techoOcclusion.vScale = 3;
+
+techoTexture.ambientTexture = techoOcclusion;
+
+//Roughness Map
+const techoRoughness = new BABYLON.Texture(
+  "/texturas/techo/ceiling_roughness.jpg",
+  scene
+);
+//techoRoughness.uScale = 3;
+//techoRoughness.vScale = 3;
+
+techoTexture.specularTexture = techoRoughness;
+//Qué tanta luz refleja (Mientras más grande menos refleja)
+techoTexture.specularPower = 500;
+// Give Physics to ground.
+const techoAggregate = new BABYLON.PhysicsAggregate(
+  techo,
+  BABYLON.PhysicsShapeType.BOX,
+  { mass: 0 },
+  scene
+);
+techo.material = techoMaterial;
+techo.position = new BABYLON.Vector3(0, 5, 0);
+techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
+
+
 
   //Create Walls's Textures
   const paredMaterial = new BABYLON.StandardMaterial("paredTexture", scene);
@@ -131,7 +258,15 @@ const createScene = async function () {
   });
   paredTrasera.material = paredMaterial;
   paredTrasera.position = new BABYLON.Vector3(0, 0, 5);
+  // Give Physics to Wall.
   paredTrasera.checkCollisions = true;
+  const paredTraseraBody = new BABYLON.PhysicsBody(paredTrasera, BABYLON.PhysicsMotionType.STATIC, false, scene);
+  const paredTraseraAggregate = new BABYLON.PhysicsAggregate(
+    paredTrasera,
+    BABYLON.PhysicsShapeType.BOX,
+    { mass: 0, restitution: 0.5, friction: 0.3 },
+    scene
+  );
 
   //Create Front Wall
   const paredDelantera = BABYLON.MeshBuilder.CreateBox("paredDelantera", {
@@ -142,6 +277,13 @@ const createScene = async function () {
   paredDelantera.material = paredMaterial;
   paredDelantera.position = new BABYLON.Vector3(0, 0, -5);
   paredDelantera.checkCollisions = true;
+  const paredDelanteraBody = new BABYLON.PhysicsBody(paredDelantera, BABYLON.PhysicsMotionType.STATIC, false, scene);
+  const paredDelanteraAggregate = new BABYLON.PhysicsAggregate(
+    paredDelantera,
+    BABYLON.PhysicsShapeType.BOX,
+    { mass: 0, restitution: 0.5, friction: 0.3 },
+    scene
+  );
 
   //Create Left Wall
   const paredIzquierda = BABYLON.MeshBuilder.CreateBox("paredIzquierda", {
@@ -153,6 +295,13 @@ const createScene = async function () {
   paredIzquierda.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
   paredIzquierda.position = new BABYLON.Vector3(3, 0, 0);
   paredIzquierda.checkCollisions = true;
+  const paredIzquierdaBody = new BABYLON.PhysicsBody(paredIzquierda, BABYLON.PhysicsMotionType.STATIC, false, scene);
+  const paredIzquierdaAggregate = new BABYLON.PhysicsAggregate(
+    paredIzquierda,
+    BABYLON.PhysicsShapeType.BOX,
+    { mass: 0, restitution: 0.5, friction: 0.3 },
+    scene
+  );
 
   //Create Right Wall
   const paredDerecha = BABYLON.MeshBuilder.CreateBox("paredDerecha", {
@@ -164,14 +313,14 @@ const createScene = async function () {
   paredDerecha.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
   paredDerecha.position = new BABYLON.Vector3(-3, 0, 0);
   paredDerecha.checkCollisions = true;
+  const paredDerechaBody = new BABYLON.PhysicsBody(paredDerecha , BABYLON.PhysicsMotionType.STATIC, false, scene);
+  const paredDerechaAggregate = new BABYLON.PhysicsAggregate(
+    paredDerecha,
+    BABYLON.PhysicsShapeType.BOX,
+    { mass: 0, restitution: 0.5, friction: 0.3 },
+    scene
+  );
 
-  // Adding drag and drop effect to sphere
-  // // Create behaviors to drag and scale with pointers in VR
-  const sixDofDragBehavior = new BABYLON.SixDofDragBehavior();
-  sixDofDragBehavior.useObje;
-  sixDofDragBehavior.dragDeltaRatio = 1;
-  sixDofDragBehavior.zDragFactor = 1;
-  sphere.addBehavior(sixDofDragBehavior);
 
   /**IMPORTANDO MODELO */
   //Cargando texturas del modelo
@@ -342,7 +491,7 @@ const createScene = async function () {
         );
       });
     }
-  );
+  );  
 
   /**Importando Mesa */
   const mesaTexture = new BABYLON.StandardMaterial("mesaTexture", scene);
@@ -508,6 +657,27 @@ const createScene = async function () {
       });
     }
   );
+
+
+
+
+
+  //const physicsViewer = new BABYLON.DebugLayer(scene);
+/**Show Meshes */
+const physicsViewer = new PhysicsViewer();
+    for (const mesh of scene.rootNodes) {
+        showPhysicsBodiesRecursive(mesh);
+    }
+
+
+    function showPhysicsBodiesRecursive(mesh) {
+      if (mesh.physicsBody) {
+          const debugMesh = physicsViewer.showBody(mesh.physicsBody);
+      }
+      for (let i=0, children = mesh.getChildren(); i<children.length; i++) {
+          showPhysicsBodiesRecursive(children[i]);
+      }
+  }
 
   return scene;
 };
