@@ -41,7 +41,7 @@ const createScene = async function () {
   // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
   const hemisLight = new BABYLON.HemisphericLight(
     "hemilight",
-    new BABYLON.Vector3(0, 1, 0),
+    new BABYLON.Vector3(0, 10, 0),
     scene
   );
 
@@ -101,6 +101,7 @@ const sixDofDragBehavior = new BABYLON.SixDofDragBehavior();
         sixDofDragBehavior.onDragEndObservable.add((event) => {
             hk.setGravity(new BABYLON.Vector3(0,-9.8,0));
         });
+        sixDofDragBehavior.attach
 
         sphere.addBehavior(sixDofDragBehavior);
 
@@ -215,6 +216,7 @@ techoTexture.specularTexture = techoRoughness;
 //Qué tanta luz refleja (Mientras más grande menos refleja)
 techoTexture.specularPower = 500;
 // Give Physics to ground.
+
 const techoAggregate = new BABYLON.PhysicsAggregate(
   techo,
   BABYLON.PhysicsShapeType.BOX,
@@ -392,7 +394,7 @@ techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
           mesh.rotation = new BABYLON.Vector3(0, -Math.PI / 2, 0);
           new BABYLON.PhysicsAggregate(
             mesh,
-            BABYLON.PhysicsShapeType.BOX,
+            BABYLON.PhysicsShapeType.MESH,
             { mass: 0, restitution: 0.1 },
             scene
           );
@@ -407,7 +409,7 @@ techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
           mesh.rotation = new BABYLON.Vector3(0, -Math.PI / 2, 0);
           new BABYLON.PhysicsAggregate(
             mesh,
-            BABYLON.PhysicsShapeType.CONVEX_HULL,
+            BABYLON.PhysicsShapeType.MESH,
             { mass: 0, restitution: 0.1 },
             scene
           );
@@ -440,7 +442,7 @@ techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
           mesh.rotation = new BABYLON.Vector3(0, 0, 0);
           new BABYLON.PhysicsAggregate(
             mesh,
-            BABYLON.PhysicsShapeType.BOX,
+            BABYLON.PhysicsShapeType.MESH,
             { mass: 0, restitution: 0.1 },
             scene
           );
@@ -455,7 +457,7 @@ techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
           mesh.rotation = new BABYLON.Vector3(0, 0, 0);
           new BABYLON.PhysicsAggregate(
             mesh,
-            BABYLON.PhysicsShapeType.CONVEX_HULL,
+            BABYLON.PhysicsShapeType.MESH,
             { mass: 0, restitution: 0.1 },
             scene
           );
@@ -485,7 +487,7 @@ techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
         //Adding Physics to Object
         new BABYLON.PhysicsAggregate(
           mesh,
-          BABYLON.PhysicsShapeType.CONVEX_HULL,
+          BABYLON.PhysicsShapeType.MESH,
           { mass: 0, restitution: 0 },
           scene
         );
@@ -509,7 +511,7 @@ techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
       //Adding Physics to Object
       new BABYLON.PhysicsAggregate(
         meshes[0],
-        BABYLON.PhysicsShapeType.CONVEX_HULL,
+        BABYLON.PhysicsShapeType.MESH,
         { mass: 0, restitution: 0.1 },
         scene
       );
@@ -634,7 +636,7 @@ techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
     }
   );
 
-  const tvTexture = new BABYLON.StandardMaterial("tvTxture", scene);
+  const tvTexture = new BABYLON.StandardMaterial("tvTexture", scene);
   const tv = BABYLON.SceneLoader.ImportMesh(
     "",
     "/tv/",
@@ -650,7 +652,7 @@ techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
         //Adding Physics to Object
         new BABYLON.PhysicsAggregate(
           mesh,
-          BABYLON.PhysicsShapeType.CONVEX_HULL,
+          BABYLON.PhysicsShapeType.MESH,
           { mass: 1, restitution: 0.1 },
           scene
         );
@@ -659,12 +661,91 @@ techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
   );
 
 
+  /**Importando modelo Lata de Refresco */
+    const lata = BABYLON.SceneLoader.ImportMesh(
+      "",
+      "/lata-pepsi/",
+      "Pepsi_Can.obj",
+      scene,
+      function (meshes, particleSystems, skeletons, animationGroups) {
+        //console.log(meshes);
+        meshes[0].scaling = new BABYLON.Vector3(1.5, 1.5, 1.5);
+        meshes[0].rotation = new BABYLON.Vector3((Math.PI/2),0,0);
+        meshes[0].position = new BABYLON.Vector3(0, 4.5, -1.5);
+        meshes[0].checkCollisions = true;
+        //Adding Physics to Object
+        const lataAggregate = new BABYLON.PhysicsAggregate(
+          meshes[0],
+          BABYLON.PhysicsShapeType.MESH,
+          { mass: 0.2, restitution: 0.1 },
+          scene
+        );
+        //lataAggregate.body.setMotionType(BABYLON.PhysicsMotionType.DYNAMIC);
+        //new BABYLON.PhysicsAggregate(meshes[0], BABYLON.PhysicsShapeType.MESH, {mass: 0.1}, scene);
+      }
+    );
+    
+    //const lataBoundingBox = BABYLON.BoundingBoxGizmo.MakeNotPickableAndWrapInBoundingBox(lata);
+    //lataBoundingBox.addBehavior(sixDofDragBehavior);
+    
 
+
+    //lata.rotation = new BABYLON.Vector3(Math.PI / 4, 0, 0);
+
+    // Sphere body
+//const lataBody = new BABYLON.PhysicsBody(lata, BABYLON.PhysicsMotionType.DYNAMIC, false, scene);
+
+//Create sphere Shape
+//const lataShape = new BABYLON.PhysicsShapeCylinder(new BABYLON.Vector3(0, -0.5, 0), new BABYLON.Vector3(0, 0.5, 0), 0.15, scene);
+
+// Set shape material properties
+//lataShape.material = { friction: 0.5, restitution: 0.75 };
+
+// Associate shape and body
+//lataBody.shape = lataShape;
+
+// And body mass
+//lataBody.setMassProperties({ mass: 0.3 });
+
+//lataBody.disablePreStep = false;
+
+   // lata.addBehavior(sixDofDragBehavior);
+
+
+
+    /**Importando modelo Cesta de basura */
+    const cestaBasura = BABYLON.SceneLoader.ImportMesh(
+      "",
+      "/cesta-basura/",
+      "cesta-basura.obj",
+      scene,
+      function (meshes, particleSystems, skeletons, animationGroups) {      
+        meshes.map((mesh) => {
+          
+          //mesh.scaling = new BABYLON.Vector3(1.5, 1.5, 1.5);
+          //mesh.rotation = new BABYLON.Vector3((Math.PI/2),0,0);
+          mesh.position = new BABYLON.Vector3(-1.8, -0.2, -2);
+          mesh.checkCollisions = true;
+          //Adding Physics to Object
+          new BABYLON.PhysicsAggregate(
+            mesh,
+            BABYLON.PhysicsShapeType.MESH,
+            { mass: 0 , restitution: 0.3 },
+            scene
+          );
+          //new BABYLON.PhysicsAggregate(mesh, BABYLON.PhysicsShapeType.MESH, {mass: 0  }, scene);
+          
+          
+        });
+      }
+    );
+
+    cestaBasura.position = new BABYLON.Vector3(0,0,0);
 
 
   //const physicsViewer = new BABYLON.DebugLayer(scene);
 /**Show Meshes */
-const physicsViewer = new PhysicsViewer();
+/*const physicsViewer = new PhysicsViewer();
     for (const mesh of scene.rootNodes) {
         showPhysicsBodiesRecursive(mesh);
     }
@@ -678,7 +759,7 @@ const physicsViewer = new PhysicsViewer();
           showPhysicsBodiesRecursive(children[i]);
       }
   }
-
+*/
   return scene;
 };
 
