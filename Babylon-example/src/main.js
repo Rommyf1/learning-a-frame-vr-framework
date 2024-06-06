@@ -87,11 +87,13 @@ sphereBody.disablePreStep = false;
 
 
 
+
 const sixDofDragBehavior = new BABYLON.SixDofDragBehavior();
         //this is the... distance to move each frame (lower reduces jitter)
         sixDofDragBehavior.dragDeltaRatio = 0.2;
         //this one modifies z dragging behavior
         sixDofDragBehavior.zDragFactor = 0.2;
+        sixDofDragBehavior.attach(sphere);
 
         sixDofDragBehavior.onDragStartObservable.add((event) => {
         hk.setGravity(new BABYLON.Vector3(0,0,0));
@@ -629,7 +631,7 @@ techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
       //Adding Physics to Object
       new BABYLON.PhysicsAggregate(
         meshes[0],
-        BABYLON.PhysicsShapeType.CONVEX_HULL,
+        BABYLON.PhysicsShapeType.MESH,
         { mass: 8, restitution: 0.1 },
         scene
       );
@@ -667,8 +669,9 @@ techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
       "/lata-pepsi/",
       "Pepsi_Can.obj",
       scene,
-      function (meshes, particleSystems, skeletons, animationGroups) {
+      function (meshes, particleSystems, skeletons, animationGroups, ) {
         //console.log(meshes);
+        
         meshes[0].scaling = new BABYLON.Vector3(1.5, 1.5, 1.5);
         meshes[0].rotation = new BABYLON.Vector3((Math.PI/2),0,0);
         meshes[0].position = new BABYLON.Vector3(0, 4.5, -1.5);
@@ -676,19 +679,40 @@ techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
         //Adding Physics to Object
         const lataAggregate = new BABYLON.PhysicsAggregate(
           meshes[0],
-          BABYLON.PhysicsShapeType.MESH,
+          BABYLON.PhysicsShapeType.CYLINDER,
           { mass: 0.2, restitution: 0.1 },
           scene
         );
-        //lataAggregate.body.setMotionType(BABYLON.PhysicsMotionType.DYNAMIC);
-        //new BABYLON.PhysicsAggregate(meshes[0], BABYLON.PhysicsShapeType.MESH, {mass: 0.1}, scene);
+
+      const lataSixDofDragBehavior = new BABYLON.SixDofDragBehavior();
+        //this is the... distance to move each frame (lower reduces jitter)
+        lataSixDofDragBehavior.dragDeltaRatio = 0.2;
+        //this one modifies z dragging behavior
+        lataSixDofDragBehavior.zDragFactor = 0.2;
+        lataSixDofDragBehavior.attach(meshes[0]);
+
+        //let pointStart;
+
+        lataSixDofDragBehavior.onDragStartObservable.add((event) => {
+        hk.setGravity(new BABYLON.Vector3(0,0,0));
+        //pointStart = point.dragPlanePoint;
+        });
+        lataSixDofDragBehavior.onDragObservable.add((event) => {
+        });
+        lataSixDofDragBehavior.onDragEndObservable.add((event) => {
+            hk.setGravity(new BABYLON.Vector3(0,-9.8,0));
+            //const distance = point.dragPlanePoint.subtract(pointStart);
+            //    block.physicsBody.applyImpulse(distance, block.absolutePosition);
+            //    pointStart = point.dragPlanePoint;
+        });
+        lataSixDofDragBehavior.attach
+    
+    //const lataBoundingBox = BABYLON.BoundingBoxGizmo.MakeNotPickableAndWrapInBoundingBox(meshes[0]);
+    meshes[0].addBehavior(lataSixDofDragBehavior);
+      
       }
     );
     
-    //const lataBoundingBox = BABYLON.BoundingBoxGizmo.MakeNotPickableAndWrapInBoundingBox(lata);
-    //lataBoundingBox.addBehavior(sixDofDragBehavior);
-    
-
 
     //lata.rotation = new BABYLON.Vector3(Math.PI / 4, 0, 0);
 
