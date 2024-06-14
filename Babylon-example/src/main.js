@@ -702,7 +702,7 @@ techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
 
 
         meshes[0].parent = lataWrapper;
-        lataWrapper.position(new BABYLON.Vector3(0,0.5,0));
+        //lataWrapper.position(new BABYLON.Vector3(0,0.5,0));
         //lataWrapper.disablePreStep = false;
 
         const lataSixDofDragBehavior = new BABYLON.SixDofDragBehavior();
