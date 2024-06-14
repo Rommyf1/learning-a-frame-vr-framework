@@ -669,27 +669,80 @@ techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
       "/lata-pepsi/",
       "Pepsi_Can.obj",
       scene,
-      function (meshes, particleSystems, skeletons, animationGroups, ) {
+      function (meshes, particleSystems, skeletons, animationGroups) {
         //console.log(meshes);
         
         meshes[0].scaling = new BABYLON.Vector3(1.5, 1.5, 1.5);
-        meshes[0].rotation = new BABYLON.Vector3((Math.PI/2),0,0);
-        meshes[0].position = new BABYLON.Vector3(0, 4.5, -1.5);
-        meshes[0].checkCollisions = true;
-        //Adding Physics to Object
+        //meshes[0].physicsBody.disablePreStep = true;
+        //meshes[0].rotation = new BABYLON.Vector3((Math.PI/2),0,0);
+        //meshes[0].position = new BABYLON.Vector3(0, 4.5, -1.5);
+        //meshes[0].checkCollisions = true;
+ 
+        const lataWrapper = new BABYLON.MeshBuilder.CreateCylinder("", {height: .2, diameter: .1});
+        lataWrapper.position = new BABYLON.Vector3(-1,3,0);
+
+        const lataShape = new BABYLON.PhysicsShapeCylinder(new BABYLON.Vector3(0, 0.5, 0), new BABYLON.Vector3(0, 1, 0), 0.15, scene);
+        lataShape.material = { friction: 0.5, restitution: 0.3 };
+        lataShape.visibility = 0.35;
+
+        const lataBody = new BABYLON.PhysicsBody(lataWrapper, BABYLON.PhysicsMotionType.DYNAMIC, false, scene);
+         
+  
+        lataBody.shape = lataShape;
+        lataBody.setMassProperties({mass: 0.2});
+        lataBody.disablePreStep = false;
+        lataWrapper.checkCollisions = true;
         const lataAggregate = new BABYLON.PhysicsAggregate(
-          meshes[0],
+          lataWrapper,
           BABYLON.PhysicsShapeType.CYLINDER,
-          { mass: 0.2, restitution: 0.1 },
+          { mass: 0.2, restitution: 0.3, height: .2, diameter: .1 },
           scene
         );
+        lataAggregate.body.disablePreStep = false;
+
+
+        meshes[0].parent = lataWrapper;
+        lataWrapper.position(new BABYLON.Vector3(0,0.5,0));
+        //lataWrapper.disablePreStep = false;
+
+        const lataSixDofDragBehavior = new BABYLON.SixDofDragBehavior();
+        //this is the... distance to move each frame (lower reduces jitter)
+        lataSixDofDragBehavior.dragDeltaRatio = 0.2;
+        //this one modifies z dragging behavior
+        lataSixDofDragBehavior.zDragFactor = 0.2;
+        lataSixDofDragBehavior.attach(lataWrapper);
+
+        lataSixDofDragBehavior.onDragStartObservable.add((event) => {
+          hk.setGravity(new BABYLON.Vector3(0,0,0));
+        });
+        lataSixDofDragBehavior.onDragObservable.add((event) => {
+        });
+        lataSixDofDragBehavior.onDragEndObservable.add((event) => {
+            hk.setGravity(new BABYLON.Vector3(0,-9.8,0));
+        });
+        
+
+        lataWrapper.addBehavior(lataSixDofDragBehavior);
+      
+        console.log(meshes[0].parent);
+        
+        // wrap in bounding box mesh to avoid picking perf hit
+       /*var lataMesh = meshes[0];
+        var boundingBox = BABYLON.BoundingBoxGizmo.MakeNotPickableAndWrapInBoundingBox(lataMesh);
+
+      // Create bounding box gizmo
+      var utilLayer = new BABYLON.UtilityLayerRenderer(scene)
+      utilLayer.utilityLayerScene.autoClearDepthAndStencil = false;
+      var gizmo = new BABYLON.BoundingBoxGizmo(BABYLON.Color3.FromHexString("#0984e3"), utilLayer)
+      gizmo.attachedMesh = boundingBox;
+
 
       const lataSixDofDragBehavior = new BABYLON.SixDofDragBehavior();
         //this is the... distance to move each frame (lower reduces jitter)
         lataSixDofDragBehavior.dragDeltaRatio = 0.2;
         //this one modifies z dragging behavior
         lataSixDofDragBehavior.zDragFactor = 0.2;
-        lataSixDofDragBehavior.attach(meshes[0]);
+        lataSixDofDragBehavior.attach(boundingBox);
 
         //let pointStart;
 
@@ -706,10 +759,16 @@ techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
             //    pointStart = point.dragPlanePoint;
         });
         lataSixDofDragBehavior.attach
+
+
+        gizmo.attachedMesh = boundingBox;
+        boundingBox.addBehavior(lataSixDofDragBehavior);*/
+        /*const lataContainer = new BABYLON.MeshBuilder.CreateCylinder("", {}, scene);
+        meshes.parent = lataContainer;
+        const lataBody = new BABYLON.PhysicsShapeCylinder(new BABYLON.Vector3(0, -0.5, 0), new BABYLON.Vector3(0, 0.5, 0), 0.15, scene)*/
     
     //const lataBoundingBox = BABYLON.BoundingBoxGizmo.MakeNotPickableAndWrapInBoundingBox(meshes[0]);
-    meshes[0].addBehavior(lataSixDofDragBehavior);
-      
+    //lataBody.addBehavior(lataSixDofDragBehavior);
       }
     );
     
