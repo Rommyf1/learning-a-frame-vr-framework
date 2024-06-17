@@ -76,11 +76,24 @@ const createScene = async function () {
 // Sphere body
 const sphereBody = new BABYLON.PhysicsBody(sphere, BABYLON.PhysicsMotionType.DYNAMIC, false, scene);
 
+//Create Sphere's Textures
+const sphereMaterial = new BABYLON.StandardMaterial("sphereTexture", scene);
+//Basic Material
+const sphereTexture = new BABYLON.Texture(
+  "/texturas/basketball/basketball-texture.jpg"
+);
+
+sphereTexture.uScale = 3;
+sphereTexture.vScale = 3;
+sphereTexture.specularPower = 1000;
+sphereMaterial.diffuseTexture = sphereTexture;
+sphere.material = sphereMaterial;
+
 // Associate shape and body
 sphereBody.shape = sphereShape;
 
 // And body mass
-sphereBody.setMassProperties({ mass: 0.3 });
+sphereBody.setMassProperties({ mass: 0.4 });
 
 sphereBody.disablePreStep = false;
 
@@ -683,7 +696,8 @@ techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
 
         const lataShape = new BABYLON.PhysicsShapeCylinder(new BABYLON.Vector3(0, 0.5, 0), new BABYLON.Vector3(0, 1, 0), 0.15, scene);
         lataShape.material = { friction: 0.5, restitution: 0.3 };
-        lataShape.visibility = 0.35;
+        lataWrapper.visibility = 0;
+        
 
         const lataBody = new BABYLON.PhysicsBody(lataWrapper, BABYLON.PhysicsMotionType.DYNAMIC, false, scene);
          
@@ -723,6 +737,76 @@ techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
         
 
         lataWrapper.addBehavior(lataSixDofDragBehavior);
+      
+        console.log(meshes[0].parent);
+        
+      }
+    );
+
+
+
+    /**Importando modelo Lata de Refresco */
+    const envaseCafe = BABYLON.SceneLoader.ImportMesh(
+      "",
+      "/lata-pepsi/",
+      "Pepsi_Can.obj",
+      scene,
+      function (meshes, particleSystems, skeletons, animationGroups) {
+        //console.log(meshes);
+        
+        meshes[0].scaling = new BABYLON.Vector3(1.5, 1.5, 1.5);
+        //meshes[0].physicsBody.disablePreStep = true;
+        //meshes[0].rotation = new BABYLON.Vector3((Math.PI/2),0,0);
+        //meshes[0].position = new BABYLON.Vector3(0, 4.5, -1.5);
+        //meshes[0].checkCollisions = true;
+ 
+        const envaseWrapper = new BABYLON.MeshBuilder.CreateCylinder("", {height: .2, diameter: 0.1});
+        envaseWrapper.position = new BABYLON.Vector3(-2,3,0);
+
+        const envaseShape = new BABYLON.PhysicsShapeMesh(meshes[0], scene);
+        envaseShape.material = { friction: 0.8, restitution: 0.2 };
+        //envaseShape.transparent = true;
+
+        const envaseBody = new BABYLON.PhysicsBody(envaseWrapper, BABYLON.PhysicsMotionType.DYNAMIC, false, scene);
+         
+  
+        envaseBody.shape = envaseShape;
+        envaseBody.setMassProperties({mass: 0.15});
+        envaseBody.disablePreStep = false;
+        envaseWrapper.checkCollisions = true;
+        const envaseAggregate = new BABYLON.PhysicsAggregate(
+          envaseWrapper,
+          BABYLON.PhysicsShapeType.MESH,
+          { mass: 0.15, restitution: 0.2, height: .2 },
+          scene
+        );
+        envaseAggregate.body.disablePreStep = false;
+        envaseWrapper.visibility = 0;
+       
+
+
+        meshes[0].parent = envaseWrapper;
+        //lataWrapper.position(new BABYLON.Vector3(0,0.5,0));
+        //lataWrapper.disablePreStep = false;
+
+        const envaseSixDofDragBehavior = new BABYLON.SixDofDragBehavior();
+        //this is the... distance to move each frame (lower reduces jitter)
+        envaseSixDofDragBehavior.dragDeltaRatio = 0.2;
+        //this one modifies z dragging behavior
+        envaseSixDofDragBehavior.zDragFactor = 0.2;
+        envaseSixDofDragBehavior.attach(envaseWrapper);
+
+        envaseSixDofDragBehavior.onDragStartObservable.add((event) => {
+          hk.setGravity(new BABYLON.Vector3(0,0,0));
+        });
+        envaseSixDofDragBehavior.onDragObservable.add((event) => {
+        });
+        envaseSixDofDragBehavior.onDragEndObservable.add((event) => {
+            hk.setGravity(new BABYLON.Vector3(0,-9.8,0));
+        });
+        
+
+        envaseWrapper.addBehavior(envaseSixDofDragBehavior);
       
         console.log(meshes[0].parent);
         
@@ -773,27 +857,8 @@ techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
     );
     
 
-    //lata.rotation = new BABYLON.Vector3(Math.PI / 4, 0, 0);
-
-    // Sphere body
-//const lataBody = new BABYLON.PhysicsBody(lata, BABYLON.PhysicsMotionType.DYNAMIC, false, scene);
-
-//Create sphere Shape
-//const lataShape = new BABYLON.PhysicsShapeCylinder(new BABYLON.Vector3(0, -0.5, 0), new BABYLON.Vector3(0, 0.5, 0), 0.15, scene);
-
-// Set shape material properties
-//lataShape.material = { friction: 0.5, restitution: 0.75 };
-
-// Associate shape and body
-//lataBody.shape = lataShape;
-
-// And body mass
-//lataBody.setMassProperties({ mass: 0.3 });
-
-//lataBody.disablePreStep = false;
-
-   // lata.addBehavior(sixDofDragBehavior);
-
+    
+  
 
 
     /**Importando modelo Cesta de basura */
