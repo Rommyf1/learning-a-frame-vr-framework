@@ -122,21 +122,113 @@ const sixDofDragBehavior = new BABYLON.SixDofDragBehavior();
 
 
 
+//Pelota de Baseball
+const pelotaBaseball = new BABYLON.MeshBuilder.CreateSphere(
+  "pelotaBaseball",
+  {
+    diameter: 0.1,
+  },
+  scene
+);
+
+//Create pelotaBaseball Shape
+const pelotaBaseballShape = new BABYLON.PhysicsShapeSphere(new BABYLON.Vector3(0, 0, 0), 0.05, scene);
+
+// Set shape material properties
+pelotaBaseballShape.material = { friction: 0.7, restitution: 0.4 };
+
+pelotaBaseball.position = new BABYLON.Vector3(-1.2, 2.5, -1);
+
+// pelotaBaseball body
+const pelotaBaseballBody = new BABYLON.PhysicsBody(pelotaBaseball, BABYLON.PhysicsMotionType.DYNAMIC, false, scene);
+
+//Create pelota Baseball's Textures
+const pelotaBaseballMaterial = new BABYLON.StandardMaterial("pelotaBaseballTexture", scene);
+//Basic Material
+const pelotaBaseballTexture = new BABYLON.Texture(
+"/texturas/pelota-baseball/baseball-diffuse.jpg"
+);
+
+//pelotaBaseballTexture.uScale = 3;
+//pelotaBaseballTexture.vScale = 3;
+//pelotaBaseballTexture.specularPower = 1000;
+pelotaBaseballMaterial.diffuseTexture = pelotaBaseballTexture;
+
+//Normal Map
+
+const pelotaBaseballNormalMap = new BABYLON.Texture(
+  "/texturas/pelota-baseball/baseball-normal.jpg",
+  scene
+);
+//pelotaBaseballNormalMap.uScale = 5;
+//pelotaBaseballNormalMap.vScale = 5;
+
+pelotaBaseballMaterial.bumpTexture = pelotaBaseballNormalMap;
+pelotaBaseballMaterial.invertNormalMapX = true;
+pelotaBaseballMaterial.invertNormalMapY = true;
+
+//Ambient Occlusion
+
+const pelotaBaseballOcclusion = new BABYLON.Texture(
+  "/texturas/pelota-baseball/baseball-ao.jpg",
+  scene
+);
+//pelotaBaseballOcclusion.uScale = 3;
+//pelotaBaseballOcclusion.vScale = 3;
+
+pelotaBaseballTexture.ambientTexture = pelotaBaseballOcclusion;
+
+//Roughness Map
+const pelotaBaseballRoughness = new BABYLON.Texture(
+  "/texturas/pelota-baseball/baseball-roughness.jpg",
+  scene
+);
+//pelotaBaseballRoughness.uScale = 3;
+//pelotaBaseballRoughness.vScale = 3;
+
+pelotaBaseballTexture.specularTexture = pelotaBaseballRoughness;
+//Qué tanta luz refleja (Mientras más grande menos refleja)
+pelotaBaseballTexture.specularPower = 500;
 
 
-  // Drag And Drop Sphere
-  //let pointerDragBehavior = new BABYLON.PointerDragBehavior({
-   
- //   dragPlaneNormal: new BABYLON.Vector3(0, 1, 0)
- // });
 
- /* pointerDragBehavior.moveAttached = false
-  pointerDragBehavior.onDragObservable.add((eventData) => {
-      sphereMesh.moveWithCollisions(eventData.delta)
-  })*/
 
-  //Asign Drag And Drop to Sphere
-// sphere.addBehavior(pointerDragBehavior, true);
+
+
+
+//Assign material to object
+pelotaBaseball.material = pelotaBaseballMaterial;
+
+// Associate shape and body
+pelotaBaseballBody.shape = pelotaBaseballShape;
+
+// And body mass
+pelotaBaseballBody.setMassProperties({ mass: 0.2 });
+
+pelotaBaseballBody.disablePreStep = false;
+
+
+
+
+
+const pelotaBaseballSixDofDragBehavior = new BABYLON.SixDofDragBehavior();
+      //this is the... distance to move each frame (lower reduces jitter)
+      pelotaBaseballSixDofDragBehavior.dragDeltaRatio = 0.2;
+      //this one modifies z dragging behavior
+      pelotaBaseballSixDofDragBehavior.zDragFactor = 0.2;
+      pelotaBaseballSixDofDragBehavior.attach(pelotaBaseball);
+
+      pelotaBaseballSixDofDragBehavior.onDragStartObservable.add((event) => {
+      hk.setGravity(new BABYLON.Vector3(0,0,0));
+      });
+      pelotaBaseballSixDofDragBehavior.onDragObservable.add((event) => {
+      });
+      pelotaBaseballSixDofDragBehavior.onDragEndObservable.add((event) => {
+          hk.setGravity(new BABYLON.Vector3(0,-9.8,0));
+      });
+      pelotaBaseballSixDofDragBehavior.attach
+
+      pelotaBaseball.addBehavior(pelotaBaseballSixDofDragBehavior);
 
 
 
@@ -230,7 +322,7 @@ const techoRoughness = new BABYLON.Texture(
 techoTexture.specularTexture = techoRoughness;
 //Qué tanta luz refleja (Mientras más grande menos refleja)
 techoTexture.specularPower = 500;
-// Give Physics to ground.
+// Give Physics to ceiling.
 
 const techoAggregate = new BABYLON.PhysicsAggregate(
   techo,
@@ -738,7 +830,7 @@ techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
 
         lataWrapper.addBehavior(lataSixDofDragBehavior);
       
-        console.log(meshes[0].parent);
+        //console.log(meshes[0].parent);
         
       }
     );
@@ -808,7 +900,7 @@ techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
 
         envaseWrapper.addBehavior(envaseSixDofDragBehavior);
       
-        console.log(meshes[0].parent);
+        //console.log(meshes[0].parent);
         
         // wrap in bounding box mesh to avoid picking perf hit
        /*var lataMesh = meshes[0];
@@ -857,8 +949,6 @@ techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
     );
     
 
-    
-  
 
 
     /**Importando modelo Cesta de basura */
@@ -867,7 +957,7 @@ techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
       "/cesta-basura/",
       "cesta-basura.obj",
       scene,
-      function (meshes, particleSystems, skeletons, animationGroups) {      
+      function (meshes, particleSystems, skeletons, animationGroups) { 
         meshes.map((mesh) => {
           
           //mesh.scaling = new BABYLON.Vector3(1.5, 1.5, 1.5);
@@ -888,7 +978,82 @@ techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
       }
     );
 
-    cestaBasura.position = new BABYLON.Vector3(0,0,0);
+    //CestaMaterial
+    const cestaMaterial = new BABYLON.StandardMaterial("cestaMaterial", scene);
+    //Basic Material
+    const cestaTexture = new BABYLON.Texture(
+    "/texturas/madera/madera_diff.jpg"
+    );
+    
+    //cestaTexture.uScale = 3;
+    //cestaTexture.vScale = 3;
+    //cestaTexture.specularPower = 1000;
+    cestaMaterial.diffuseTexture = cestaTexture;
+    
+    //Normal Map
+    
+    const cestaNormalMap = new BABYLON.Texture(
+      "/texturas/madera/madera_normal.jpg",
+      scene
+    );
+    //cestaNormalMap.uScale = 5;
+    //cestaNormalMap.vScale = 5;
+    
+    cestaMaterial.bumpTexture = cestaNormalMap;
+    cestaMaterial.invertNormalMapX = true;
+    cestaMaterial.invertNormalMapY = true;
+    
+    //Ambient Occlusion
+    
+    const cestaOcclusion = new BABYLON.Texture(
+      "/texturas/madera/madera_ao.jpg",
+      scene
+    );
+    //cestaOcclusion.uScale = 3;
+    //cestaOcclusion.vScale = 3;
+    
+    cestaMaterial.ambientTexture = cestaOcclusion;
+    
+    //Roughness Map
+    const cestaRoughness = new BABYLON.Texture(
+      "/texturas/madera/madera_roughness.jpg",
+      scene
+    );
+    //cestaRoughness.uScale = 3;
+    //cestaRoughness.vScale = 3;
+    
+    cestaMaterial.specularTexture = cestaRoughness;
+    //Qué tanta luz refleja (Mientras más grande menos refleja)
+    //cestaTexture.specularPower = 500;
+
+/**Importando modelo Cesta de basura */
+const cesta = BABYLON.SceneLoader.ImportMesh(
+  "",
+  "/box_obj/",
+  "boxobj.obj",
+  scene,
+  function (meshes, particleSystems, skeletons, animationGroups) { 
+    meshes.map((mesh) => {
+      
+      mesh.scaling = new BABYLON.Vector3(0.005, 0.005, 0.005);
+      //mesh.rotation = new BABYLON.Vector3((Math.PI/2),0,0);
+      mesh.position = new BABYLON.Vector3(-2.4, 0.1, -4.5);
+      mesh.checkCollisions = true;
+      //Adding Physics to Object
+      new BABYLON.PhysicsAggregate(
+        mesh,
+        BABYLON.PhysicsShapeType.MESH,
+        { mass: 0 , restitution: 0.3 },
+        scene
+      );
+      //new BABYLON.PhysicsAggregate(mesh, BABYLON.PhysicsShapeType.MESH, {mass: 0  }, scene);
+      //Create pelota Baseball's Textures
+mesh.material = cestaMaterial;
+
+      
+    });
+  }
+);
 
 
   //const physicsViewer = new BABYLON.DebugLayer(scene);
