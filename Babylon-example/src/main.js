@@ -1019,7 +1019,7 @@ const createScene = async function () {
       meshes.map((mesh) => {
         //mesh.scaling = new BABYLON.Vector3(1.5, 1.5, 1.5);
         //mesh.rotation = new BABYLON.Vector3((Math.PI/2),0,0);
-        mesh.position = new BABYLON.Vector3(-1.8, -0.2, -2);
+        mesh.position = new BABYLON.Vector3(3, -0.2, 3.2);
         mesh.checkCollisions = true;
         //Adding Physics to Object
         new BABYLON.PhysicsAggregate(
