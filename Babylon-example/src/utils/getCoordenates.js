@@ -1,5 +1,5 @@
 export const randomHorizontalPosition = () => {
-    let position = Math.random() * 2;
+    let position = Math.random() * 2.4;
     const modificator = Math.random() * 1;
     return (modificator >= 0.5) ? (position) : (-position);
   };
