@@ -1,6 +1,10 @@
 import * as BABYLON from "@babylonjs/core";
 import "@babylonjs/loaders/OBJ";
 import { PhysicsViewer } from "@babylonjs/core/Debug/";
+import {
+  randomHorizontalPosition,
+  randomVerticalPosition,
+} from "./utils/getCoordenates";
 //import createSofa from "./components/sofa";
 
 const canvas = document.getElementById("renderCanvas");
@@ -52,7 +56,6 @@ const createScene = async function () {
   // enable physics in the scene with a gravity
   scene.enablePhysics(new BABYLON.Vector3(0, -9.8, 0), hk);
 
-
   // Default intensity is 1. Let's dim the light a small amount
   // light.intensity = 0.7;
 
@@ -66,173 +69,187 @@ const createScene = async function () {
   );
 
   //Create sphere Shape
-  const sphereShape = new BABYLON.PhysicsShapeSphere(new BABYLON.Vector3(0, 0, 0), 0.15, scene);
+  const sphereShape = new BABYLON.PhysicsShapeSphere(
+    new BABYLON.Vector3(0, 0, 0),
+    0.15,
+    scene
+  );
 
   // Set shape material properties
   sphereShape.material = { friction: 0.5, restitution: 0.75 };
 
-  sphere.position = new BABYLON.Vector3(-1, 2, 1.3);
+  //sphere.position = new BABYLON.Vector3(-1, 2, 1.3);
+  const sphereXCoordenate = randomHorizontalPosition();
+  const sphereYCoordenate = randomVerticalPosition();
+  const sphereZCoordenate = randomHorizontalPosition();
+  sphere.position = new BABYLON.Vector3(
+    sphereXCoordenate,
+    sphereYCoordenate,
+    sphereZCoordenate
+  );
 
-// Sphere body
-const sphereBody = new BABYLON.PhysicsBody(sphere, BABYLON.PhysicsMotionType.DYNAMIC, false, scene);
+  // Sphere body
+  const sphereBody = new BABYLON.PhysicsBody(
+    sphere,
+    BABYLON.PhysicsMotionType.DYNAMIC,
+    false,
+    scene
+  );
 
-//Create Sphere's Textures
-const sphereMaterial = new BABYLON.StandardMaterial("sphereTexture", scene);
-//Basic Material
-const sphereTexture = new BABYLON.Texture(
-  "/texturas/basketball/basketball-texture.jpg"
-);
+  //Create Sphere's Textures
+  const sphereMaterial = new BABYLON.StandardMaterial("sphereTexture", scene);
+  //Basic Material
+  const sphereTexture = new BABYLON.Texture(
+    "/texturas/basketball/basketball-texture.jpg"
+  );
 
-sphereTexture.uScale = 3;
-sphereTexture.vScale = 3;
-sphereTexture.specularPower = 1000;
-sphereMaterial.diffuseTexture = sphereTexture;
-sphere.material = sphereMaterial;
+  sphereTexture.uScale = 3;
+  sphereTexture.vScale = 3;
+  sphereTexture.specularPower = 1000;
+  sphereMaterial.diffuseTexture = sphereTexture;
+  sphere.material = sphereMaterial;
 
-// Associate shape and body
-sphereBody.shape = sphereShape;
+  // Associate shape and body
+  sphereBody.shape = sphereShape;
 
-// And body mass
-sphereBody.setMassProperties({ mass: 0.4 });
+  // And body mass
+  sphereBody.setMassProperties({ mass: 0.4 });
 
-sphereBody.disablePreStep = false;
+  sphereBody.disablePreStep = false;
 
+  const sixDofDragBehavior = new BABYLON.SixDofDragBehavior();
+  //this is the... distance to move each frame (lower reduces jitter)
+  sixDofDragBehavior.dragDeltaRatio = 0.2;
+  //this one modifies z dragging behavior
+  sixDofDragBehavior.zDragFactor = 0.2;
+  sixDofDragBehavior.attach(sphere);
 
+  sixDofDragBehavior.onDragStartObservable.add((event) => {
+    hk.setGravity(new BABYLON.Vector3(0, 0, 0));
+  });
+  sixDofDragBehavior.onDragObservable.add((event) => {});
+  sixDofDragBehavior.onDragEndObservable.add((event) => {
+    hk.setGravity(new BABYLON.Vector3(0, -9.8, 0));
+  });
+  sixDofDragBehavior.attach;
 
+  sphere.addBehavior(sixDofDragBehavior);
 
+  //Pelota de Baseball
+  const pelotaBaseball = new BABYLON.MeshBuilder.CreateSphere(
+    "pelotaBaseball",
+    {
+      diameter: 0.1,
+    },
+    scene
+  );
 
-const sixDofDragBehavior = new BABYLON.SixDofDragBehavior();
-        //this is the... distance to move each frame (lower reduces jitter)
-        sixDofDragBehavior.dragDeltaRatio = 0.2;
-        //this one modifies z dragging behavior
-        sixDofDragBehavior.zDragFactor = 0.2;
-        sixDofDragBehavior.attach(sphere);
+  //Create pelotaBaseball Shape
+  const pelotaBaseballShape = new BABYLON.PhysicsShapeSphere(
+    new BABYLON.Vector3(0, 0, 0),
+    0.05,
+    scene
+  );
 
-        sixDofDragBehavior.onDragStartObservable.add((event) => {
-        hk.setGravity(new BABYLON.Vector3(0,0,0));
-        });
-        sixDofDragBehavior.onDragObservable.add((event) => {
-        });
-        sixDofDragBehavior.onDragEndObservable.add((event) => {
-            hk.setGravity(new BABYLON.Vector3(0,-9.8,0));
-        });
-        sixDofDragBehavior.attach
+  // Set shape material properties
+  pelotaBaseballShape.material = { friction: 0.7, restitution: 0.4 };
 
-        sphere.addBehavior(sixDofDragBehavior);
+  const pelotaXPosition = randomHorizontalPosition();
+  const pelotaYPosition = randomVerticalPosition();
+  const pelotaZPosition = randomHorizontalPosition();
+  pelotaBaseball.position = new BABYLON.Vector3(
+    pelotaXPosition,
+    pelotaYPosition,
+    pelotaZPosition
+  );
 
+  // pelotaBaseball body
+  const pelotaBaseballBody = new BABYLON.PhysicsBody(
+    pelotaBaseball,
+    BABYLON.PhysicsMotionType.DYNAMIC,
+    false,
+    scene
+  );
 
+  //Create pelota Baseball's Textures
+  const pelotaBaseballMaterial = new BABYLON.StandardMaterial(
+    "pelotaBaseballTexture",
+    scene
+  );
+  //Basic Material
+  const pelotaBaseballTexture = new BABYLON.Texture(
+    "/texturas/pelota-baseball/baseball-diffuse.jpg"
+  );
 
-//Pelota de Baseball
-const pelotaBaseball = new BABYLON.MeshBuilder.CreateSphere(
-  "pelotaBaseball",
-  {
-    diameter: 0.1,
-  },
-  scene
-);
+  //pelotaBaseballTexture.uScale = 3;
+  //pelotaBaseballTexture.vScale = 3;
+  //pelotaBaseballTexture.specularPower = 1000;
+  pelotaBaseballMaterial.diffuseTexture = pelotaBaseballTexture;
 
-//Create pelotaBaseball Shape
-const pelotaBaseballShape = new BABYLON.PhysicsShapeSphere(new BABYLON.Vector3(0, 0, 0), 0.05, scene);
+  //Normal Map
 
-// Set shape material properties
-pelotaBaseballShape.material = { friction: 0.7, restitution: 0.4 };
+  const pelotaBaseballNormalMap = new BABYLON.Texture(
+    "/texturas/pelota-baseball/baseball-normal.jpg",
+    scene
+  );
+  //pelotaBaseballNormalMap.uScale = 5;
+  //pelotaBaseballNormalMap.vScale = 5;
 
-pelotaBaseball.position = new BABYLON.Vector3(-1.2, 2.5, -1);
+  pelotaBaseballMaterial.bumpTexture = pelotaBaseballNormalMap;
+  pelotaBaseballMaterial.invertNormalMapX = true;
+  pelotaBaseballMaterial.invertNormalMapY = true;
 
-// pelotaBaseball body
-const pelotaBaseballBody = new BABYLON.PhysicsBody(pelotaBaseball, BABYLON.PhysicsMotionType.DYNAMIC, false, scene);
+  //Ambient Occlusion
 
-//Create pelota Baseball's Textures
-const pelotaBaseballMaterial = new BABYLON.StandardMaterial("pelotaBaseballTexture", scene);
-//Basic Material
-const pelotaBaseballTexture = new BABYLON.Texture(
-"/texturas/pelota-baseball/baseball-diffuse.jpg"
-);
+  const pelotaBaseballOcclusion = new BABYLON.Texture(
+    "/texturas/pelota-baseball/baseball-ao.jpg",
+    scene
+  );
+  //pelotaBaseballOcclusion.uScale = 3;
+  //pelotaBaseballOcclusion.vScale = 3;
 
-//pelotaBaseballTexture.uScale = 3;
-//pelotaBaseballTexture.vScale = 3;
-//pelotaBaseballTexture.specularPower = 1000;
-pelotaBaseballMaterial.diffuseTexture = pelotaBaseballTexture;
+  pelotaBaseballTexture.ambientTexture = pelotaBaseballOcclusion;
 
-//Normal Map
+  //Roughness Map
+  const pelotaBaseballRoughness = new BABYLON.Texture(
+    "/texturas/pelota-baseball/baseball-roughness.jpg",
+    scene
+  );
+  //pelotaBaseballRoughness.uScale = 3;
+  //pelotaBaseballRoughness.vScale = 3;
 
-const pelotaBaseballNormalMap = new BABYLON.Texture(
-  "/texturas/pelota-baseball/baseball-normal.jpg",
-  scene
-);
-//pelotaBaseballNormalMap.uScale = 5;
-//pelotaBaseballNormalMap.vScale = 5;
+  pelotaBaseballTexture.specularTexture = pelotaBaseballRoughness;
+  //Qué tanta luz refleja (Mientras más grande menos refleja)
+  pelotaBaseballTexture.specularPower = 500;
 
-pelotaBaseballMaterial.bumpTexture = pelotaBaseballNormalMap;
-pelotaBaseballMaterial.invertNormalMapX = true;
-pelotaBaseballMaterial.invertNormalMapY = true;
+  //Assign material to object
+  pelotaBaseball.material = pelotaBaseballMaterial;
 
-//Ambient Occlusion
+  // Associate shape and body
+  pelotaBaseballBody.shape = pelotaBaseballShape;
 
-const pelotaBaseballOcclusion = new BABYLON.Texture(
-  "/texturas/pelota-baseball/baseball-ao.jpg",
-  scene
-);
-//pelotaBaseballOcclusion.uScale = 3;
-//pelotaBaseballOcclusion.vScale = 3;
+  // And body mass
+  pelotaBaseballBody.setMassProperties({ mass: 0.2 });
 
-pelotaBaseballTexture.ambientTexture = pelotaBaseballOcclusion;
+  pelotaBaseballBody.disablePreStep = false;
 
-//Roughness Map
-const pelotaBaseballRoughness = new BABYLON.Texture(
-  "/texturas/pelota-baseball/baseball-roughness.jpg",
-  scene
-);
-//pelotaBaseballRoughness.uScale = 3;
-//pelotaBaseballRoughness.vScale = 3;
+  const pelotaBaseballSixDofDragBehavior = new BABYLON.SixDofDragBehavior();
+  //this is the... distance to move each frame (lower reduces jitter)
+  pelotaBaseballSixDofDragBehavior.dragDeltaRatio = 0.2;
+  //this one modifies z dragging behavior
+  pelotaBaseballSixDofDragBehavior.zDragFactor = 0.2;
+  pelotaBaseballSixDofDragBehavior.attach(pelotaBaseball);
 
-pelotaBaseballTexture.specularTexture = pelotaBaseballRoughness;
-//Qué tanta luz refleja (Mientras más grande menos refleja)
-pelotaBaseballTexture.specularPower = 500;
+  pelotaBaseballSixDofDragBehavior.onDragStartObservable.add((event) => {
+    hk.setGravity(new BABYLON.Vector3(0, 0, 0));
+  });
+  pelotaBaseballSixDofDragBehavior.onDragObservable.add((event) => {});
+  pelotaBaseballSixDofDragBehavior.onDragEndObservable.add((event) => {
+    hk.setGravity(new BABYLON.Vector3(0, -9.8, 0));
+  });
+  pelotaBaseballSixDofDragBehavior.attach;
 
-
-
-
-
-
-
-//Assign material to object
-pelotaBaseball.material = pelotaBaseballMaterial;
-
-// Associate shape and body
-pelotaBaseballBody.shape = pelotaBaseballShape;
-
-// And body mass
-pelotaBaseballBody.setMassProperties({ mass: 0.2 });
-
-pelotaBaseballBody.disablePreStep = false;
-
-
-
-
-
-const pelotaBaseballSixDofDragBehavior = new BABYLON.SixDofDragBehavior();
-      //this is the... distance to move each frame (lower reduces jitter)
-      pelotaBaseballSixDofDragBehavior.dragDeltaRatio = 0.2;
-      //this one modifies z dragging behavior
-      pelotaBaseballSixDofDragBehavior.zDragFactor = 0.2;
-      pelotaBaseballSixDofDragBehavior.attach(pelotaBaseball);
-
-      pelotaBaseballSixDofDragBehavior.onDragStartObservable.add((event) => {
-      hk.setGravity(new BABYLON.Vector3(0,0,0));
-      });
-      pelotaBaseballSixDofDragBehavior.onDragObservable.add((event) => {
-      });
-      pelotaBaseballSixDofDragBehavior.onDragEndObservable.add((event) => {
-          hk.setGravity(new BABYLON.Vector3(0,-9.8,0));
-      });
-      pelotaBaseballSixDofDragBehavior.attach
-
-      pelotaBaseball.addBehavior(pelotaBaseballSixDofDragBehavior);
-
-
-
-
+  pelotaBaseball.addBehavior(pelotaBaseballSixDofDragBehavior);
 
   //Ground shape
   const ground = BABYLON.MeshBuilder.CreateGround(
@@ -241,8 +258,13 @@ const pelotaBaseballSixDofDragBehavior = new BABYLON.SixDofDragBehavior();
     scene
   );
 
-// Sphere body
-const groundBody = new BABYLON.PhysicsBody(ground, BABYLON.PhysicsMotionType.STATIC, false, scene);
+  // Sphere body
+  const groundBody = new BABYLON.PhysicsBody(
+    ground,
+    BABYLON.PhysicsMotionType.STATIC,
+    false,
+    scene
+  );
 
   //Ground Texture
   const groundMaterial = new BABYLON.StandardMaterial();
@@ -265,76 +287,75 @@ const groundBody = new BABYLON.PhysicsBody(ground, BABYLON.PhysicsMotionType.STA
     scene
   );
 
+  /**Crear Techo */
+  const techo = BABYLON.MeshBuilder.CreateBox(
+    "techo",
+    { width: 6, height: 10, depth: 0.1 },
+    scene
+  );
 
+  // Sphere body
+  const techoBody = new BABYLON.PhysicsBody(
+    techo,
+    BABYLON.PhysicsMotionType.STATIC,
+    false,
+    scene
+  );
 
-/**Crear Techo */
-const techo = BABYLON.MeshBuilder.CreateBox(
-  "techo",
-  { width: 6, height: 10, depth: 0.1 },
-  scene
-);
+  //Create Walls's Textures
+  const techoMaterial = new BABYLON.StandardMaterial("techoTexture", scene);
+  //Basic Material
+  const techoTexture = new BABYLON.Texture("/texturas/techo/ceiling.jpg");
+  //techoTexture.uScale = 5;
+  //techoTexture.vScale = 5;
+  techoMaterial.diffuseTexture = techoTexture;
 
-// Sphere body
-const techoBody = new BABYLON.PhysicsBody(techo, BABYLON.PhysicsMotionType.STATIC, false, scene);
+  //Normal Map
 
-//Create Walls's Textures
-const techoMaterial = new BABYLON.StandardMaterial("techoTexture", scene);
-//Basic Material
-const techoTexture = new BABYLON.Texture(
-  "/texturas/techo/ceiling.jpg"
-);
-//techoTexture.uScale = 5;
-//techoTexture.vScale = 5;
-techoMaterial.diffuseTexture = techoTexture;
+  const techoNormalMap = new BABYLON.Texture(
+    "/texturas/techo/ceiling_normal.png",
+    scene
+  );
+  //techoNormalMap.uScale = 5;
+  //techoNormalMap.vScale = 5;
 
-//Normal Map
+  techoMaterial.bumpTexture = techoNormalMap;
+  techoMaterial.invertNormalMapX = true;
+  techoMaterial.invertNormalMapY = true;
 
-const techoNormalMap = new BABYLON.Texture(
-  "/texturas/techo/ceiling_normal.png",
-  scene
-);
-//techoNormalMap.uScale = 5;
-//techoNormalMap.vScale = 5;
+  //Ambient Occlusion
 
-techoMaterial.bumpTexture = techoNormalMap;
-techoMaterial.invertNormalMapX = true;
-techoMaterial.invertNormalMapY = true;
+  const techoOcclusion = new BABYLON.Texture(
+    "/texturas/techo/ceiling_ao.jpg",
+    scene
+  );
+  //techoOcclusion.uScale = 3;
+  //techoOcclusion.vScale = 3;
 
-//Ambient Occlusion
+  techoTexture.ambientTexture = techoOcclusion;
 
-const techoOcclusion = new BABYLON.Texture(
-  "/texturas/techo/ceiling_ao.jpg",
-  scene
-);
-//techoOcclusion.uScale = 3;
-//techoOcclusion.vScale = 3;
+  //Roughness Map
+  const techoRoughness = new BABYLON.Texture(
+    "/texturas/techo/ceiling_roughness.jpg",
+    scene
+  );
+  //techoRoughness.uScale = 3;
+  //techoRoughness.vScale = 3;
 
-techoTexture.ambientTexture = techoOcclusion;
+  techoTexture.specularTexture = techoRoughness;
+  //Qué tanta luz refleja (Mientras más grande menos refleja)
+  techoTexture.specularPower = 500;
+  // Give Physics to ceiling.
 
-//Roughness Map
-const techoRoughness = new BABYLON.Texture(
-  "/texturas/techo/ceiling_roughness.jpg",
-  scene
-);
-//techoRoughness.uScale = 3;
-//techoRoughness.vScale = 3;
-
-techoTexture.specularTexture = techoRoughness;
-//Qué tanta luz refleja (Mientras más grande menos refleja)
-techoTexture.specularPower = 500;
-// Give Physics to ceiling.
-
-const techoAggregate = new BABYLON.PhysicsAggregate(
-  techo,
-  BABYLON.PhysicsShapeType.BOX,
-  { mass: 0 },
-  scene
-);
-techo.material = techoMaterial;
-techo.position = new BABYLON.Vector3(0, 5, 0);
-techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
-
-
+  const techoAggregate = new BABYLON.PhysicsAggregate(
+    techo,
+    BABYLON.PhysicsShapeType.BOX,
+    { mass: 0 },
+    scene
+  );
+  techo.material = techoMaterial;
+  techo.position = new BABYLON.Vector3(0, 5, 0);
+  techo.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);
 
   //Create Walls's Textures
   const paredMaterial = new BABYLON.StandardMaterial("paredTexture", scene);
@@ -369,7 +390,12 @@ techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
   paredTrasera.position = new BABYLON.Vector3(0, 0, 5);
   // Give Physics to Wall.
   paredTrasera.checkCollisions = true;
-  const paredTraseraBody = new BABYLON.PhysicsBody(paredTrasera, BABYLON.PhysicsMotionType.STATIC, false, scene);
+  const paredTraseraBody = new BABYLON.PhysicsBody(
+    paredTrasera,
+    BABYLON.PhysicsMotionType.STATIC,
+    false,
+    scene
+  );
   const paredTraseraAggregate = new BABYLON.PhysicsAggregate(
     paredTrasera,
     BABYLON.PhysicsShapeType.BOX,
@@ -386,7 +412,12 @@ techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
   paredDelantera.material = paredMaterial;
   paredDelantera.position = new BABYLON.Vector3(0, 0, -5);
   paredDelantera.checkCollisions = true;
-  const paredDelanteraBody = new BABYLON.PhysicsBody(paredDelantera, BABYLON.PhysicsMotionType.STATIC, false, scene);
+  const paredDelanteraBody = new BABYLON.PhysicsBody(
+    paredDelantera,
+    BABYLON.PhysicsMotionType.STATIC,
+    false,
+    scene
+  );
   const paredDelanteraAggregate = new BABYLON.PhysicsAggregate(
     paredDelantera,
     BABYLON.PhysicsShapeType.BOX,
@@ -404,7 +435,12 @@ techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
   paredIzquierda.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
   paredIzquierda.position = new BABYLON.Vector3(3, 0, 0);
   paredIzquierda.checkCollisions = true;
-  const paredIzquierdaBody = new BABYLON.PhysicsBody(paredIzquierda, BABYLON.PhysicsMotionType.STATIC, false, scene);
+  const paredIzquierdaBody = new BABYLON.PhysicsBody(
+    paredIzquierda,
+    BABYLON.PhysicsMotionType.STATIC,
+    false,
+    scene
+  );
   const paredIzquierdaAggregate = new BABYLON.PhysicsAggregate(
     paredIzquierda,
     BABYLON.PhysicsShapeType.BOX,
@@ -422,14 +458,18 @@ techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
   paredDerecha.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
   paredDerecha.position = new BABYLON.Vector3(-3, 0, 0);
   paredDerecha.checkCollisions = true;
-  const paredDerechaBody = new BABYLON.PhysicsBody(paredDerecha , BABYLON.PhysicsMotionType.STATIC, false, scene);
+  const paredDerechaBody = new BABYLON.PhysicsBody(
+    paredDerecha,
+    BABYLON.PhysicsMotionType.STATIC,
+    false,
+    scene
+  );
   const paredDerechaAggregate = new BABYLON.PhysicsAggregate(
     paredDerecha,
     BABYLON.PhysicsShapeType.BOX,
     { mass: 0, restitution: 0.5, friction: 0.3 },
     scene
   );
-
 
   /**IMPORTANDO MODELO */
   //Cargando texturas del modelo
@@ -600,7 +640,7 @@ techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
         );
       });
     }
-  );  
+  );
 
   /**Importando Mesa */
   const mesaTexture = new BABYLON.StandardMaterial("mesaTexture", scene);
@@ -767,143 +807,164 @@ techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
     }
   );
 
+  /**Importando modelo Lata de Refresco */
+  const lata = BABYLON.SceneLoader.ImportMesh(
+    "",
+    "/lata-pepsi/",
+    "Pepsi_Can.obj",
+    scene,
+    function (meshes, particleSystems, skeletons, animationGroups) {
+      //console.log(meshes);
+
+      meshes[0].scaling = new BABYLON.Vector3(1.5, 1.5, 1.5);
+      //meshes[0].physicsBody.disablePreStep = true;
+      //meshes[0].rotation = new BABYLON.Vector3((Math.PI/2),0,0);
+      //meshes[0].position = new BABYLON.Vector3(0, 4.5, -1.5);
+      //meshes[0].checkCollisions = true;
+
+      const lataWrapper = new BABYLON.MeshBuilder.CreateCylinder("", {
+        height: 0.2,
+        diameter: 0.1,
+      });
+      const lataXPosition = randomHorizontalPosition();
+      const lataYPosition = randomVerticalPosition();
+      const lataZPosition = randomHorizontalPosition();
+      lataWrapper.position = new BABYLON.Vector3(
+        lataXPosition,
+        lataYPosition,
+        lataZPosition
+      );
+
+      const lataShape = new BABYLON.PhysicsShapeCylinder(
+        new BABYLON.Vector3(0, 0.5, 0),
+        new BABYLON.Vector3(0, 1, 0),
+        0.15,
+        scene
+      );
+      lataShape.material = { friction: 0.5, restitution: 0.3 };
+      lataWrapper.visibility = 0;
+
+      const lataBody = new BABYLON.PhysicsBody(
+        lataWrapper,
+        BABYLON.PhysicsMotionType.DYNAMIC,
+        false,
+        scene
+      );
+
+      lataBody.shape = lataShape;
+      lataBody.setMassProperties({ mass: 0.2 });
+      lataBody.disablePreStep = false;
+      lataWrapper.checkCollisions = true;
+      const lataAggregate = new BABYLON.PhysicsAggregate(
+        lataWrapper,
+        BABYLON.PhysicsShapeType.CYLINDER,
+        { mass: 0.2, restitution: 0.3, height: 0.2, diameter: 0.1 },
+        scene
+      );
+      lataAggregate.body.disablePreStep = false;
+
+      meshes[0].parent = lataWrapper;
+      //lataWrapper.position(new BABYLON.Vector3(0,0.5,0));
+      //lataWrapper.disablePreStep = false;
+
+      const lataSixDofDragBehavior = new BABYLON.SixDofDragBehavior();
+      //this is the... distance to move each frame (lower reduces jitter)
+      lataSixDofDragBehavior.dragDeltaRatio = 0.2;
+      //this one modifies z dragging behavior
+      lataSixDofDragBehavior.zDragFactor = 0.2;
+      lataSixDofDragBehavior.attach(lataWrapper);
+
+      lataSixDofDragBehavior.onDragStartObservable.add((event) => {
+        hk.setGravity(new BABYLON.Vector3(0, 0, 0));
+      });
+      lataSixDofDragBehavior.onDragObservable.add((event) => {});
+      lataSixDofDragBehavior.onDragEndObservable.add((event) => {
+        hk.setGravity(new BABYLON.Vector3(0, -9.8, 0));
+      });
+
+      lataWrapper.addBehavior(lataSixDofDragBehavior);
+
+      //console.log(meshes[0].parent);
+    }
+  );
 
   /**Importando modelo Lata de Refresco */
-    const lata = BABYLON.SceneLoader.ImportMesh(
-      "",
-      "/lata-pepsi/",
-      "Pepsi_Can.obj",
-      scene,
-      function (meshes, particleSystems, skeletons, animationGroups) {
-        //console.log(meshes);
-        
-        meshes[0].scaling = new BABYLON.Vector3(1.5, 1.5, 1.5);
-        //meshes[0].physicsBody.disablePreStep = true;
-        //meshes[0].rotation = new BABYLON.Vector3((Math.PI/2),0,0);
-        //meshes[0].position = new BABYLON.Vector3(0, 4.5, -1.5);
-        //meshes[0].checkCollisions = true;
- 
-        const lataWrapper = new BABYLON.MeshBuilder.CreateCylinder("", {height: .2, diameter: .1});
-        lataWrapper.position = new BABYLON.Vector3(-1,3,0);
+  const lata2 = BABYLON.SceneLoader.ImportMesh(
+    "",
+    "/lata-pepsi/",
+    "Pepsi_Can.obj",
+    scene,
+    function (meshes, particleSystems, skeletons, animationGroups) {
+      //console.log(meshes);
 
-        const lataShape = new BABYLON.PhysicsShapeCylinder(new BABYLON.Vector3(0, 0.5, 0), new BABYLON.Vector3(0, 1, 0), 0.15, scene);
-        lataShape.material = { friction: 0.5, restitution: 0.3 };
-        lataWrapper.visibility = 0;
-        
+      meshes[0].scaling = new BABYLON.Vector3(1.5, 1.5, 1.5);
+      //meshes[0].physicsBody.disablePreStep = true;
+      //meshes[0].rotation = new BABYLON.Vector3((Math.PI/2),0,0);
+      //meshes[0].position = new BABYLON.Vector3(0, 4.5, -1.5);
+      //meshes[0].checkCollisions = true;
 
-        const lataBody = new BABYLON.PhysicsBody(lataWrapper, BABYLON.PhysicsMotionType.DYNAMIC, false, scene);
-         
-  
-        lataBody.shape = lataShape;
-        lataBody.setMassProperties({mass: 0.2});
-        lataBody.disablePreStep = false;
-        lataWrapper.checkCollisions = true;
-        const lataAggregate = new BABYLON.PhysicsAggregate(
-          lataWrapper,
-          BABYLON.PhysicsShapeType.CYLINDER,
-          { mass: 0.2, restitution: 0.3, height: .2, diameter: .1 },
-          scene
-        );
-        lataAggregate.body.disablePreStep = false;
+      const envaseWrapper = new BABYLON.MeshBuilder.CreateCylinder("", {
+        height: 0.2,
+        diameter: 0.1,
+      });
+      const envaseXPosition = randomHorizontalPosition();
+      const envaseYPosition = randomVerticalPosition();
+      const envaseZPosition = randomHorizontalPosition();
+      envaseWrapper.position = new BABYLON.Vector3(
+        envaseXPosition,
+        envaseYPosition,
+        envaseZPosition
+      );
 
+      const envaseShape = new BABYLON.PhysicsShapeMesh(meshes[0], scene);
+      envaseShape.material = { friction: 0.8, restitution: 0.2 };
+      //envaseShape.transparent = true;
 
-        meshes[0].parent = lataWrapper;
-        //lataWrapper.position(new BABYLON.Vector3(0,0.5,0));
-        //lataWrapper.disablePreStep = false;
+      const envaseBody = new BABYLON.PhysicsBody(
+        envaseWrapper,
+        BABYLON.PhysicsMotionType.DYNAMIC,
+        false,
+        scene
+      );
 
-        const lataSixDofDragBehavior = new BABYLON.SixDofDragBehavior();
-        //this is the... distance to move each frame (lower reduces jitter)
-        lataSixDofDragBehavior.dragDeltaRatio = 0.2;
-        //this one modifies z dragging behavior
-        lataSixDofDragBehavior.zDragFactor = 0.2;
-        lataSixDofDragBehavior.attach(lataWrapper);
+      envaseBody.shape = envaseShape;
+      envaseBody.setMassProperties({ mass: 0.15 });
+      envaseBody.disablePreStep = false;
+      envaseWrapper.checkCollisions = true;
+      const envaseAggregate = new BABYLON.PhysicsAggregate(
+        envaseWrapper,
+        BABYLON.PhysicsShapeType.MESH,
+        { mass: 0.15, restitution: 0.2, height: 0.2 },
+        scene
+      );
+      envaseAggregate.body.disablePreStep = false;
+      envaseWrapper.visibility = 0;
 
-        lataSixDofDragBehavior.onDragStartObservable.add((event) => {
-          hk.setGravity(new BABYLON.Vector3(0,0,0));
-        });
-        lataSixDofDragBehavior.onDragObservable.add((event) => {
-        });
-        lataSixDofDragBehavior.onDragEndObservable.add((event) => {
-            hk.setGravity(new BABYLON.Vector3(0,-9.8,0));
-        });
-        
+      meshes[0].parent = envaseWrapper;
+      //lataWrapper.position(new BABYLON.Vector3(0,0.5,0));
+      //lataWrapper.disablePreStep = false;
 
-        lataWrapper.addBehavior(lataSixDofDragBehavior);
-      
-        //console.log(meshes[0].parent);
-        
-      }
-    );
+      const envaseSixDofDragBehavior = new BABYLON.SixDofDragBehavior();
+      //this is the... distance to move each frame (lower reduces jitter)
+      envaseSixDofDragBehavior.dragDeltaRatio = 0.2;
+      //this one modifies z dragging behavior
+      envaseSixDofDragBehavior.zDragFactor = 0.2;
+      envaseSixDofDragBehavior.attach(envaseWrapper);
 
+      envaseSixDofDragBehavior.onDragStartObservable.add((event) => {
+        hk.setGravity(new BABYLON.Vector3(0, 0, 0));
+      });
+      envaseSixDofDragBehavior.onDragObservable.add((event) => {});
+      envaseSixDofDragBehavior.onDragEndObservable.add((event) => {
+        hk.setGravity(new BABYLON.Vector3(0, -9.8, 0));
+      });
 
+      envaseWrapper.addBehavior(envaseSixDofDragBehavior);
 
-    /**Importando modelo Lata de Refresco */
-    const envaseCafe = BABYLON.SceneLoader.ImportMesh(
-      "",
-      "/lata-pepsi/",
-      "Pepsi_Can.obj",
-      scene,
-      function (meshes, particleSystems, skeletons, animationGroups) {
-        //console.log(meshes);
-        
-        meshes[0].scaling = new BABYLON.Vector3(1.5, 1.5, 1.5);
-        //meshes[0].physicsBody.disablePreStep = true;
-        //meshes[0].rotation = new BABYLON.Vector3((Math.PI/2),0,0);
-        //meshes[0].position = new BABYLON.Vector3(0, 4.5, -1.5);
-        //meshes[0].checkCollisions = true;
- 
-        const envaseWrapper = new BABYLON.MeshBuilder.CreateCylinder("", {height: .2, diameter: 0.1});
-        envaseWrapper.position = new BABYLON.Vector3(-2,3,0);
+      //console.log(meshes[0].parent);
 
-        const envaseShape = new BABYLON.PhysicsShapeMesh(meshes[0], scene);
-        envaseShape.material = { friction: 0.8, restitution: 0.2 };
-        //envaseShape.transparent = true;
-
-        const envaseBody = new BABYLON.PhysicsBody(envaseWrapper, BABYLON.PhysicsMotionType.DYNAMIC, false, scene);
-         
-  
-        envaseBody.shape = envaseShape;
-        envaseBody.setMassProperties({mass: 0.15});
-        envaseBody.disablePreStep = false;
-        envaseWrapper.checkCollisions = true;
-        const envaseAggregate = new BABYLON.PhysicsAggregate(
-          envaseWrapper,
-          BABYLON.PhysicsShapeType.MESH,
-          { mass: 0.15, restitution: 0.2, height: .2 },
-          scene
-        );
-        envaseAggregate.body.disablePreStep = false;
-        envaseWrapper.visibility = 0;
-       
-
-
-        meshes[0].parent = envaseWrapper;
-        //lataWrapper.position(new BABYLON.Vector3(0,0.5,0));
-        //lataWrapper.disablePreStep = false;
-
-        const envaseSixDofDragBehavior = new BABYLON.SixDofDragBehavior();
-        //this is the... distance to move each frame (lower reduces jitter)
-        envaseSixDofDragBehavior.dragDeltaRatio = 0.2;
-        //this one modifies z dragging behavior
-        envaseSixDofDragBehavior.zDragFactor = 0.2;
-        envaseSixDofDragBehavior.attach(envaseWrapper);
-
-        envaseSixDofDragBehavior.onDragStartObservable.add((event) => {
-          hk.setGravity(new BABYLON.Vector3(0,0,0));
-        });
-        envaseSixDofDragBehavior.onDragObservable.add((event) => {
-        });
-        envaseSixDofDragBehavior.onDragEndObservable.add((event) => {
-            hk.setGravity(new BABYLON.Vector3(0,-9.8,0));
-        });
-        
-
-        envaseWrapper.addBehavior(envaseSixDofDragBehavior);
-      
-        //console.log(meshes[0].parent);
-        
-        // wrap in bounding box mesh to avoid picking perf hit
-       /*var lataMesh = meshes[0];
+      // wrap in bounding box mesh to avoid picking perf hit
+      /*var lataMesh = meshes[0];
         var boundingBox = BABYLON.BoundingBoxGizmo.MakeNotPickableAndWrapInBoundingBox(lataMesh);
 
       // Create bounding box gizmo
@@ -939,60 +1000,52 @@ techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
 
         gizmo.attachedMesh = boundingBox;
         boundingBox.addBehavior(lataSixDofDragBehavior);*/
-        /*const lataContainer = new BABYLON.MeshBuilder.CreateCylinder("", {}, scene);
+      /*const lataContainer = new BABYLON.MeshBuilder.CreateCylinder("", {}, scene);
         meshes.parent = lataContainer;
         const lataBody = new BABYLON.PhysicsShapeCylinder(new BABYLON.Vector3(0, -0.5, 0), new BABYLON.Vector3(0, 0.5, 0), 0.15, scene)*/
-    
-    //const lataBoundingBox = BABYLON.BoundingBoxGizmo.MakeNotPickableAndWrapInBoundingBox(meshes[0]);
-    //lataBody.addBehavior(lataSixDofDragBehavior);
-      }
-    );
-    
 
+      //const lataBoundingBox = BABYLON.BoundingBoxGizmo.MakeNotPickableAndWrapInBoundingBox(meshes[0]);
+      //lataBody.addBehavior(lataSixDofDragBehavior);
+    }
+  );
 
+  /**Importando modelo Cesta de basura */
+  const cestaBasura = BABYLON.SceneLoader.ImportMesh(
+    "",
+    "/cesta-basura/",
+    "cesta-basura.obj",
+    scene,
+    function (meshes, particleSystems, skeletons, animationGroups) {
+      meshes.map((mesh) => {
+        //mesh.scaling = new BABYLON.Vector3(1.5, 1.5, 1.5);
+        //mesh.rotation = new BABYLON.Vector3((Math.PI/2),0,0);
+        mesh.position = new BABYLON.Vector3(-1.8, -0.2, -2);
+        mesh.checkCollisions = true;
+        //Adding Physics to Object
+        new BABYLON.PhysicsAggregate(
+          mesh,
+          BABYLON.PhysicsShapeType.MESH,
+          { mass: 0, restitution: 0.3 },
+          scene
+        );
+        //new BABYLON.PhysicsAggregate(mesh, BABYLON.PhysicsShapeType.MESH, {mass: 0  }, scene);
+      });
+    }
+  );
 
-    /**Importando modelo Cesta de basura */
-    const cestaBasura = BABYLON.SceneLoader.ImportMesh(
-      "",
-      "/cesta-basura/",
-      "cesta-basura.obj",
-      scene,
-      function (meshes, particleSystems, skeletons, animationGroups) { 
-        meshes.map((mesh) => {
-          
-          //mesh.scaling = new BABYLON.Vector3(1.5, 1.5, 1.5);
-          //mesh.rotation = new BABYLON.Vector3((Math.PI/2),0,0);
-          mesh.position = new BABYLON.Vector3(-1.8, -0.2, -2);
-          mesh.checkCollisions = true;
-          //Adding Physics to Object
-          new BABYLON.PhysicsAggregate(
-            mesh,
-            BABYLON.PhysicsShapeType.MESH,
-            { mass: 0 , restitution: 0.3 },
-            scene
-          );
-          //new BABYLON.PhysicsAggregate(mesh, BABYLON.PhysicsShapeType.MESH, {mass: 0  }, scene);
-          
-          
-        });
-      }
-    );
+  //CestaMaterial
+  const cestaMaterial = new BABYLON.StandardMaterial("cestaMaterial", scene);
+  //Basic Material
+  const cestaTexture = new BABYLON.Texture("/texturas/madera/madera_diff.jpg");
 
-    //CestaMaterial
-    const cestaMaterial = new BABYLON.StandardMaterial("cestaMaterial", scene);
-    //Basic Material
-    const cestaTexture = new BABYLON.Texture(
-    "/texturas/madera/madera_diff.jpg"
-    );
-    
-    //cestaTexture.uScale = 3;
-    //cestaTexture.vScale = 3;
-    //cestaTexture.specularPower = 1000;
-    cestaMaterial.diffuseTexture = cestaTexture;
-    
-    //Normal Map
-    
-    const cestaNormalMap = new BABYLON.Texture(
+  //cestaTexture.uScale = 3;
+  //cestaTexture.vScale = 3;
+  //cestaTexture.specularPower = 1000;
+  cestaMaterial.diffuseTexture = cestaTexture;
+
+  //Normal Map
+
+  /*const cestaNormalMap = new BABYLON.Texture(
       "/texturas/madera/madera_normal.jpg",
       scene
     );
@@ -1001,64 +1054,60 @@ techo.rotation = new BABYLON.Vector3(Math.PI/2, 0, 0);
     
     cestaMaterial.bumpTexture = cestaNormalMap;
     cestaMaterial.invertNormalMapX = true;
-    cestaMaterial.invertNormalMapY = true;
-    
-    //Ambient Occlusion
-    
-    const cestaOcclusion = new BABYLON.Texture(
+    cestaMaterial.invertNormalMapY = true;*/
+
+  //Ambient Occlusion
+
+  /*const cestaOcclusion = new BABYLON.Texture(
       "/texturas/madera/madera_ao.jpg",
       scene
     );
     //cestaOcclusion.uScale = 3;
     //cestaOcclusion.vScale = 3;
     
-    cestaMaterial.ambientTexture = cestaOcclusion;
-    
-    //Roughness Map
-    const cestaRoughness = new BABYLON.Texture(
+    cestaMaterial.ambientTexture = cestaOcclusion;*/
+
+  //Roughness Map
+  /* const cestaRoughness = new BABYLON.Texture(
       "/texturas/madera/madera_roughness.jpg",
       scene
     );
     //cestaRoughness.uScale = 3;
     //cestaRoughness.vScale = 3;
     
-    cestaMaterial.specularTexture = cestaRoughness;
-    //Qué tanta luz refleja (Mientras más grande menos refleja)
-    //cestaTexture.specularPower = 500;
+    cestaMaterial.specularTexture = cestaRoughness;*/
+  //Qué tanta luz refleja (Mientras más grande menos refleja)
+  //cestaTexture.specularPower = 500;
 
-/**Importando modelo Cesta de basura */
-const cesta = BABYLON.SceneLoader.ImportMesh(
-  "",
-  "/box_obj/",
-  "boxobj.obj",
-  scene,
-  function (meshes, particleSystems, skeletons, animationGroups) { 
-    meshes.map((mesh) => {
-      
-      mesh.scaling = new BABYLON.Vector3(0.005, 0.005, 0.005);
-      //mesh.rotation = new BABYLON.Vector3((Math.PI/2),0,0);
-      mesh.position = new BABYLON.Vector3(-2.4, 0.1, -4.5);
-      mesh.checkCollisions = true;
-      //Adding Physics to Object
-      new BABYLON.PhysicsAggregate(
-        mesh,
-        BABYLON.PhysicsShapeType.MESH,
-        { mass: 0 , restitution: 0.3 },
-        scene
-      );
-      //new BABYLON.PhysicsAggregate(mesh, BABYLON.PhysicsShapeType.MESH, {mass: 0  }, scene);
-      //Create pelota Baseball's Textures
-mesh.material = cestaMaterial;
-
-      
-    });
-  }
-);
-
+  /**Importando modelo Cesta de basura */
+  const cesta = BABYLON.SceneLoader.ImportMesh(
+    "",
+    "/box_obj/",
+    "boxobj.obj",
+    scene,
+    function (meshes, particleSystems, skeletons, animationGroups) {
+      meshes.map((mesh) => {
+        mesh.scaling = new BABYLON.Vector3(0.005, 0.005, 0.005);
+        //mesh.rotation = new BABYLON.Vector3((Math.PI/2),0,0);
+        mesh.position = new BABYLON.Vector3(-2.4, 0.1, -4.5);
+        mesh.checkCollisions = true;
+        //Adding Physics to Object
+        new BABYLON.PhysicsAggregate(
+          mesh,
+          BABYLON.PhysicsShapeType.MESH,
+          { mass: 0, restitution: 0.3 },
+          scene
+        );
+        //new BABYLON.PhysicsAggregate(mesh, BABYLON.PhysicsShapeType.MESH, {mass: 0  }, scene);
+        //Create pelota Baseball's Textures
+        mesh.material = cestaMaterial;
+      });
+    }
+  );
 
   //const physicsViewer = new BABYLON.DebugLayer(scene);
-/**Show Meshes */
-/*const physicsViewer = new PhysicsViewer();
+  /**Show Meshes */
+  /*const physicsViewer = new PhysicsViewer();
     for (const mesh of scene.rootNodes) {
         showPhysicsBodiesRecursive(mesh);
     }
