@@ -134,6 +134,7 @@ const createScene = async function () {
   sixDofDragBehavior.attach;
 
   sphere.addBehavior(sixDofDragBehavior);
+  //console.log(sphere.getBoundingInfo());
 
   //Pelota de Baseball
   const pelotaBaseball = new BABYLON.MeshBuilder.CreateSphere(
@@ -196,8 +197,8 @@ const createScene = async function () {
   //pelotaBaseballNormalMap.vScale = 5;
 
   pelotaBaseballMaterial.bumpTexture = pelotaBaseballNormalMap;
-  pelotaBaseballMaterial.invertNormalMapX = true;
-  pelotaBaseballMaterial.invertNormalMapY = true;
+  //pelotaBaseballMaterial.invertNormalMapX = true;
+  //pelotaBaseballMaterial.invertNormalMapY = true;
 
   //Ambient Occlusion
 
@@ -208,7 +209,7 @@ const createScene = async function () {
   //pelotaBaseballOcclusion.uScale = 3;
   //pelotaBaseballOcclusion.vScale = 3;
 
-  pelotaBaseballTexture.ambientTexture = pelotaBaseballOcclusion;
+  pelotaBaseballMaterial.ambientTexture = pelotaBaseballOcclusion;
 
   //Roughness Map
   const pelotaBaseballRoughness = new BABYLON.Texture(
@@ -218,9 +219,9 @@ const createScene = async function () {
   //pelotaBaseballRoughness.uScale = 3;
   //pelotaBaseballRoughness.vScale = 3;
 
-  pelotaBaseballTexture.specularTexture = pelotaBaseballRoughness;
+  pelotaBaseballMaterial.specularTexture = pelotaBaseballRoughness;
   //Qué tanta luz refleja (Mientras más grande menos refleja)
-  pelotaBaseballTexture.specularPower = 500;
+  pelotaBaseballMaterial.specularPower = 500;
 
   //Assign material to object
   pelotaBaseball.material = pelotaBaseballMaterial;
@@ -250,6 +251,8 @@ const createScene = async function () {
   pelotaBaseballSixDofDragBehavior.attach;
 
   pelotaBaseball.addBehavior(pelotaBaseballSixDofDragBehavior);
+  
+  //console.log(pelotaBaseball.intersectsMesh(sphere));
 
   //Ground shape
   const ground = BABYLON.MeshBuilder.CreateGround(
@@ -534,7 +537,7 @@ const createScene = async function () {
       //"Resto del sofa: meshes[5]"
       meshes.map((mesh, index) => {
         //console.log(mesh);
-        if (index === 1 || index === 3) {
+        if (index === 1 || index === 3 || index === 5) {
           //console.log(mesh);
           mesh.scaling = new BABYLON.Vector3(0.15, 0.15, 0.15);
           mesh.position = new BABYLON.Vector3(2, 0, 2);
@@ -549,7 +552,7 @@ const createScene = async function () {
           mesh.checkCollisions = true;
         }
 
-        if (index === 5) {
+        /*if (index === 5) {
           //console.log(mesh);
           mesh.scaling = new BABYLON.Vector3(0.15, 0.15, 0.15);
           mesh.position = new BABYLON.Vector3(2, 0, 2);
@@ -562,7 +565,7 @@ const createScene = async function () {
           );
           mesh.material = sofaTexture;
           mesh.checkCollisions = true;
-        }
+        }*/
       });
     }
   );
@@ -582,8 +585,7 @@ const createScene = async function () {
       //"Resto del sofa: meshes[5]"
       meshes.map((mesh, index) => {
         //console.log(mesh);
-        if (index === 1 || index === 3) {
-          //console.log(mesh);
+        if (index === 1 || index === 3 || index === 5) {
           mesh.scaling = new BABYLON.Vector3(0.15, 0.15, 0.15);
           mesh.position = new BABYLON.Vector3(0.8, 0, 0.5);
           mesh.rotation = new BABYLON.Vector3(0, 0, 0);
@@ -597,8 +599,7 @@ const createScene = async function () {
           mesh.checkCollisions = true;
         }
 
-        if (index === 5) {
-          // console.log(mesh);
+       /* if (index === 5) {
           mesh.scaling = new BABYLON.Vector3(0.15, 0.15, 0.15);
           mesh.position = new BABYLON.Vector3(0.8, 0, 0.5);
           mesh.rotation = new BABYLON.Vector3(0, 0, 0);
@@ -610,7 +611,7 @@ const createScene = async function () {
           );
           mesh.material = sofaTexture;
           mesh.checkCollisions = true;
-        }
+        }*/
       });
     }
   );
@@ -651,7 +652,6 @@ const createScene = async function () {
     "table.obj",
     scene,
     function (meshes, particleSystems, skeletons, animationGroups) {
-      //console.log(meshes);
       meshes[0].scaling = new BABYLON.Vector3(0.3, 0.3, 0.3);
       meshes[0].position = new BABYLON.Vector3(1, 0, -3);
       meshes[0].checkCollisions = true;
@@ -675,7 +675,6 @@ const createScene = async function () {
     "Chair.obj",
     scene,
     function (meshes, particleSystems, skeletons, animationGroups) {
-      //console.log(meshes);
       meshes[0].scaling = new BABYLON.Vector3(0.01, 0.01, 0.01);
       meshes[0].rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
       meshes[0].position = new BABYLON.Vector3(0.7, 0, -3.5);
@@ -697,7 +696,6 @@ const createScene = async function () {
     "Chair.obj",
     scene,
     function (meshes, particleSystems, skeletons, animationGroups) {
-      //console.log(meshes);
       meshes[0].scaling = new BABYLON.Vector3(0.01, 0.01, 0.01);
       meshes[0].rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
       meshes[0].position = new BABYLON.Vector3(1.4, 0, -3.5);
@@ -719,7 +717,6 @@ const createScene = async function () {
     "Chair.obj",
     scene,
     function (meshes, particleSystems, skeletons, animationGroups) {
-      // console.log(meshes);
       meshes[0].scaling = new BABYLON.Vector3(0.01, 0.01, 0.01);
       meshes[0].rotation = new BABYLON.Vector3(0, -Math.PI / 2, 0);
       meshes[0].position = new BABYLON.Vector3(1.3, 0, -2.5);
@@ -741,7 +738,6 @@ const createScene = async function () {
     "Chair.obj",
     scene,
     function (meshes, particleSystems, skeletons, animationGroups) {
-      //console.log(meshes);
       meshes[0].scaling = new BABYLON.Vector3(0.01, 0.01, 0.01);
       meshes[0].rotation = new BABYLON.Vector3(0, -Math.PI / 2, 0);
       meshes[0].position = new BABYLON.Vector3(0.6, 0, -2.5);
@@ -768,7 +764,6 @@ const createScene = async function () {
     "Auxiliar_Table_005.obj",
     scene,
     function (meshes, particleSystems, skeletons, animationGroups) {
-      //console.log(meshes);
       meshes[0].scaling = new BABYLON.Vector3(0.018, 0.02, 0.02);
       meshes[0].rotation = new BABYLON.Vector3(0, -Math.PI / 2, 0);
       meshes[0].position = new BABYLON.Vector3(-2.4, 0, 2);
@@ -790,7 +785,6 @@ const createScene = async function () {
     "tv.obj",
     scene,
     function (meshes, particleSystems, skeletons, animationGroups) {
-      // console.log(meshes);
       meshes.map((mesh) => {
         mesh.scaling = new BABYLON.Vector3(0.3, 0.3, 0.3);
         mesh.rotation = new BABYLON.Vector3(0, Math.PI / 2, 0);
@@ -814,12 +808,10 @@ const createScene = async function () {
     "Pepsi_Can.obj",
     scene,
     function (meshes, particleSystems, skeletons, animationGroups) {
-      //console.log(meshes);
 
       meshes[0].scaling = new BABYLON.Vector3(1.5, 1.5, 1.5);
       //meshes[0].physicsBody.disablePreStep = true;
       //meshes[0].rotation = new BABYLON.Vector3((Math.PI/2),0,0);
-      //meshes[0].position = new BABYLON.Vector3(0, 4.5, -1.5);
       //meshes[0].checkCollisions = true;
 
       const lataWrapper = new BABYLON.MeshBuilder.CreateCylinder("", {
@@ -864,8 +856,6 @@ const createScene = async function () {
       lataAggregate.body.disablePreStep = false;
 
       meshes[0].parent = lataWrapper;
-      //lataWrapper.position(new BABYLON.Vector3(0,0.5,0));
-      //lataWrapper.disablePreStep = false;
 
       const lataSixDofDragBehavior = new BABYLON.SixDofDragBehavior();
       //this is the... distance to move each frame (lower reduces jitter)
@@ -900,7 +890,6 @@ const createScene = async function () {
       meshes[0].scaling = new BABYLON.Vector3(1.5, 1.5, 1.5);
       //meshes[0].physicsBody.disablePreStep = true;
       //meshes[0].rotation = new BABYLON.Vector3((Math.PI/2),0,0);
-      //meshes[0].position = new BABYLON.Vector3(0, 4.5, -1.5);
       //meshes[0].checkCollisions = true;
 
       const envaseWrapper = new BABYLON.MeshBuilder.CreateCylinder("", {
@@ -941,9 +930,7 @@ const createScene = async function () {
       envaseWrapper.visibility = 0;
 
       meshes[0].parent = envaseWrapper;
-      //lataWrapper.position(new BABYLON.Vector3(0,0.5,0));
-      //lataWrapper.disablePreStep = false;
-
+  
       const envaseSixDofDragBehavior = new BABYLON.SixDofDragBehavior();
       //this is the... distance to move each frame (lower reduces jitter)
       envaseSixDofDragBehavior.dragDeltaRatio = 0.2;
@@ -963,18 +950,7 @@ const createScene = async function () {
 
       //console.log(meshes[0].parent);
 
-      // wrap in bounding box mesh to avoid picking perf hit
-      /*var lataMesh = meshes[0];
-        var boundingBox = BABYLON.BoundingBoxGizmo.MakeNotPickableAndWrapInBoundingBox(lataMesh);
-
-      // Create bounding box gizmo
-      var utilLayer = new BABYLON.UtilityLayerRenderer(scene)
-      utilLayer.utilityLayerScene.autoClearDepthAndStencil = false;
-      var gizmo = new BABYLON.BoundingBoxGizmo(BABYLON.Color3.FromHexString("#0984e3"), utilLayer)
-      gizmo.attachedMesh = boundingBox;
-
-
-      const lataSixDofDragBehavior = new BABYLON.SixDofDragBehavior();
+/*      const lataSixDofDragBehavior = new BABYLON.SixDofDragBehavior();
         //this is the... distance to move each frame (lower reduces jitter)
         lataSixDofDragBehavior.dragDeltaRatio = 0.2;
         //this one modifies z dragging behavior
@@ -996,16 +972,8 @@ const createScene = async function () {
             //    pointStart = point.dragPlanePoint;
         });
         lataSixDofDragBehavior.attach
-
-
-        gizmo.attachedMesh = boundingBox;
-        boundingBox.addBehavior(lataSixDofDragBehavior);*/
-      /*const lataContainer = new BABYLON.MeshBuilder.CreateCylinder("", {}, scene);
-        meshes.parent = lataContainer;
-        const lataBody = new BABYLON.PhysicsShapeCylinder(new BABYLON.Vector3(0, -0.5, 0), new BABYLON.Vector3(0, 0.5, 0), 0.15, scene)*/
-
-      //const lataBoundingBox = BABYLON.BoundingBoxGizmo.MakeNotPickableAndWrapInBoundingBox(meshes[0]);
-      //lataBody.addBehavior(lataSixDofDragBehavior);
+*/
+    
     }
   );
 
@@ -1045,37 +1013,37 @@ const createScene = async function () {
 
   //Normal Map
 
-  /*const cestaNormalMap = new BABYLON.Texture(
-      "/texturas/madera/madera_normal.jpg",
-      scene
-    );
-    //cestaNormalMap.uScale = 5;
-    //cestaNormalMap.vScale = 5;
-    
-    cestaMaterial.bumpTexture = cestaNormalMap;
-    cestaMaterial.invertNormalMapX = true;
-    cestaMaterial.invertNormalMapY = true;*/
+  const cestaNormalMap = new BABYLON.Texture(
+    "/texturas/madera/madera_normal.jpg",
+    scene
+  );
+  //cestaNormalMap.uScale = 5;
+  //cestaNormalMap.vScale = 5;
+
+  cestaMaterial.bumpTexture = cestaNormalMap;
+  cestaMaterial.invertNormalMapX = true;
+  cestaMaterial.invertNormalMapY = true;
 
   //Ambient Occlusion
 
-  /*const cestaOcclusion = new BABYLON.Texture(
-      "/texturas/madera/madera_ao.jpg",
-      scene
-    );
-    //cestaOcclusion.uScale = 3;
-    //cestaOcclusion.vScale = 3;
-    
-    cestaMaterial.ambientTexture = cestaOcclusion;*/
+  const cestaOcclusion = new BABYLON.Texture(
+    "/texturas/madera/madera_ao.jpg",
+    scene
+  );
+  //cestaOcclusion.uScale = 3;
+  //cestaOcclusion.vScale = 3;
+
+  cestaMaterial.ambientTexture = cestaOcclusion;
 
   //Roughness Map
-  /* const cestaRoughness = new BABYLON.Texture(
-      "/texturas/madera/madera_roughness.jpg",
-      scene
-    );
-    //cestaRoughness.uScale = 3;
-    //cestaRoughness.vScale = 3;
-    
-    cestaMaterial.specularTexture = cestaRoughness;*/
+  const cestaRoughness = new BABYLON.Texture(
+    "/texturas/madera/madera_roughness.jpg",
+    scene
+  );
+  //cestaRoughness.uScale = 3;
+  //cestaRoughness.vScale = 3;
+
+  cestaMaterial.specularTexture = cestaRoughness;
   //Qué tanta luz refleja (Mientras más grande menos refleja)
   //cestaTexture.specularPower = 500;
 
@@ -1086,7 +1054,8 @@ const createScene = async function () {
     "boxobj.obj",
     scene,
     function (meshes, particleSystems, skeletons, animationGroups) {
-      meshes.map((mesh) => {
+      const floorMeshes = [2, 4, 6, 8, 10, 12, 14, 16, 17]
+      meshes.map((mesh,index) => {
         mesh.scaling = new BABYLON.Vector3(0.005, 0.005, 0.005);
         //mesh.rotation = new BABYLON.Vector3((Math.PI/2),0,0);
         mesh.position = new BABYLON.Vector3(-2.4, 0.1, -4.5);
@@ -1098,6 +1067,16 @@ const createScene = async function () {
           { mass: 0, restitution: 0.3 },
           scene
         );
+        if(floorMeshes.includes(index)){
+          mesh.actionManager = new BABYLON.ActionManager(scene);
+          mesh.actionManager.registerAction(new BABYLON.ExecuteCodeAction({ trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger,
+            parameter: {
+              mesh: sphere,
+              usePreciseIntersection: true,
+            }}, function(){
+              console.log("El balón de Basketball se encuentra dentro de la cesta");
+            }));
+        }
         //new BABYLON.PhysicsAggregate(mesh, BABYLON.PhysicsShapeType.MESH, {mass: 0  }, scene);
         //Create pelota Baseball's Textures
         mesh.material = cestaMaterial;
@@ -1122,6 +1101,32 @@ const createScene = async function () {
       }
   }
 */
+
+
+
+scene.registerBeforeRender(function () {
+  if(pelotaBaseball.intersectsMesh(sphere, true)){
+    console.log("Pelota de Basket y Pelota de Baseball chocaron");
+  }
+});
+
+
+
+/*if(sphere.intersectsMesh(cesta, true)){
+  console.log("Pelota de Basket chocó a la cesta de Pelotas");
+}*/
+
+
+//console.log(cesta);
+/*const root = cesta.
+    const childMeshes = root.getChildMeshes()
+
+    for (let mesh of childMeshes) {
+        console.log(mesh.uniqueID);
+    }*/
+
+
+
   return scene;
 };
 
