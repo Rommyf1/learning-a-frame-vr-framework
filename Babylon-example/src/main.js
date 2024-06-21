@@ -1154,9 +1154,7 @@ const createScene = async function () {
                 },
               },
               function () {
-                console.log(
-                  "El balón de Basketball se encuentra dentro de la cesta"
-                );
+                console.log("El balón de Basketball se encuentra dentro de la cesta");
               }
             )
           );
@@ -1172,9 +1170,37 @@ const createScene = async function () {
                 },
               },
               function () {
-                console.log(
-                  "La pelota de Baseball se encuentra dentro de la cesta"
-                );
+                console.log("La pelota de Baseball se encuentra dentro de la cesta");
+              }
+            )
+          );
+          //Detect when Pelota de Baseball is not longer inside cesta de pelotas
+          mesh.actionManager.registerAction(
+            new BABYLON.ExecuteCodeAction(
+              {
+                trigger: BABYLON.ActionManager.OnIntersectionExitTrigger,
+                parameter: {
+                  mesh: pelotaBaseball,
+                  usePreciseIntersection: true,
+                },
+              },
+              function () {
+                console.log("La pelota de Baseball Ya No se encuentra dentro de la cesta");
+              }
+            )
+          );
+          //Detect when Balón de Basket is not longer inside cesta de pelotas
+          mesh.actionManager.registerAction(
+            new BABYLON.ExecuteCodeAction(
+              {
+                trigger: BABYLON.ActionManager.OnIntersectionExitTrigger,
+                parameter: {
+                  mesh: sphere,
+                  usePreciseIntersection: true,
+                },
+              },
+              function () {
+                console.log("El balón de Basketball Ya No se encuentra dentro de la cesta");
               }
             )
           );
