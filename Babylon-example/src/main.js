@@ -251,7 +251,7 @@ const createScene = async function () {
   pelotaBaseballSixDofDragBehavior.attach;
 
   pelotaBaseball.addBehavior(pelotaBaseballSixDofDragBehavior);
-  
+
   //console.log(pelotaBaseball.intersectsMesh(sphere));
 
   //Ground shape
@@ -599,7 +599,7 @@ const createScene = async function () {
           mesh.checkCollisions = true;
         }
 
-       /* if (index === 5) {
+        /* if (index === 5) {
           mesh.scaling = new BABYLON.Vector3(0.15, 0.15, 0.15);
           mesh.position = new BABYLON.Vector3(0.8, 0, 0.5);
           mesh.rotation = new BABYLON.Vector3(0, 0, 0);
@@ -808,16 +808,18 @@ const createScene = async function () {
     "Pepsi_Can.obj",
     scene,
     function (meshes, particleSystems, skeletons, animationGroups) {
-
       meshes[0].scaling = new BABYLON.Vector3(1.5, 1.5, 1.5);
       //meshes[0].physicsBody.disablePreStep = true;
       //meshes[0].rotation = new BABYLON.Vector3((Math.PI/2),0,0);
       //meshes[0].checkCollisions = true;
 
-      const lataWrapper = new BABYLON.MeshBuilder.CreateCylinder("", {
-        height: 0.2,
-        diameter: 0.1,
-      });
+      const lataWrapper = new BABYLON.MeshBuilder.CreateCylinder(
+        "lataWrapper",
+        {
+          height: 0.2,
+          diameter: 0.1,
+        }
+      );
       const lataXPosition = randomHorizontalPosition();
       const lataYPosition = randomVerticalPosition();
       const lataZPosition = randomHorizontalPosition();
@@ -873,6 +875,7 @@ const createScene = async function () {
       });
 
       lataWrapper.addBehavior(lataSixDofDragBehavior);
+      return lataWrapper;
 
       //console.log(meshes[0].parent);
     }
@@ -892,10 +895,13 @@ const createScene = async function () {
       //meshes[0].rotation = new BABYLON.Vector3((Math.PI/2),0,0);
       //meshes[0].checkCollisions = true;
 
-      const envaseWrapper = new BABYLON.MeshBuilder.CreateCylinder("", {
-        height: 0.2,
-        diameter: 0.1,
-      });
+      const envaseWrapper = new BABYLON.MeshBuilder.CreateCylinder(
+        "envaseWrapper",
+        {
+          height: 0.2,
+          diameter: 0.1,
+        }
+      );
       const envaseXPosition = randomHorizontalPosition();
       const envaseYPosition = randomVerticalPosition();
       const envaseZPosition = randomHorizontalPosition();
@@ -930,7 +936,7 @@ const createScene = async function () {
       envaseWrapper.visibility = 0;
 
       meshes[0].parent = envaseWrapper;
-  
+
       const envaseSixDofDragBehavior = new BABYLON.SixDofDragBehavior();
       //this is the... distance to move each frame (lower reduces jitter)
       envaseSixDofDragBehavior.dragDeltaRatio = 0.2;
@@ -947,10 +953,11 @@ const createScene = async function () {
       });
 
       envaseWrapper.addBehavior(envaseSixDofDragBehavior);
+      return envaseWrapper;
 
       //console.log(meshes[0].parent);
 
-/*      const lataSixDofDragBehavior = new BABYLON.SixDofDragBehavior();
+      /*      const lataSixDofDragBehavior = new BABYLON.SixDofDragBehavior();
         //this is the... distance to move each frame (lower reduces jitter)
         lataSixDofDragBehavior.dragDeltaRatio = 0.2;
         //this one modifies z dragging behavior
@@ -973,9 +980,10 @@ const createScene = async function () {
         });
         lataSixDofDragBehavior.attach
 */
-    
     }
   );
+
+  console.log(scene.meshes);
 
   /**Importando modelo Cesta de basura */
   const cestaBasura = BABYLON.SceneLoader.ImportMesh(
@@ -984,7 +992,8 @@ const createScene = async function () {
     "cesta-basura.obj",
     scene,
     function (meshes, particleSystems, skeletons, animationGroups) {
-      meshes.map((mesh) => {
+      //console.log(meshes);
+      meshes.map((mesh, index) => {
         //mesh.scaling = new BABYLON.Vector3(1.5, 1.5, 1.5);
         //mesh.rotation = new BABYLON.Vector3((Math.PI/2),0,0);
         mesh.position = new BABYLON.Vector3(3, -0.2, 3.2);
@@ -996,6 +1005,41 @@ const createScene = async function () {
           { mass: 0, restitution: 0.3 },
           scene
         );
+        if (index >= 1) {
+          const lata1 = scene.meshes[56];
+          const lata2 = scene.meshes[57];
+          //Detect when lata1 is inside of cesta de pelotas
+          mesh.actionManager = new BABYLON.ActionManager(scene);
+          mesh.actionManager.registerAction(
+            new BABYLON.ExecuteCodeAction(
+              {
+                trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger,
+                parameter: {
+                  mesh: lata1,
+                  usePreciseIntersection: true,
+                },
+              },
+              function () {
+                console.log("La lata de Refresco 1 se encuentra dentro de la cesta de Basura");
+              }
+            )
+          );
+          //Detect when lata2 is inside of cesta de pelotas
+          mesh.actionManager.registerAction(
+            new BABYLON.ExecuteCodeAction(
+              {
+                trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger,
+                parameter: {
+                  mesh: lata2,
+                  usePreciseIntersection: true,
+                },
+              },
+              function () {
+                console.log("La lata de Refresco 2 se encuentra dentro de la cesta de Basura");
+              }
+            )
+          );
+        }
         //new BABYLON.PhysicsAggregate(mesh, BABYLON.PhysicsShapeType.MESH, {mass: 0  }, scene);
       });
     }
@@ -1055,7 +1099,7 @@ const createScene = async function () {
     scene,
     function (meshes, particleSystems, skeletons, animationGroups) {
       const floorMeshes = [2, 4, 6, 8, 10, 12, 14, 16, 17];
-      meshes.map((mesh,index) => {
+      meshes.map((mesh, index) => {
         mesh.scaling = new BABYLON.Vector3(0.005, 0.005, 0.005);
         //mesh.rotation = new BABYLON.Vector3((Math.PI/2),0,0);
         mesh.position = new BABYLON.Vector3(-2.4, 0.1, -4.5);
@@ -1067,24 +1111,43 @@ const createScene = async function () {
           { mass: 0, restitution: 0.3 },
           scene
         );
-        if(floorMeshes.includes(index)){
+        if (floorMeshes.includes(index)) {
+          //Detect when Balón de Basket is in cesta de pelotas
           mesh.actionManager = new BABYLON.ActionManager(scene);
-          mesh.actionManager.registerAction(new BABYLON.ExecuteCodeAction({ trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger,
-            parameter: {
-              mesh: sphere,
-              usePreciseIntersection: true,
-            }}, function(){
-              console.log("El balón de Basketball se encuentra dentro de la cesta");
-            }));
+          mesh.actionManager.registerAction(
+            new BABYLON.ExecuteCodeAction(
+              {
+                trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger,
+                parameter: {
+                  mesh: sphere,
+                  usePreciseIntersection: true,
+                },
+              },
+              function () {
+                console.log(
+                  "El balón de Basketball se encuentra dentro de la cesta"
+                );
+              }
+            )
+          );
 
-            //mesh.actionManager2 = new BABYLON.ActionManager(scene);
-          mesh.actionManager.registerAction(new BABYLON.ExecuteCodeAction({ trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger,
-            parameter: {
-              mesh: pelotaBaseball,
-              usePreciseIntersection: true,
-            }}, function(){
-              console.log("La pelota de Baseball se encuentra dentro de la cesta");
-            }));
+          //Detect when Pelota de Baseball is in cesta de pelotas
+          mesh.actionManager.registerAction(
+            new BABYLON.ExecuteCodeAction(
+              {
+                trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger,
+                parameter: {
+                  mesh: pelotaBaseball,
+                  usePreciseIntersection: true,
+                },
+              },
+              function () {
+                console.log(
+                  "La pelota de Baseball se encuentra dentro de la cesta"
+                );
+              }
+            )
+          );
         }
         //new BABYLON.PhysicsAggregate(mesh, BABYLON.PhysicsShapeType.MESH, {mass: 0  }, scene);
         //Create pelota Baseball's Textures
@@ -1111,30 +1174,23 @@ const createScene = async function () {
   }
 */
 
+  scene.registerBeforeRender(function () {
+    if (pelotaBaseball.intersectsMesh(sphere, true)) {
+      console.log("Pelota de Basket y Pelota de Baseball chocaron");
+    }
+  });
 
-
-scene.registerBeforeRender(function () {
-  if(pelotaBaseball.intersectsMesh(sphere, true)){
-    console.log("Pelota de Basket y Pelota de Baseball chocaron");
-  }
-});
-
-
-
-/*if(sphere.intersectsMesh(cesta, true)){
+  /*if(sphere.intersectsMesh(cesta, true)){
   console.log("Pelota de Basket chocó a la cesta de Pelotas");
 }*/
 
-
-//console.log(cesta);
-/*const root = cesta.
+  //console.log(cesta);
+  /*const root = cesta.
     const childMeshes = root.getChildMeshes()
 
     for (let mesh of childMeshes) {
         console.log(mesh.uniqueID);
     }*/
-
-
 
   return scene;
 };
