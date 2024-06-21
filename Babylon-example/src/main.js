@@ -1039,6 +1039,36 @@ const createScene = async function () {
               }
             )
           );
+          //Detect when lata2 is not longer inside of cesta de pelotas
+          mesh.actionManager.registerAction(
+            new BABYLON.ExecuteCodeAction(
+              {
+                trigger: BABYLON.ActionManager.OnIntersectionExitTrigger,
+                parameter: {
+                  mesh: lata1,
+                  usePreciseIntersection: true,
+                },
+              },
+              function () {
+                console.log("La lata de Refresco 1 Ya No se encuentra en el fondo de la cesta de Basura");
+              }
+            )
+          );
+          //Detect when lata2 is not longer inside of cesta de pelotas
+          mesh.actionManager.registerAction(
+            new BABYLON.ExecuteCodeAction(
+              {
+                trigger: BABYLON.ActionManager.OnIntersectionExitTrigger,
+                parameter: {
+                  mesh: lata2,
+                  usePreciseIntersection: true,
+                },
+              },
+              function () {
+                console.log("La lata de Refresco 1 Ya No se encuentra en el fondo de la cesta de Basura");
+              }
+            )
+          );
         }
         //new BABYLON.PhysicsAggregate(mesh, BABYLON.PhysicsShapeType.MESH, {mass: 0  }, scene);
       });
