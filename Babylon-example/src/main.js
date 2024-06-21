@@ -1054,7 +1054,7 @@ const createScene = async function () {
     "boxobj.obj",
     scene,
     function (meshes, particleSystems, skeletons, animationGroups) {
-      const floorMeshes = [2, 4, 6, 8, 10, 12, 14, 16, 17]
+      const floorMeshes = [2, 4, 6, 8, 10, 12, 14, 16, 17];
       meshes.map((mesh,index) => {
         mesh.scaling = new BABYLON.Vector3(0.005, 0.005, 0.005);
         //mesh.rotation = new BABYLON.Vector3((Math.PI/2),0,0);
@@ -1075,6 +1075,15 @@ const createScene = async function () {
               usePreciseIntersection: true,
             }}, function(){
               console.log("El balón de Basketball se encuentra dentro de la cesta");
+            }));
+
+            //mesh.actionManager2 = new BABYLON.ActionManager(scene);
+          mesh.actionManager.registerAction(new BABYLON.ExecuteCodeAction({ trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger,
+            parameter: {
+              mesh: pelotaBaseball,
+              usePreciseIntersection: true,
+            }}, function(){
+              console.log("La pelota de Baseball se encuentra dentro de la cesta");
             }));
         }
         //new BABYLON.PhysicsAggregate(mesh, BABYLON.PhysicsShapeType.MESH, {mass: 0  }, scene);
