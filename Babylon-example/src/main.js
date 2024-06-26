@@ -133,6 +133,7 @@ const createScene = async function () {
   });
   sixDofDragBehavior.attach;
 
+  //sphere.isNearGrabbable = true; /// Testing
   sphere.addBehavior(sixDofDragBehavior);
   //console.log(sphere.getBoundingInfo());
 
@@ -250,6 +251,7 @@ const createScene = async function () {
   });
   pelotaBaseballSixDofDragBehavior.attach;
 
+  //pelotaBaseball.isNearGrabbable = true; /// Testing
   pelotaBaseball.addBehavior(pelotaBaseballSixDofDragBehavior);
 
   //console.log(pelotaBaseball.intersectsMesh(sphere));
@@ -812,7 +814,7 @@ const createScene = async function () {
       //meshes[0].physicsBody.disablePreStep = true;
       //meshes[0].rotation = new BABYLON.Vector3((Math.PI/2),0,0);
       //meshes[0].checkCollisions = true;
-
+       //meshes[0].isNearGrabbable = true; /// Testing
       const lataWrapper = new BABYLON.MeshBuilder.CreateCylinder(
         "lataWrapper",
         {
@@ -894,7 +896,7 @@ const createScene = async function () {
       //meshes[0].physicsBody.disablePreStep = true;
       //meshes[0].rotation = new BABYLON.Vector3((Math.PI/2),0,0);
       //meshes[0].checkCollisions = true;
-
+       //meshes[0].isNearGrabbable = true; /// Testing
       const envaseWrapper = new BABYLON.MeshBuilder.CreateCylinder(
         "envaseWrapper",
         {
@@ -1008,6 +1010,9 @@ const createScene = async function () {
         if (index >= 1) {
           const lata1 = scene.meshes[56];
           const lata2 = scene.meshes[57];
+          //let isLata1Inside = false;
+          //let isLata2Inside = false;
+          let latasRemaining = 2;
           //Detect when lata1 is inside of cesta de pelotas
           mesh.actionManager = new BABYLON.ActionManager(scene);
           mesh.actionManager.registerAction(
@@ -1020,7 +1025,12 @@ const createScene = async function () {
                 },
               },
               function () {
+                //if(isLata1Inside) return;
                 console.log("La lata de Refresco 1 se encuentra dentro de la cesta de Basura");
+                latasRemaining--;
+                lata1.dispose();
+                alert(`Latas Restantes Por Botar: ${latasRemaining}`);
+                //!isLata1Inside
               }
             )
           );
@@ -1036,10 +1046,13 @@ const createScene = async function () {
               },
               function () {
                 console.log("La lata de Refresco 2 se encuentra dentro de la cesta de Basura");
+                latasRemaining--;
+                lata2.dispose();
+                alert(`Latas Restantes Por Botar: ${latasRemaining}`);
               }
             )
           );
-          //Detect when lata2 is not longer inside of cesta de pelotas
+          //Detect when lata1 is not longer inside of cesta de pelotas
           mesh.actionManager.registerAction(
             new BABYLON.ExecuteCodeAction(
               {
@@ -1051,6 +1064,8 @@ const createScene = async function () {
               },
               function () {
                 console.log("La lata de Refresco 1 Ya No se encuentra en el fondo de la cesta de Basura");
+                latasRemaining--;
+                alert(`Latas Restantes Por Botar: ${latasRemaining}`);
               }
             )
           );
