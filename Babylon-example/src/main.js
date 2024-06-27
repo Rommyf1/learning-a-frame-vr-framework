@@ -17,6 +17,9 @@ const createScene = async function () {
   // This creates a basic Babylon Scene object (non-mesh)
   const scene = new BABYLON.Scene(engine);
 
+  //Counters
+  let ballsRemaining = 2;
+
   // This creates and positions a free camera (non-mesh)
   const camera = new BABYLON.FreeCamera(
     "camera",
@@ -1027,8 +1030,8 @@ const createScene = async function () {
               function () {
                 //if(isLata1Inside) return;
                 console.log("La lata de Refresco 1 se encuentra dentro de la cesta de Basura");
-                latasRemaining--;
                 lata1.dispose();
+                latasRemaining--;
                 alert(`Latas Restantes Por Botar: ${latasRemaining}`);
                 //!isLata1Inside
               }
@@ -1053,7 +1056,7 @@ const createScene = async function () {
             )
           );
           //Detect when lata1 is not longer inside of cesta de pelotas
-          mesh.actionManager.registerAction(
+          /*mesh.actionManager.registerAction(
             new BABYLON.ExecuteCodeAction(
               {
                 trigger: BABYLON.ActionManager.OnIntersectionExitTrigger,
@@ -1068,9 +1071,9 @@ const createScene = async function () {
                 alert(`Latas Restantes Por Botar: ${latasRemaining}`);
               }
             )
-          );
+          );*/
           //Detect when lata2 is not longer inside of cesta de pelotas
-          mesh.actionManager.registerAction(
+          /*mesh.actionManager.registerAction(
             new BABYLON.ExecuteCodeAction(
               {
                 trigger: BABYLON.ActionManager.OnIntersectionExitTrigger,
@@ -1083,7 +1086,7 @@ const createScene = async function () {
                 console.log("La lata de Refresco 1 Ya No se encuentra en el fondo de la cesta de Basura");
               }
             )
-          );
+          );*/
         }
         //new BABYLON.PhysicsAggregate(mesh, BABYLON.PhysicsShapeType.MESH, {mass: 0  }, scene);
       });
@@ -1144,6 +1147,7 @@ const createScene = async function () {
     scene,
     function (meshes, particleSystems, skeletons, animationGroups) {
       const floorMeshes = [2, 4, 6, 8, 10, 12, 14, 16, 17];
+      let isbasketBallInside = false;
       meshes.map((mesh, index) => {
         mesh.scaling = new BABYLON.Vector3(0.005, 0.005, 0.005);
         //mesh.rotation = new BABYLON.Vector3((Math.PI/2),0,0);
@@ -1156,6 +1160,10 @@ const createScene = async function () {
           { mass: 0, restitution: 0.3 },
           scene
         );
+        
+        //const balonBasket = scene.meshes[0];
+        const pelota = scene.meshes[1];
+
         if (floorMeshes.includes(index)) {
           //Detect when Balón de Basket is in cesta de pelotas
           mesh.actionManager = new BABYLON.ActionManager(scene);
@@ -1169,7 +1177,13 @@ const createScene = async function () {
                 },
               },
               function () {
+                if(isbasketBallInside) return;
+                !isbasketBallInside;
+                console.log(isbasketBallInside);
                 console.log("El balón de Basketball se encuentra dentro de la cesta");
+                ballsRemaining--;
+                sphere.dispose();
+                alert(`Pelotas Restantes por Guardar: ${ballsRemaining}`);
               }
             )
           );
@@ -1186,11 +1200,14 @@ const createScene = async function () {
               },
               function () {
                 console.log("La pelota de Baseball se encuentra dentro de la cesta");
+                pelota.dispose();
+                ballsRemaining--;
+                alert(`Pelotas Restantes por Guardar: ${ballsRemaining}`);
               }
             )
           );
           //Detect when Pelota de Baseball is not longer inside cesta de pelotas
-          mesh.actionManager.registerAction(
+         /* mesh.actionManager.registerAction(
             new BABYLON.ExecuteCodeAction(
               {
                 trigger: BABYLON.ActionManager.OnIntersectionExitTrigger,
@@ -1203,9 +1220,9 @@ const createScene = async function () {
                 console.log("La pelota de Baseball Ya No se encuentra dentro de la cesta");
               }
             )
-          );
+          );*/
           //Detect when Balón de Basket is not longer inside cesta de pelotas
-          mesh.actionManager.registerAction(
+          /*mesh.actionManager.registerAction(
             new BABYLON.ExecuteCodeAction(
               {
                 trigger: BABYLON.ActionManager.OnIntersectionExitTrigger,
@@ -1218,10 +1235,10 @@ const createScene = async function () {
                 console.log("El balón de Basketball Ya No se encuentra dentro de la cesta");
               }
             )
-          );
+          );*/
         }
-        //new BABYLON.PhysicsAggregate(mesh, BABYLON.PhysicsShapeType.MESH, {mass: 0  }, scene);
-        //Create pelota Baseball's Textures
+      
+        //Create cesta's Textures
         mesh.material = cestaMaterial;
       });
     }
@@ -1242,26 +1259,14 @@ const createScene = async function () {
       for (let i=0, children = mesh.getChildren(); i<children.length; i++) {
           showPhysicsBodiesRecursive(children[i]);
       }
-  }
-*/
+  }*/
+
 
   scene.registerBeforeRender(function () {
     if (pelotaBaseball.intersectsMesh(sphere, true)) {
       console.log("Pelota de Basket y Pelota de Baseball chocaron");
     }
   });
-
-  /*if(sphere.intersectsMesh(cesta, true)){
-  console.log("Pelota de Basket chocó a la cesta de Pelotas");
-}*/
-
-  //console.log(cesta);
-  /*const root = cesta.
-    const childMeshes = root.getChildMeshes()
-
-    for (let mesh of childMeshes) {
-        console.log(mesh.uniqueID);
-    }*/
 
   return scene;
 };
